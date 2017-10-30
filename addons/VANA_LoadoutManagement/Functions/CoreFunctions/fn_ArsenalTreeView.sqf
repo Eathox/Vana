@@ -1,46 +1,5 @@
 disableserialization;
 
-/*
-Next Changelog (0.86)
-
-Overall:
-
-Changed:
-- Loadout Export function is now disabled when the loadout management/Confirmation UI is open (This allows text copy-pasting in the edit fields)
-- Switched to a different initialization trigger to hopefully fix the "Broken UI" bug on arsenal opening (Since i cant reproduce the bug the fix is experimental)
-
-Added:
-- A warning notifaction when the arsenal is opened and vana didn't initialize
-- shortcut Ctrl/Shift + N to create a new tab
-- shortcut Ctrl/Shift + E to edit loadout/tab name
-- shortcut Ctrl/Shift + D to delete a tab/loadout
-
-Fixed:
-- Loadouts that were just created with the same name as a tab dint display until you reoping of the arsenal.
-- Weapon, Vest, Uniform ect. Icons stay on top of the loadout screen.
-
-*/
-
-/*-- to do: (Things that are being worked on are marked with WIP)
-Finish the Stringtable.xml
-dragdrop when clicking on nothing tab should deselect
-fix this The small gear type icons seem to be shown trough "main loadout folder". (_selections search for that in arsenal function)
-Clean up code!
-
-change folder collor when dragdrop is in action (visual feedback to were the user)
-make compatibale with zeus respawnloadout module
-
-make prefrance tab wich allows user to toggle: load loadouts with modded items they currently dont have on, Slecet Newnly created tab, add cross infront of loadouts that are not allowed to be loaded, let him choice wich tabs start open
-allow manual sorting in prefrance tab
-add all pictures like in vanila
-add button that clears all displayed loadouts and tabs and then only shows the loadout so that user can reorgenise the whole Tv (Could be loacated in ^)
-add search bar to load loadout screen
-*/
-
-/* Ideas
-Add Prefrance to collor code Loadouts and tabs?
-*/
-
 Private _Return = False;
 Private _Mode = [_this,0,"Open",[displaynull,""]] call bis_fnc_param;
 _ArsenalIDD = [_this,1,[]] call bis_fnc_param; //Gets Arsenal Display ID
