@@ -140,7 +140,7 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
       //--- VANA Code:
 
       //--- Rename
-      case (_key == DIK_E && (_Ctrl || _Shift)):
+      case (_key == DIK_E && _Ctrl):
       {
         if (_InTemplate && !_InPopupUI) then
         {
@@ -150,7 +150,7 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
       };
 
       //--- CreateTab
-      case (_key == DIK_N && (_Ctrl || _Shift)):
+      case (_key == DIK_N && _Ctrl):
       {
         if (_InTemplate && !_InPopupUI) then
         {
@@ -160,7 +160,7 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
       };
 
       //--- Delete
-      case ((_key == DIK_DELETE)||(_key == DIK_D && (_Ctrl || _Shift))):
+      case ((_key == DIK_DELETE)||(_key == DIK_D && _Ctrl)):
       {
         if (_InTemplate && !_InPopupUI) then
         {
