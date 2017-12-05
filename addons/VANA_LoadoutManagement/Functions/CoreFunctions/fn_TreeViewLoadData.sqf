@@ -1,4 +1,3 @@
-//--- to do make function load newly added loadouts (that were saved with out mod on) while also loading saved data
 disableserialization;
 
 params
