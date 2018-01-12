@@ -9,5 +9,5 @@ before_script:
   - wget https://www.dropbox.com/s/jza43yuxswvx2hz/config_style_checker.py
 
 script:
-  - python3 tools/sqf_validator.py
-  - python3 tools/config_style_checker.py
+  - python3 sqf_validator.py
+  - python3 config_style_checker.py
