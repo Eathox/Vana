@@ -18,7 +18,7 @@ class CfgPatches
 
 class CfgScriptPaths
 {
-	VANACoreFnc="\VANA_LoadoutManagement\Functions\CoreFunctions\";
+  VANACoreFnc="\VANA_LoadoutManagement\Functions\CoreFunctions\";
   VANASideFnc="\VANA_LoadoutManagement\Functions\SideFunctions\";
 };
 
