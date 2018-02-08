@@ -25,7 +25,7 @@ switch _TvData do
 	case "tvtab":
 	{
 		//Recreates all loadouts under tab
-		_TargetTvChildren = [_CtrlTreeView, _TargetTv] call VANA_fnc_TreeViewGetData;
+		_TargetTvChildren = [_CtrlTreeView, _TargetTv] call VANA_fnc_TvGetData;
 
 		{
 			params ["_TvName","_TvData"];

@@ -38,6 +38,6 @@ _CtrlTreeView tvSetPicture [_NewSubTVPath, "\VANA_LoadoutManagement\UI\Data_Icon
 
 _CtrlTreeView tvExpand _TargetTv;
 
-if (_this select 3) then {(_CtrlTreeView setvariable ["VANA_fnc_TreeViewLoadData_Count", (_CtrlTreeView getvariable ["VANA_fnc_TreeViewLoadData_Count", 0])+1])};
+//if (_this select 3) then {(_CtrlTreeView setvariable ["VANA_fnc_TvLoadData_Count", (_CtrlTreeView getvariable ["VANA_fnc_TvLoadData_Count", 0])+1])}; //WIP
 
 _NewSubTvPath

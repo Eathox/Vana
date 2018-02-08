@@ -21,7 +21,7 @@ if (_VANAData isequalto []) exitwith
 	False
 };
 
-diag_log text "[VANA_fnc_TreeViewLoadData]: Loading Data...";
+diag_log text "[VANA_fnc_TvLoadData]: Loading Data...";
 
 //Send data to co responding create fucntions
 {
@@ -52,6 +52,6 @@ diag_log text "[VANA_fnc_TreeViewLoadData]: Loading Data...";
 	};
 } foreach (_LoadoutData select {_x isequaltype ""});
 
-diag_log text "[VANA_fnc_TreeViewLoadData]: Data loaded.";
+diag_log text "[VANA_fnc_TvLoadData]: Data loaded.";
 
 True

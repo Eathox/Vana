@@ -17,7 +17,7 @@ _TvParent = _Arguments select 1;
 
 //Find Correct SubTv
 _FncArguments = [[_CtrlTreeView, _TvParent, [], _TypeData, False], [_CtrlTreeView]] select (_TvParent isequalto [-1]);
-_Target = (_FncArguments call VANA_fnc_TreeViewGetData) select {(_x select 0) isequalto _Name};
+_Target = (_FncArguments call VANA_fnc_TvGetData) select {(_x select 0) isequalto _Name};
 
 if (isnil "_Target") then {[-1]};
 

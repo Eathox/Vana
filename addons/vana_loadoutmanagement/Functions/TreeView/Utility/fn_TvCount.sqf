@@ -8,5 +8,5 @@ params
 	["_CheckSubTv", True, [True]]
 ];
 
-//Call VANA_fnc_TreeViewGetData in Count mode
-[_CtrlTreeView, _ParentTv, [], _TypeData, _CheckSubTv, True] call VANA_fnc_TreeViewGetData;
+//Call VANA_fnc_TvGetData in Count mode
+[_CtrlTreeView, _ParentTv, [], _TypeData, _CheckSubTv, True] call VANA_fnc_TvGetData;

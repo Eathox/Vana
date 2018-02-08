@@ -132,6 +132,6 @@ if
 _CtrlTreeView tvExpand _TargetTv;
 _CtrlTreeView tvSetCurSel ([_CtrlTreeView,[_LoadoutName,_TargetTv],"tvloadout"] call VANA_fnc_TvGetPosition);
 
-if (_this select 3) then {(_CtrlTreeView setvariable ["VANA_fnc_TreeViewLoadData_Count", (_CtrlTreeView getvariable ["VANA_fnc_TreeViewLoadData_Count", 0])+1])};
+//if (_this select 3) then {(_CtrlTreeView setvariable ["VANA_fnc_TvLoadData_Count", (_CtrlTreeView getvariable ["VANA_fnc_TvLoadData_Count", 0])+1])}; //WIP
 
 [_LoadoutPath,_LoadoutName]

@@ -17,9 +17,7 @@ class CfgPatches
 
 class CfgScriptPaths
 {
-  VANAButtonFnc="\VANA_LoadoutManagement\Functions\Button\";
-	VANACoreFnc="\VANA_LoadoutManagement\Functions\Core\";
-  VANAUtilityFnc="\VANA_LoadoutManagement\Functions\Utility\";
+  VANAInit="\VANA_LoadoutManagement\Functions\";
 };
 
 class cfgFunctions

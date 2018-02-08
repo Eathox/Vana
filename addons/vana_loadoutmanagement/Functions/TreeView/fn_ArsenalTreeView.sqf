@@ -30,9 +30,9 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
     _CtrlTreeView ctrladdeventhandler ["TreeSelChanged","[ctrlparent (_this select 0),'TreeViewSelChanged'] call VANA_fnc_ArsenalTreeView;"];
     _CtrlTreeView ctrladdeventhandler ["TreeDblClick","[ctrlparent (_this select 0),'TreeDblClick'] call VANA_fnc_ArsenalTreeView;"];
 
-    _CtrlTreeView ctrladdeventhandler ["MouseButtonDown","[ctrlparent (_this select 0),'DragDrop', ['MouseDown']] spawn VANA_fnc_ArsenalTreeView;"];
-    _CtrlTreeView ctrladdeventhandler ["TreeMouseMove","[ctrlparent (_this select 0),'DragDrop', ['MouseMove', _This]] spawn VANA_fnc_ArsenalTreeView;"];
-    _CtrlTreeView ctrladdeventhandler ["MouseButtonUp","[ctrlparent (_this select 0),'DragDrop', ['MouseUp']] spawn VANA_fnc_ArsenalTreeView;"];
+    _CtrlTreeView ctrladdeventhandler ["MouseButtonDown","[ctrlparent (_this select 0),'TvDragDrop', ['MouseDown']] spawn VANA_fnc_ArsenalTreeView;"];
+    _CtrlTreeView ctrladdeventhandler ["TreeMouseMove","[ctrlparent (_this select 0),'TvDragDrop', ['MouseMove', _This]] spawn VANA_fnc_ArsenalTreeView;"];
+    _CtrlTreeView ctrladdeventhandler ["MouseButtonUp","[ctrlparent (_this select 0),'TvDragDrop', ['MouseUp']] spawn VANA_fnc_ArsenalTreeView;"];
 
     _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
     _CtrlTemplateEdit ctrladdeventhandler ["KeyDown","[ctrlparent (_this select 0),'CheckOverWrite'] spawn VANA_fnc_ArsenalTreeView;"];
@@ -65,8 +65,8 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
 
     //Load and Sort treeview
     private _Time = diag_tickTime;
-    [_CtrlTreeView] call VANA_fnc_TreeViewLoadData;
-    [_CtrlTreeView] call VANA_fnc_TreeViewSorting;
+    [_CtrlTreeView] call VANA_fnc_TvLoadData;
+    [_CtrlTreeView] call VANA_fnc_TvSorting;
     _Time = (diag_ticktime - _Time);
     diag_log str _Time;
     systemchat str _Time;
@@ -85,16 +85,16 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 
-    _CtrlTreeView setvariable ["DragDrop_InAction", nil];
-    _CtrlTreeView setvariable ["DragDrop_GetTarget", nil];
-    _CtrlTreeView setvariable ["DragDrop_TargetTv", nil];
-    _CtrlTreeView setvariable ["DragDrop_ReleaseSubTv", nil];
+    _CtrlTreeView setvariable ["TvDragDrop_InAction", nil];
+    _CtrlTreeView setvariable ["TvDragDrop_GetTarget", nil];
+    _CtrlTreeView setvariable ["TvDragDrop_TargetTv", nil];
+    _CtrlTreeView setvariable ["TvDragDrop_ReleaseSubTv", nil];
 
     True
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-	case "dragdrop":
+	case "TvDragDrop":
   {
     _Arguments params
     [
@@ -112,7 +112,7 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
 
     _CursorTab = _Arguments param [1, [-1], [[]]];
 
-    _FncReturn = [_CtrlTreeView, _DragDropMode, _CursorTab] call VANA_fnc_DragDrop;
+    _FncReturn = [_CtrlTreeView, _DragDropMode, _CursorTab] call VANA_fnc_TvDragDrop;
 
     _FncMode = tolower (_FncReturn select 0);
     _FncArguments = _FncReturn select 1;
@@ -122,8 +122,8 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
       _TvParrent = +_FncArguments;
       _TvParrent resize ((Count _TvParrent)-1);
 
-      [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TreeViewSorting;
-      //[_CtrlTreeView] call VANA_fnc_TreeViewSaveData;
+      [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
+      //[_CtrlTreeView] call VANA_fnc_TvSaveData;
     };
 
     True
@@ -270,7 +270,7 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 
-    [_CtrlTreeView] call VANA_fnc_TreeViewSaveData;
+    [_CtrlTreeView] call VANA_fnc_TvSaveData;
 
     True
   };
@@ -325,10 +325,10 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
     _SelectedTab = tvCurSel _CtrlTreeView;
     _TvData = tolower (_CtrlTreeView tvData _SelectedTab);
 
-    _CtrlTreeView setvariable ["DragDrop_InAction", nil];
-    _CtrlTreeView setvariable ["DragDrop_GetTarget", nil];
-    _CtrlTreeView setvariable ["DragDrop_TargetTv", nil];
-    _CtrlTreeView setvariable ["DragDrop_ReleaseSubTv", nil];
+    _CtrlTreeView setvariable ["TvDragDrop_InAction", nil];
+    _CtrlTreeView setvariable ["TvDragDrop_GetTarget", nil];
+    _CtrlTreeView setvariable ["TvDragDrop_TargetTv", nil];
+    _CtrlTreeView setvariable ["TvDragDrop_ReleaseSubTv", nil];
 
     _CtrlVANA_DeleteButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONDELETE;
     _CtrlVANA_DeleteButton ctrlenable !(_SelectedTab isequalto []);
@@ -450,15 +450,15 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
     {
       //Save
       _LoadoutName = ctrltext _CtrlTemplateEdit;
-      _FncReturn = [_CtrlTreeView, _LoadoutName] call VANA_fnc_SaveLoadout;
+      _FncReturn = [_CtrlTreeView, _LoadoutName] call VANA_fnc_TvSaveLoadout;
       if (_FncReturn select 0 isequalto [-1]) exitwith {};
 
       _TvParrent = +(_FncReturn select 0);
 
       _TvParrent resize ((Count _TvParrent)-1);
 
-      [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TreeViewSorting;
-      [_CtrlTreeView] call VANA_fnc_TreeViewSaveData;
+      [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
+      [_CtrlTreeView] call VANA_fnc_TvSaveData;
     } else {
       //Load
       _Center = (missionnamespace getvariable ["BIS_fnc_arsenal_center",player]);
@@ -518,8 +518,8 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
       _TvParrent resize ((Count _TvParrent)-1);
 
       [_ArsenalDisplay,"TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
-      [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TreeViewSorting;
-      [_CtrlTreeView] call VANA_fnc_TreeViewSaveData;
+      [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
+      [_CtrlTreeView] call VANA_fnc_TvSaveData;
 
       True
     };
@@ -545,8 +545,8 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
 
         _TvParrent resize ((Count _TvParrent)-1);
 
-        [_CtrlTreeView] call VANA_fnc_TreeViewSaveData;
-        [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TreeViewSorting;
+        [_CtrlTreeView] call VANA_fnc_TvSaveData;
+        [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
         [_ArsenalDisplay,"TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
       };
     };
@@ -593,8 +593,8 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
         _TvParrent resize ((Count _TvParrent)-1);
 
         [_ArsenalDisplay, "TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
-        [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TreeViewSorting;
-        [_CtrlTreeView] call VANA_fnc_TreeViewSaveData;
+        [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
+        [_CtrlTreeView] call VANA_fnc_TvSaveData;
       };
     };
   };

@@ -15,22 +15,22 @@ switch (toLower _Mode) do
     params ["_InAction"];
 
     //Clear Values
-    _CtrlTreeView Setvariable ["DragDrop_InAction", nil];
-    _CtrlTreeView Setvariable ["DragDrop_GetTarget", nil];
-    _CtrlTreeView Setvariable ["DragDrop_TargetTv", nil];
-    _CtrlTreeView Setvariable ["DragDrop_ReleaseTv", nil];
+    _CtrlTreeView Setvariable ["TvDragDrop_InAction", nil];
+    _CtrlTreeView Setvariable ["TvDragDrop_GetTarget", nil];
+    _CtrlTreeView Setvariable ["TvDragDrop_TargetTv", nil];
+    _CtrlTreeView Setvariable ["TvDragDrop_ReleaseTv", nil];
 
     //Tell script to get Target
-    _CtrlTreeView Setvariable ["VANA_fnc_DragDrop_GetTarget", True];
+    _CtrlTreeView Setvariable ["VANA_fnc_TvDragDrop_GetTarget", True];
 
-    //Double check user is initiating DragDrop action
-    _CtrlTreeView Setvariable ["VANA_fnc_DragDrop_InAction", "Double Check"];
+    //Double check user is initiating TvDragDrop action
+    _CtrlTreeView Setvariable ["VANA_fnc_TvDragDrop_InAction", "Double Check"];
     sleep 0.1;
 
-    _InAction = _CtrlTreeView Getvariable ["VANA_fnc_DragDrop_InAction", False];
-    _CtrlTreeView Setvariable ["VANA_fnc_DragDrop_InAction", ([False, True] select (_InAction isequalto "Double Check"))];
+    _InAction = _CtrlTreeView Getvariable ["VANA_fnc_TvDragDrop_InAction", False];
+    _CtrlTreeView Setvariable ["VANA_fnc_TvDragDrop_InAction", ([False, True] select (_InAction isequalto "Double Check"))];
 
-    ["mousedown", (_CtrlTreeView Getvariable ["VANA_fnc_DragDrop_InAction", False])]
+    ["mousedown", (_CtrlTreeView Getvariable ["VANA_fnc_TvDragDrop_InAction", False])]
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -39,15 +39,15 @@ switch (toLower _Mode) do
     params ["_Return","_GetTarget","_InAction","_CursorTab"];
 
     _Return = ["mousemove", false];
-    _GetTarget = _CtrlTreeView Getvariable ["VANA_fnc_DragDrop_GetTarget", False];
-    _InAction = _CtrlTreeView Getvariable ["VANA_fnc_DragDrop_InAction", False];
+    _GetTarget = _CtrlTreeView Getvariable ["VANA_fnc_TvDragDrop_GetTarget", False];
+    _InAction = _CtrlTreeView Getvariable ["VANA_fnc_TvDragDrop_InAction", False];
     _CursorTab = _Arguments;
 
     //Get Target
     if _GetTarget then
     {
-      _CtrlTreeView Setvariable ["DragDrop_TargetTv", _CursorTab];
-      _CtrlTreeView Setvariable ["VANA_fnc_DragDrop_GetTarget", nil];
+      _CtrlTreeView Setvariable ["TvDragDrop_TargetTv", _CursorTab];
+      _CtrlTreeView Setvariable ["VANA_fnc_TvDragDrop_GetTarget", nil];
 
       _Return = ["mousemove", True];
     };
@@ -55,7 +55,7 @@ switch (toLower _Mode) do
     //Get Release Subtv
     if (_InAction isequalto true) then
     {
-      _CtrlTreeView Setvariable ["DragDrop_ReleaseTv", _CursorTab];
+      _CtrlTreeView Setvariable ["TvDragDrop_ReleaseTv", _CursorTab];
 
       _Return = ["mousemove", True];
     };
@@ -68,13 +68,13 @@ switch (toLower _Mode) do
   {
     params ["_FncReturn","_TargetTv","_ReleaseTv"];
 
-    _TargetTv = _CtrlTreeView Getvariable ["DragDrop_TargetTv", [-1]];
-    _ReleaseTv = _CtrlTreeView Getvariable ["DragDrop_ReleaseTv", [-1]];
+    _TargetTv = _CtrlTreeView Getvariable ["TvDragDrop_TargetTv", [-1]];
+    _ReleaseTv = _CtrlTreeView Getvariable ["TvDragDrop_ReleaseTv", [-1]];
 
-    //Call DragDrop function
+    //Call TvDragDrop function
     if !(_TargetTv isequalto [-1]) exitwith
     {
-      _FncReturn = [_CtrlTreeView, "DragDropFnc", [_TargetTv, _ReleaseTv]] call VANA_fnc_DragDrop;
+      _FncReturn = [_CtrlTreeView, "DragDropFnc", [_TargetTv, _ReleaseTv]] call VANA_fnc_TvDragDrop;
 
       ["MouseUp", _FncReturn]
     };
@@ -152,7 +152,7 @@ switch (toLower _Mode) do
       if (_TargetTvData isequalto "tvtab") then
       {
         _CtrlTreeView tvSetPicture [_MovedSubtv , "\VANA_LoadoutManagement\UI\Data_Icons\icon_ca.paa"];
-        _TargetTvChildren = [_CtrlTreeView, _TargetTv] call VANA_fnc_TreeViewGetData;
+        _TargetTvChildren = [_CtrlTreeView, _TargetTv] call VANA_fnc_TvGetData;
         //Form wich data is saved in is [["Name",[Position],"DataType"],["Name",[Position],"DataType"],["Name",[Position],"DataType"]] ect.
         {
           params ["_TvName","_TvPosition","_TvData","_TvNewParent"];

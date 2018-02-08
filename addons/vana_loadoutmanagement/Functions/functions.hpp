@@ -2,38 +2,53 @@ class VANA
 {
   tag="VANA";
 
-  class ButtonFNC
+  class Arsenal {};
+  class Vana_Init {};
+
+  //TreeView
+  class TreeView
   {
-    file = "\VANA_LoadoutManagement\Functions\Button";
+    file = "\VANA_LoadoutManagement\Functions\TreeView";
 
-    class TvCreateTab {};
-    class TvDelete {};
-    class TvRename {};
-  };
-
-  class CoreFNC
-  {
-    file = "\VANA_LoadoutManagement\Functions\Core";
-
-    class Arsenal {};
     class ArsenalTreeView {};
-    class SaveLoadout {};
-    class DragDrop {};
-    class TreeViewLoadData {};
-    class TreeViewSaveData {};
-    class TvCreateLoadout {};
-    class Vana_Init {};
+
+    class Button
+    {
+      file = "\VANA_LoadoutManagement\Functions\TreeView\Button";
+
+      class TvCreateTab {};
+      class TvDelete {};
+      class TvRename {};
+    };
+
+    class Core
+    {
+      file = "\VANA_LoadoutManagement\Functions\TreeView\Core";
+
+      class TvCreateLoadout {};
+      class TvDragDrop {};s
+      class TvLoadData {};
+      class TvSaveData {};
+      class TvSaveLoadout {};
+    };
+
+    class Utility
+    {
+      file = "\VANA_LoadoutManagement\Functions\TreeView\Utility";
+
+      class TvCount {};
+      class TvExists {};
+      class TvGetData {};
+      class TvGetPosition {};
+      class TvSorting {};
+    };
   };
 
-  class UtilityFNC
+  //UIPopup
+  class UIPopup
   {
-    file = "\VANA_LoadoutManagement\Functions\Utility";
+    file = "\VANA_LoadoutManagement\Functions\UIPopup";
 
-    class TreeViewGetData {};
-    class TreeViewSorting {};
-    class TvCount {};
-    class TvExists {};
-    class TvGetPosition {};
     class UIPopup {};
   };
 };
