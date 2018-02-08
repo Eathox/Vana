@@ -26,4 +26,4 @@ class cfgFunctions
 };
 
 #include "UI\defineDialogs.inc"
-#include "UI\HPP\RscArsenalTreeView.hpp"
+#include "UI\HPP\RscVANA.hpp"
