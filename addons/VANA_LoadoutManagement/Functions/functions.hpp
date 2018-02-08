@@ -1,30 +1,39 @@
 class VANA
 {
   tag="VANA";
-  class CoreFNC
-  {
-    file = "\VANA_LoadoutManagement\Functions\CoreFunctions";
-    class ArsenalTreeView_Init {};
-    class ArsenalTreeView {};
-    class SaveLoadout {};
-    class ShowVirtualLoadouts {};
-    class DragDrop {};
-    class TreeViewGetData {};
-    class TreeViewGetPosition {};
-    class TreeViewLoadData {};
-    class TreeViewSaveData {};
-    class TreeViewSorting {};
-  };
+
   class ButtonFNC
   {
-    file = "\VANA_LoadoutManagement\Functions\CoreFunctions\ButtonFunctions";
+    file = "\VANA_LoadoutManagement\Functions\Button";
+
     class TvCreateTab {};
     class TvDelete {};
     class TvRename {};
-    class TreeViewUIPopup {};
   };
-  class SideFNC
+
+  class CoreFNC
   {
-    file = "\VANA_LoadoutManagement\Functions\SideFunctions";
+    file = "\VANA_LoadoutManagement\Functions\Core";
+
+    class Arsenal {};
+    class ArsenalTreeView {};
+    class SaveLoadout {};
+    class DragDrop {};
+    class TreeViewLoadData {};
+    class TreeViewSaveData {};
+    class TvCreateLoadout {};
+    class Vana_Init {};
+  };
+
+  class UtilityFNC
+  {
+    file = "\VANA_LoadoutManagement\Functions\Utility";
+
+    class TreeViewGetData {};
+    class TreeViewSorting {};
+    class TvCount {};
+    class TvExists {};
+    class TvGetPosition {};
+    class UIPopup {};
   };
 };

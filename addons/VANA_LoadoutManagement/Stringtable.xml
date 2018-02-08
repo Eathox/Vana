@@ -2,24 +2,24 @@
 <Project Name="VANA">
     <Package Name="Mod.ccp">
         <Key ID="STR_VANA_Tooltip">
-            <Original>Vana - Loadout Management 0.86</Original>
-            <English>Vana - Loadout Management 0.86</English>
+            <Original>Vana - Loadout Management 0.87</Original>
+            <English>Vana - Loadout Management 0.87</English>
         </Key>
         <Key ID="STR_VANA_TooltipOwned">
-            <Original>Vana - Loadout Management 0.86</Original>
-            <English>Vana - Loadout Management 0.86</English>
+            <Original>Vana - Loadout Management 0.87</Original>
+            <English>Vana - Loadout Management 0.87</English>
         </Key>
         <Key ID="STR_VANA_OverviewText">
-            <Original>Vana - Loadout Management 0.86</Original>
-            <English>Vana - Loadout Management 0.86</English>
+            <Original>Vana - Loadout Management 0.87</Original>
+            <English>Vana - Loadout Management 0.87</English>
         </Key>
         <Key ID="STR_VANA_Overview">
             <Original>Vana Purpose is to add extra loadout sorting options to the Virtual Arsenal.</Original>
             <English>Vana Purpose is to add extra loadout sorting options to the Virtual Arsenal.</English>
         </Key>
         <Key ID="STR_VANA_ActionName">
-            <Original>Tracker</Original>
-            <English>Tracker</English>
+            <Original>Github</Original>
+            <English>Github</English>
         </Key>
     </Package>
     <Package Name="RscDisplayArsenal">
@@ -28,25 +28,13 @@
                 <Original>Name:</Original>
                 <English>Name:</English>
             </Key>
-            <Key ID="STR_VANA_OKButton_Text">
-                <Original>Load</Original>
-                <English>Load</English>
-            </Key>
-            <Key ID="STR_VANA_ButtonDelete_Text">
-                <Original>Delete</Original>
-                <English>Delete</English>
-            </Key>
-            <Key ID="STR_VANA_ButtonDelete_ToolTip">
-                <Original>Delete Loadouts/Tabs [Ctrl + D]</Original>
-                <English>Delete Loadouts/Tabs [Ctrl + D]</English>
-            </Key>
             <Key ID="STR_VANA_ButtonCreate_ToolTip">
-                <Original>Create New Tab [Ctrl/Shift + N]</Original>
-                <English>Create New Tab [Ctrl/Shift + N]</English>
+                <Original>Create New Tab [Ctrl + N]</Original>
+                <English>Create New Tab [Ctrl + N]</English>
             </Key>
             <Key ID="STR_VANA_ButtonRename_ToolTip">
-                <Original>Rename Loadouts/Tabs [Ctrl/Shift + E]</Original>
-                <English>Rename Loadouts/Tabs [Ctrl/Shift + E]</English>
+                <Original>Rename Loadouts/Tabs [Ctrl + E]</Original>
+                <English>Rename Loadouts/Tabs [Ctrl + E]</English>
             </Key>
             <Key ID="STR_VANA_TempCheckbox_ToolTip">
                 <Original>Disable delete confirmation (Temporary button)</Original>
@@ -59,8 +47,14 @@
                 <English>Vana didn't initialize</English>
             </Key>
             <Key ID="STR_VANA_Text_Text">
-                <Original>Something went wrong in the initialization</Original>
-                <English>Something went wrong in the initialization</English>
+                <Original>
+                  Something went wrong in the initialization
+                  (You wont be able to open the loadout screen)
+                </Original>
+                <English>
+                  Something went wrong in the initialization
+                  (You wont be able to open the loadout screen)
+                </English>
             </Key>
             <Key ID="STR_VANA_ButtonOK_Text">
                 <Original>Confirm</Original>

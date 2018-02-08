@@ -1,11 +1,10 @@
-#include "BIS_AddonInfo.hpp"
 class CfgPatches
 {
   class VANA
   {
     name = "Vana - Loadout Management";
     author = "Eathox";
-    version = "0.85";
+    version = "0.87";
     requiredVersion = 1.3;
     units[] = {};
     requiredAddons[] =
@@ -18,8 +17,9 @@ class CfgPatches
 
 class CfgScriptPaths
 {
-  VANACoreFnc="\VANA_LoadoutManagement\Functions\CoreFunctions\";
-  VANASideFnc="\VANA_LoadoutManagement\Functions\SideFunctions\";
+  VANAButtonFnc="\VANA_LoadoutManagement\Functions\Button\";
+	VANACoreFnc="\VANA_LoadoutManagement\Functions\Core\";
+  VANAUtilityFnc="\VANA_LoadoutManagement\Functions\Utility\";
 };
 
 class cfgFunctions
