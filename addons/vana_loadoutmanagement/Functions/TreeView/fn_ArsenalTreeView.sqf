@@ -109,53 +109,74 @@ switch tolower _Mode do
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-	case "tvdragdrop":
+  case "savedata":
   {
-    _Arguments params
-    [
-      ["_DragDropMode", "", [""]],
-      ["_Arguments", [], [[]]],
-      "_CtrlTreeView",
-      "_CursorTab",
-      "_FncReturn",
-      "_FncMode",
-      "_FncArguments",
-      "_TvParent"
-    ];
+    params ["_CtrlTreeView"];
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-    _CursorTab = _Arguments param [1, [-1], [[]]];
-
-    _FncReturn = [_CtrlTreeView, _DragDropMode, _CursorTab] call VANA_fnc_TvDragDrop;
-
-    _FncMode = tolower (_FncReturn select 0);
-    _FncArguments = _FncReturn select 1;
-
-    if (!(_FncMode isequalto "dragdropfnc") || !(_FncArguments isequaltype [])) exitwith {False};
-
-    _TvParent = _FncArguments call VANA_fnc_TvGetParent;
-
-    [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
     [_CtrlTreeView] call VANA_fnc_TvSaveData;
 
     True
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-  case "mousemove":
+  case "treeviewselchanged":
   {
-    _Arguments params
-    [
-      ["_CtrlTreeView", controlnull, [controlnull]],
-      ["_XCoord", 0, [0]],
-      ["_YCoord", 0, [0]]
-    ];
+    params ["_CtrlTreeView","_SelectedTab","_IsEnabledLoadout","_CtrlVANA_DeleteButton","_CtrlVANA_ButtonRename","_CtrlTemplateEdit","_CtrlTemplateOKButton"];
 
-    if (_XCoord >= 0.566) then
+    [_ArsenalDisplay, "CheckOverWrite"] spawn VANA_fnc_ArsenalTreeView;
+
+    _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
+
+    _SelectedTab = tvCurSel _CtrlTreeView;
+    _IsEnabledLoadout = tolower (_CtrlTreeView tvData _SelectedTab) isEqualto "tvloadout" && (_CtrlTreeView tvValue _SelectedTab) >= 0;
+
+    //Make sure something is selected
+    _CtrlVANA_DeleteButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONDELETE;
+    _CtrlVANA_DeleteButton ctrlenable !(_SelectedTab isequalto []);
+
+    _CtrlVANA_ButtonRename = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonRename;
+    _CtrlVANA_ButtonRename ctrlenable !(_SelectedTab isequalto []);
+
+    //SetText to selected Subtv Text
+    _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
+    _CtrlTemplateEdit ctrlsettext (_CtrlTreeView tvtext _SelectedTab);
+
+    //Disable button if loadout is missing items
+    _CtrlTemplateOKButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
+    _CtrlTemplateOKButton ctrlenable ([_IsEnabledLoadout, True] select ctrlenabled _CtrlTemplateEdit);
+
+    //Temp code WIP
+    private _CtrlTempCheckbox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelConfirmToggle;
+    if (Profilenamespace getvariable ['TEMP_Popup_Value', False]) then
     {
-      _CtrlTreeView setvariable ["MouseOverScrollBar", True];
+      _CtrlTempCheckbox cbSetChecked true;
     } else {
-      _CtrlTreeView setvariable ["MouseOverScrollBar", False];
+      _CtrlTempCheckbox cbSetChecked False;
+    };
+
+    True
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "checkoverwrite":
+  {
+    params ["_CtrlTemplateBUTTONOK","_CtrlTemplateEdit","_LoadoutData","_Name","_Duplicate"];
+
+    _CtrlTemplateBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
+    _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
+    _LoadoutData = (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]) select {_x isequaltype ""};
+
+    //Check if name duplicate and change text accordingly
+    _Name = ctrltext _CtrlTemplateEdit;
+
+    if (ctrlenabled _CtrlTemplateEdit) then
+    {
+      _Duplicate = _Name in _LoadoutData;
+      _CtrlTemplateBUTTONOK Ctrlsettext (["Save", "Replace"] select _Duplicate);
+      _CtrlTemplateBUTTONOK Ctrlenable ([True, False] select (_Name isequalto ""));
+
+      _Duplicate
     };
   };
 
@@ -332,73 +353,135 @@ switch tolower _Mode do
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-  case "savedata":
+  case "mousemove":
   {
-    params ["_CtrlTreeView"];
+    _Arguments params
+    [
+      ["_CtrlTreeView", controlnull, [controlnull]],
+      ["_XCoord", 0, [0]],
+      ["_YCoord", 0, [0]]
+    ];
+
+    if (_XCoord >= 0.566) then
+    {
+      _CtrlTreeView setvariable ["MouseOverScrollBar", True];
+    } else {
+      _CtrlTreeView setvariable ["MouseOverScrollBar", False];
+    };
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "tvdragdrop":
+  {
+    _Arguments params
+    [
+      ["_DragDropMode", "", [""]],
+      ["_Arguments", [], [[]]],
+      "_CtrlTreeView",
+      "_CursorTab",
+      "_FncReturn",
+      "_FncMode",
+      "_FncArguments",
+      "_TvParent"
+    ];
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
+    _CursorTab = _Arguments param [1, [-1], [[]]];
+
+    _FncReturn = [_CtrlTreeView, _DragDropMode, _CursorTab] call VANA_fnc_TvDragDrop;
+
+    _FncMode = tolower (_FncReturn select 0);
+    _FncArguments = _FncReturn select 1;
+
+    if (!(_FncMode isequalto "dragdropfnc") || !(_FncArguments isequaltype [])) exitwith {False};
+
+    _TvParent = _FncArguments call VANA_fnc_TvGetParent;
+
+    [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
     [_CtrlTreeView] call VANA_fnc_TvSaveData;
 
     True
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-  case "checkoverwrite":
+  Case "create":
   {
-    params ["_CtrlTemplateBUTTONOK","_CtrlTemplateEdit","_LoadoutData","_Name","_Duplicate"];
+    params ["_CtrlTreeView","_FncReturn","_TvParent"];
 
-    _CtrlTemplateBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
-    _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
-    _LoadoutData = (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]) select {_x isequaltype ""};
+    _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
+    _FncReturn = [_CtrlTreeView] call VANA_fnc_TvCreateTab;
 
-    //Check if name duplicate and change text accordingly
-    _Name = ctrltext _CtrlTemplateEdit;
+    if (_FncReturn isequalto [-1]) exitwith {False};
 
-    if (ctrlenabled _CtrlTemplateEdit) then
+    _TvParent = _FncReturn call VANA_fnc_TvGetParent;
+
+    [_ArsenalDisplay, "TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
+    [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
+    [_CtrlTreeView] call VANA_fnc_TvSaveData;
+
+    True
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  Case "delete":
+  {
+    params ["_CtrlTreeView","_TargetTv","_DeleteFnc"];
+
+    _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
+
+    _TargetTv = tvCurSel _CtrlTreeView;
+    _DeleteFnc =
     {
-      _Duplicate = _Name in _LoadoutData;
-      _CtrlTemplateBUTTONOK Ctrlsettext (["Save", "Replace"] select _Duplicate);
-      _CtrlTemplateBUTTONOK Ctrlenable ([True, False] select (_Name isequalto ""));
+      params ["_FncReturn","_TvParent"];
 
-      _Duplicate
+      _FncReturn = [_CtrlTreeView, _TargetTv] call VANA_fnc_TvDelete;
+
+      if !(_FncReturn isequaltype []) exitwith {False};
+
+      _TvParent = _FncReturn call VANA_fnc_TvGetParent;
+
+      [_ArsenalDisplay, "TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
+      [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
+      [_CtrlTreeView] call VANA_fnc_TvSaveData;
+
+      True
+    };
+
+    if (_TargetTv isequalto []) exitwith {False};
+
+    if !(Profilenamespace getvariable ["TEMP_Popup_Value", False]) then
+    {
+      if ([_ArsenalDisplay,"Delete"] call VANA_fnc_UIPopup) then
+      {
+        call _DeleteFnc;
+      };
+    } else {
+      call _DeleteFnc;
     };
   };
 
-	///////////////////////////////////////////////////////////////////////////////////////////
-  case "treeviewselchanged":
-	{
-    params ["_CtrlTreeView","_SelectedTab","_IsEnabledLoadout","_CtrlVANA_DeleteButton","_CtrlVANA_ButtonRename","_CtrlTemplateEdit","_CtrlTemplateOKButton"];
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  Case "rename":
+  {
+    params ["_CtrlTreeView","_CtrlRenameEdit","_Return","_TargetTv","_FncReturn","_Name","_TvParent"];
 
-    [_ArsenalDisplay, "CheckOverWrite"] spawn VANA_fnc_ArsenalTreeView;
+    _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
+    _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_RenameEdit;
 
-		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
+    _Return = [_ArsenalDisplay, "Rename"] call VANA_fnc_UIPopup;
 
-    _SelectedTab = tvCurSel _CtrlTreeView;
-    _IsEnabledLoadout = tolower (_CtrlTreeView tvData _SelectedTab) isEqualto "tvloadout" && (_CtrlTreeView tvValue _SelectedTab) >= 0;
+    if !_Return exitwith {False};
 
-    //Make sure something is selected
-    _CtrlVANA_DeleteButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONDELETE;
-    _CtrlVANA_DeleteButton ctrlenable !(_SelectedTab isequalto []);
+    _TargetTv = tvCurSel _CtrlTreeView;
+    _Name = ctrltext _CtrlRenameEdit;
 
-		_CtrlVANA_ButtonRename = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonRename;
-		_CtrlVANA_ButtonRename ctrlenable !(_SelectedTab isequalto []);
+    [_CtrlTreeView, [_TargetTv, _Name]] call VANA_fnc_TvRename;
 
-    //SetText to selected Subtv Text
-    _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
-    _CtrlTemplateEdit ctrlsettext (_CtrlTreeView tvtext _SelectedTab);
+    _TvParent = _TargetTv call VANA_fnc_TvGetParent;
 
-    //Disable button if loadout is missing items
-    _CtrlTemplateOKButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
-    _CtrlTemplateOKButton ctrlenable ([_IsEnabledLoadout, True] select ctrlenabled _CtrlTemplateEdit);
-
-    //Temp code WIP
-    private _CtrlTempCheckbox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelConfirmToggle;
-    if (Profilenamespace getvariable ['TEMP_Popup_Value', False]) then
-    {
-      _CtrlTempCheckbox cbSetChecked true;
-    } else {
-      _CtrlTempCheckbox cbSetChecked False;
-    };
+    [_ArsenalDisplay, "TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
+    [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
+    [_CtrlTreeView] call VANA_fnc_TvSaveData;
 
     True
   };
@@ -523,87 +606,4 @@ switch tolower _Mode do
 
     True
 	};
-
-  ///////////////////////////////////////////////////////////////////////////////////////////
-  Case "create":
-  {
-    params ["_CtrlTreeView","_FncReturn","_TvParent"];
-
-		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-	 	_FncReturn = [_CtrlTreeView] call VANA_fnc_TvCreateTab;
-
-    if (_FncReturn isequalto [-1]) exitwith {False};
-
-    _TvParent = _FncReturn call VANA_fnc_TvGetParent;
-
-    [_ArsenalDisplay, "TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
-    [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
-    [_CtrlTreeView] call VANA_fnc_TvSaveData;
-
-    True
-  };
-
-  ///////////////////////////////////////////////////////////////////////////////////////////
-  Case "delete":
-  {
-    params ["_CtrlTreeView","_TargetTv","_DeleteFnc"];
-
-    _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-
-    _TargetTv = tvCurSel _CtrlTreeView;
-    _DeleteFnc =
-    {
-      params ["_FncReturn","_TvParent"];
-
-      _FncReturn = [_CtrlTreeView, _TargetTv] call VANA_fnc_TvDelete;
-
-      if !(_FncReturn isequaltype []) exitwith {False};
-
-      _TvParent = _FncReturn call VANA_fnc_TvGetParent;
-
-      [_ArsenalDisplay, "TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
-      [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
-      [_CtrlTreeView] call VANA_fnc_TvSaveData;
-
-      True
-    };
-
-    if (_TargetTv isequalto []) exitwith {False};
-
-    if !(Profilenamespace getvariable ["TEMP_Popup_Value", False]) then
-    {
-      if ([_ArsenalDisplay,"Delete"] call VANA_fnc_UIPopup) then
-      {
-        call _DeleteFnc;
-      };
-    } else {
-      call _DeleteFnc;
-    };
-  };
-
-  ///////////////////////////////////////////////////////////////////////////////////////////
-  Case "rename":
-  {
-    params ["_CtrlTreeView","_CtrlRenameEdit","_Return","_TargetTv","_FncReturn","_Name","_TvParent"];
-
-    _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-    _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_RenameEdit;
-
-    _Return = [_ArsenalDisplay, "Rename"] call VANA_fnc_UIPopup;
-
-    if !_Return exitwith {False};
-
-    _TargetTv = tvCurSel _CtrlTreeView;
-    _Name = ctrltext _CtrlRenameEdit;
-
-    [_CtrlTreeView, [_TargetTv, _Name]] call VANA_fnc_TvRename;
-
-    _TvParent = _TargetTv call VANA_fnc_TvGetParent;
-
-    [_ArsenalDisplay, "TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
-    [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
-    [_CtrlTreeView] call VANA_fnc_TvSaveData;
-
-    True
-  };
 };
