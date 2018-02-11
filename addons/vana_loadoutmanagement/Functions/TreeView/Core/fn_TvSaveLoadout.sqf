@@ -11,9 +11,11 @@ params
 	"_ReturnValue"
 ];
 
+//Check if loadout is duplicate
+_DuplicateLoadout = _LoadoutName in (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]] select {_x isequaltype ""});
+
 //Normal Save function (Has to be run in order to acctuly save the loadout)
 _Center = (missionnamespace getvariable ["BIS_fnc_arsenal_Center",player]);
-
 [
   _center,
   [profilenamespace,_LoadoutName],
@@ -24,17 +26,14 @@ _Center = (missionnamespace getvariable ["BIS_fnc_arsenal_Center",player]);
   ]
 ] call bis_fnc_saveInventory;
 
-//Check if loadout is duplicate
-_DuplicateLoadout = _LoadoutName in (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]);
-
+//Find and Validate Updated Loadout
 if _DuplicateLoadout exitwith
 {
-	[_CtrlTreeView, _LoadoutName, ([_CtrlTreeView, [_LoadoutName], "TvLoadout"] Call VANA_fnc_TvGetPosition)] call VANA_fnc_TvValidateLoadout;
+	[_CtrlTreeView, [([_CtrlTreeView, [[-1], _LoadoutName], "TvLoadout"] Call VANA_fnc_TvGetPosition), _LoadoutName]] call VANA_fnc_TvValidateLoadout;
 	["showMessage",[(ctrlparent _CtrlTreeView), (format ["Replaced existing loadout: ""%1""", _LoadoutName])]] spawn BIS_fnc_arsenal;
 
  	[[-1], _LoadoutName]
 };
-
 
 //Create Subtv for loadout
 _TargetTv = tvCurSel _CtrlTreeView;
@@ -46,8 +45,8 @@ if (_TvData isEqualto "tvloadout") then
 };
 
 _ReturnValue = [_CtrlTreeView, [_TargetTv, _LoadoutName]] call VANA_fnc_TvCreateLoadout;
-_TargetTv =  (_ReturnValue Select 0);
 
+[_CtrlTreeView, _ReturnValue] call VANA_fnc_TvValidateLoadout;
 ["showMessage",[(ctrlparent _CtrlTreeView), (format ["Loadout: ""%1"" Saved", _LoadoutName])]] spawn BIS_fnc_arsenal;
 
-[_TargetTv, _LoadoutName];
+_ReturnValue

@@ -47,7 +47,7 @@ for "_i" from 0 to (_CtrlTreeView tvCount _ParentTv)-1 do
 	//Execute function for all Subtv's
 	if (_CheckSubTv && _CtrlTreeView tvCount _TargetTv > 0) then
 	{
-		_ExportDataArray = [_CtrlTreeView, [_TargetTv, _TypeData], _ExportDataArray, True, False] call VANA_fnc_TvGetData;
+		_ExportDataArray = [_CtrlTreeView, [_TargetTv, _TypeData], _ExportDataArray, True, _Count] call VANA_fnc_TvGetData;
 	};
 };
 

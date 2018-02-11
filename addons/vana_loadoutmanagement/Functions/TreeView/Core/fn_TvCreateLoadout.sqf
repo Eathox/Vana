@@ -43,9 +43,7 @@ _CtrlTreeView tvSetData [_LoadoutPath, "tvloadout"];
 if !(_Behavior in ["firsttimesetup", "dragdrop"]) then
 {
 	_CtrlTreeView tvExpand _TargetTv;
-	_CtrlTreeView tvSetCurSel ([_CtrlTreeView,[_LoadoutName,_TargetTv],"tvloadout"] call VANA_fnc_TvGetPosition);
-
-	[_CtrlTreeView, _LoadoutName, _LoadoutPath] call VANA_fnc_TvValidateLoadout;
+	_CtrlTreeView tvSetCurSel ([_CtrlTreeView, [_TargetTv, _LoadoutName], "tvloadout"] call VANA_fnc_TvGetPosition);
 };
 
-[_LoadoutPath,_LoadoutName]
+[_LoadoutPath, _LoadoutName]

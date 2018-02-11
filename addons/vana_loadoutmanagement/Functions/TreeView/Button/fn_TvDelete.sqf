@@ -37,7 +37,7 @@ switch _TvData do
 	{
 		//Delete loadout from profiledata
 		_Center = (missionnamespace getvariable ["BIS_fnc_arsenal_center",player]);
-		[_Center, [profilenamespace,_TvName],nil,True] call BIS_fnc_saveInventory;
+		[_center,[profilenamespace,_TvName],nil,true] call BIS_fnc_saveInventory;
 	};
 };
 

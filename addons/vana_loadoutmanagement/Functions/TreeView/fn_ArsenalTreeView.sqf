@@ -357,7 +357,7 @@ switch tolower _Mode do
     if (ctrlenabled _CtrlTemplateEdit) then
     {
       _Duplicate = _Name in _LoadoutData;
-      _CtrlTemplateBUTTONOK Ctrlsettext (["Save", "OverWrite"] select _Duplicate);
+      _CtrlTemplateBUTTONOK Ctrlsettext (["Save", "Replace"] select _Duplicate);
       _CtrlTemplateBUTTONOK Ctrlenable ([True, False] select (_Name isequalto ""));
 
       _Duplicate
