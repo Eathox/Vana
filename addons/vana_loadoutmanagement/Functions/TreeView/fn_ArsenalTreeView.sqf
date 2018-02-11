@@ -131,7 +131,7 @@ switch tolower _Mode do
     _FncMode = tolower (_FncReturn select 0);
     _FncArguments = _FncReturn select 1;
 
-    if (!(_FncMode isequalto "dragdropfnc") && !(_FncArguments isequaltype [])) exitwith {False};
+    if (!(_FncMode isequalto "dragdropfnc") || !(_FncArguments isequaltype [])) exitwith {False};
 
     _TvParent = _FncArguments call VANA_fnc_TvGetParent;
 
@@ -367,7 +367,7 @@ switch tolower _Mode do
 	///////////////////////////////////////////////////////////////////////////////////////////
   case "treeviewselchanged":
 	{
-    params ["_CtrlTreeView","_SelectedTab","_IsEnabledLoadout","_CtrlVANA_DeleteButton","_CtrlVANA_ButtonRename","_CtrlTemplateOKButton","_CtrlTemplateEdit"];
+    params ["_CtrlTreeView","_SelectedTab","_IsEnabledLoadout","_CtrlVANA_DeleteButton","_CtrlVANA_ButtonRename","_CtrlTemplateEdit","_CtrlTemplateOKButton"];
 
     [_ArsenalDisplay, "CheckOverWrite"] spawn VANA_fnc_ArsenalTreeView;
 
@@ -383,13 +383,13 @@ switch tolower _Mode do
 		_CtrlVANA_ButtonRename = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonRename;
 		_CtrlVANA_ButtonRename ctrlenable !(_SelectedTab isequalto []);
 
-    //Disable button if loadout is missing items
-    _CtrlTemplateOKButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
-    _CtrlTemplateOKButton ctrlenable ([_IsEnabledLoadout, True] select ctrlenabled _CtrlTemplateEdit);
-
     //SetText to selected Subtv Text
     _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
     _CtrlTemplateEdit ctrlsettext (_CtrlTreeView tvtext _SelectedTab);
+
+    //Disable button if loadout is missing items
+    _CtrlTemplateOKButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
+    _CtrlTemplateOKButton ctrlenable ([_IsEnabledLoadout, True] select ctrlenabled _CtrlTemplateEdit);
 
     //Temp code WIP
     private _CtrlTempCheckbox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelConfirmToggle;
@@ -591,7 +591,7 @@ switch tolower _Mode do
 
     _Return = [_ArsenalDisplay, "Rename"] call VANA_fnc_UIPopup;
 
-    if _Return exitwith {False};
+    if !_Return exitwith {False};
 
     _TargetTv = tvCurSel _CtrlTreeView;
     _Name = ctrltext _CtrlRenameEdit;

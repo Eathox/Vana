@@ -3,7 +3,7 @@ disableserialization;
 params
 [
 	["_CtrlTreeView", controlnull, [controlnull]],
-	["_Arguments", [[-1],""], [[]]],
+	["_Arguments", [], [[]]],
 	"_TvData",
 	"_TvName",
 	"_LoadoutData",

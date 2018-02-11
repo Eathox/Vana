@@ -3,7 +3,7 @@ disableserialization;
 params
 [
 	["_CtrlTreeView", controlnull, [controlnull]],
-	["_Arguments", [[-1], ""], [[]]],
+	["_Arguments", [], [[]]],
 	["_Behavior", "", [""]],
 	"_TvData",
 	"_NewSubTvPath",
@@ -14,7 +14,7 @@ params
 _Arguments params
 [
 	["_TargetTv", (tvCurSel _CtrlTreeView), [[]]],
-	["_TabName", []]
+	["_TabName", "", [""]]
 ];
 
 _TargetTv = +_TargetTv;
@@ -29,7 +29,7 @@ if (!(_TvData isEqualto "tvtab") && !(_TargetTv isequalto [])) then
 
 //Create Tab in treeview
 _NewSubTvPath = +_TargetTv;
-if (_TabName isEqualType "") then
+if !(_TabName isequalto "") then
 {
 	_AddSubTv = _CtrlTreeView tvAdd [_TargetTv, _TabName];
 } else {
