@@ -3,7 +3,7 @@ disableserialization;
 params
 [
 	["_CtrlTreeView", controlnull, [controlnull]],
-	["_TargetTv", (tvCurSel _CtrlTreeView), [[]]],
+	["_TargetTv", (tvCurSel (_this select 0)), [[]]],
 	"_TvName",
 	"_TvData",
 	"_TargetTvParent",
@@ -16,9 +16,7 @@ params
 
 _TvName = _CtrlTreeView TvText _TargetTv;
 _TvData = tolower (_CtrlTreeView tvData _TargetTv);
-_TargetTvParent = +_TargetTv;
-
-_TargetTvParent resize ((Count _TargetTv) - 1);
+_TargetTvParent = _TargetTv call VANA_fnc_TvGetParent;
 
 switch _TvData do
 {
@@ -28,14 +26,9 @@ switch _TvData do
 		_TargetTvChildren = [_CtrlTreeView, _TargetTv] call VANA_fnc_TvGetData;
 
 		{
-			params ["_TvName","_TvData"];
-
-			_TvName = _x select 0;
-			_TvData = tolower (_x select 2);
-
-			if (_TvData isEqualto "tvloadout") then
+			if (tolower (_x select 2) isEqualto "tvloadout") then
 			{
-				[_CtrlTreeView, _TargetTvParent, _TvName] call VANA_fnc_TvCreateLoadout;
+				[_CtrlTreeView, _TargetTvParent, _x select 0] call VANA_fnc_TvCreateLoadout;
 			};
 		} foreach _TargetTvChildren;
 	};
@@ -55,7 +48,7 @@ _CtrlTreeView tvDelete _TargetTv;
 
 //Select next subtv
 _AboveTab = +_TargetTv;
-_LastNumber = _AboveTab select (count _AboveTab -1);
+_LastNumber = _AboveTab select (count _AboveTab-1);
 
 if !(_LastNumber isequalto 0) then
 {

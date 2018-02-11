@@ -9,8 +9,8 @@ class RscDisplayArsenal //Path to add code to allready exsisting Rsc class
   onUnload="['onUnload',_this,'fn_Vana_Init','VANAInit'] call (uinamespace getvariable 'BIS_fnc_initDisplay')"; // calls VANA Script instead of A3
   class controls //Path to add code to allready exsisting Rsc class
   {
-    #include "UI\HPP\RscTreeView.hpp"
-    #include "UI\HPP\RscUIPopup.hpp"
+    #include "RscTreeView.hpp"
+    #include "RscUIPopup.hpp"
 
     class VANA_Mouseblock: RscBackgroundGUI
     {

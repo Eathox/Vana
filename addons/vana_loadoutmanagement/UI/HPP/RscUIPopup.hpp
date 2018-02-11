@@ -34,7 +34,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
       y="0.05 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="1.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      text="\VANA_LoadoutManagement\UI\Data_Icons\Vana (Small) - WhiteText NoBackground.paa";
+      text="\vana_LoadoutManagement\UI\Data_Icons\Vana (Small) - WhiteText NoBackground.paa";
     };
     class VANA_BackGround: RscBackgroundGUI
     {

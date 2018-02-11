@@ -1,5 +1,11 @@
 disableserialization;
 
+#include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
+#include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
+
+#define Expanded 1
+#define Collapsed 0
+
 params
 [
   ["_ArsenalDisplay", displaynull, [displaynull]],
@@ -10,9 +16,6 @@ params
 
 _FullVersion = missionnamespace getvariable ["BIS_fnc_arsenal_fullArsenal",False];
 
-#include "\VANA_LoadoutManagement\UI\defineDIKCodes.inc"
-#include "\VANA_LoadoutManagement\UI\defineResinclDesign.inc"
-
 switch (tolower _Mode) do  //Checks wich mode the code exes in
 {
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -21,14 +24,18 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
     params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlButtonSave","_CtrlButtonLoad","_CtrlVANA_OKButton","_CtrlVANA_ButtonTabCreate","_CtrlVANA_ButtonRename","_CtrlVANA_OKButton","_CtrlVANA_DeleteButton","_CtrlTvUIPopup"];
 
     _ArsenalDisplay setvariable ["Vana_Initialised", True];
-    [_ArsenalDisplay,"Init"] call VANA_fnc_UIPopup;
+    [_ArsenalDisplay, "Init"] call VANA_fnc_UIPopup;
 
     //Add EventHandlers
-    _ArsenalDisplay displayseteventhandler ["keyDown","[(_this select 0),'KeyDown',_this] call VANA_fnc_ArsenalTreeView;"];
+    _ArsenalDisplay displayseteventhandler ["keyDown","[(_this select 0), 'KeyDown', _this] call VANA_fnc_ArsenalTreeView;"];
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
     _CtrlTreeView ctrladdeventhandler ["TreeSelChanged","[ctrlparent (_this select 0),'TreeViewSelChanged'] call VANA_fnc_ArsenalTreeView;"];
     _CtrlTreeView ctrladdeventhandler ["TreeDblClick","[ctrlparent (_this select 0),'TreeDblClick'] call VANA_fnc_ArsenalTreeView;"];
+    _CtrlTreeView ctrladdeventhandler ["MouseMoving", "[ctrlparent (_this select 0),'MouseMove', _this] call VANA_fnc_ArsenalTreeView;"];
+
+    _CtrlTreeView ctrladdeventhandler ["TreeExpanded", "[ctrlparent (_this select 0),'SubTvToggle', (_this + [True])] call VANA_fnc_ArsenalTreeView;"];
+    _CtrlTreeView ctrladdeventhandler ["TreeCollapsed", "[ctrlparent (_this select 0),'SubTvToggle', (_this + [False])] call VANA_fnc_ArsenalTreeView;"];
 
     _CtrlTreeView ctrladdeventhandler ["MouseButtonDown","[ctrlparent (_this select 0),'TvDragDrop', ['MouseDown']] spawn VANA_fnc_ArsenalTreeView;"];
     _CtrlTreeView ctrladdeventhandler ["TreeMouseMove","[ctrlparent (_this select 0),'TvDragDrop', ['MouseMove', _This]] spawn VANA_fnc_ArsenalTreeView;"];
@@ -94,7 +101,7 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-	case "TvDragDrop":
+	case "tvdragdrop":
   {
     _Arguments params
     [
@@ -105,7 +112,7 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
       "_FncReturn",
       "_FncMode",
       "_FncArguments",
-      "_TvParrent"
+      "_TvParent"
     ];
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
@@ -117,16 +124,79 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
     _FncMode = tolower (_FncReturn select 0);
     _FncArguments = _FncReturn select 1;
 
-    if (_FncMode isequalto "mouseup" && _FncArguments isequaltype []) then
+    if (_FncMode isequalto "DragDropFnc" && _FncArguments isequaltype []) then
     {
-      _TvParrent = +_FncArguments;
-      _TvParrent resize ((Count _TvParrent)-1);
-
-      [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
+      _TvParent = _FncArguments call VANA_fnc_TvGetParent;
+      [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
       //[_CtrlTreeView] call VANA_fnc_TvSaveData;
     };
 
     True
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "mousemove":
+  {
+    _Arguments params
+    [
+      ["_CtrlTreeView", controlnull, [controlnull]],
+      ["_XCoord", 0, [0]],
+      ["_YCoord", 0, [0]]
+    ];
+
+    if (_XCoord >= 0.566) then
+    {
+      _CtrlTreeView setvariable ["MouseOverScrollBar", True];
+    } else {
+      _CtrlTreeView setvariable ["MouseOverScrollBar", False];
+    };
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "subtvtoggle":
+  {
+    _Arguments params
+    [
+      ["_CtrlTreeView", controlnull, [controlnull]],
+      ["_TargetTv", [-1], [[]]],
+      ["_Expanded", False, [False]]
+    ];
+
+    _CtrlTreeView TvSetValue [_TargetTv, ([Collapsed, Expanded] Select _Expanded)];
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "treedblclick":
+  {
+    params ["_SelectedTab","_TvData","_CtrlTreeView","_TvCollapsed"];
+
+    _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
+    _SelectedTab = tvCurSel _CtrlTreeView;
+    _TvData = tolower (_CtrlTreeView tvData _SelectedTab);
+
+    if (_CtrlTreeView getvariable ["MouseOverScrollBar", False]) exitwith {False};
+
+    switch _TvData do
+    {
+      case "tvloadout":
+      {
+        [_ArsenalDisplay,"ButtonTemplateOK"] call VANA_fnc_ArsenalTreeView;
+        True
+      };
+      case "tvtab":
+      {
+        _TvCollapsed = (_CtrlTreeView TvValue _SelectedTab) isequalto Collapsed;
+        if _TvCollapsed then
+        {
+          _CtrlTreeView TvExpand _SelectedTab;
+        } else {
+          _CtrlTreeView TvCollapse _SelectedTab;
+        };
+
+        [_ArsenalDisplay,"SubTvToggle", [_CtrlTreeView, _SelectedTab, ([False, True] select _TvCollapsed)]] call VANA_fnc_ArsenalTreeView;
+        True
+      };
+    };
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -216,7 +286,7 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
         {
           if _InPopupUI then
           {
-            _CtrlTvUIPopup setvariable ["VANA_fnc_TvUIPopup_Status",False];
+            _CtrlTvUIPopup setvariable ["TvUIPopup_Status",False];
           } else {
             _ctrlTemplate ctrlsetfade 1;
             _ctrlTemplate ctrlcommit 0;
@@ -239,7 +309,7 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
           if _InPopupUI then
           {
             private _CtrlPopupButtonOk = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_ButtonOK;
-            if (ctrlenabled _CtrlPopupButtonOk) then {_CtrlTvUIPopup setvariable ["VANA_fnc_TvUIPopup_Status",True];};
+            if (ctrlenabled _CtrlPopupButtonOk) then {_CtrlTvUIPopup setvariable ["TvUIPopup_Status",True];};
           } else {
             private _CtrlTemplateBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
             if (ctrlenabled _CtrlTemplateBUTTONOK) then {[_ArsenalDisplay,"ButtonTemplateOK"] call VANA_fnc_ArsenalTreeView;};
@@ -273,22 +343,6 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
     [_CtrlTreeView] call VANA_fnc_TvSaveData;
 
     True
-  };
-
-  ///////////////////////////////////////////////////////////////////////////////////////////
-  case "treedblclick":
-  {
-    params ["_SelectedTab","_TvData","_CtrlTreeView"];
-
-    _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-    _SelectedTab = tvCurSel _CtrlTreeView; //Gets Selected tab
-    _TvData = tolower (_CtrlTreeView tvData _SelectedTab); //Gets Data assigned to sellected SubTv
-
-    if ((_TvData isequalto "tvloadout")) then
-    {
-      [_ArsenalDisplay,"ButtonTemplateOK"] call VANA_fnc_ArsenalTreeView;
-      True
-    };
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -342,9 +396,9 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
     _CtrlVANA_OKButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
     if (ctrlenabled _CtrlTemplateEdit) then
     {
-      _CtrlVANA_OKButton ctrlenable True; //Save
+      _CtrlVANA_OKButton ctrlenable True;
     } else {
-      _CtrlVANA_OKButton ctrlenable ((_TvData isEqualto "tvloadout")&&((_CtrlTreeView tvValue _SelectedTab) >= 0)); //Load
+      _CtrlVANA_OKButton ctrlenable (_TvData isEqualto "tvloadout" && (_CtrlTreeView tvValue _SelectedTab) >= 0);
     };
 
     //Temp code
@@ -436,12 +490,10 @@ switch (tolower _Mode) do  //Checks wich mode the code exes in
   ///////////////////////////////////////////////////////////////////////////////////////////
 	case "buttontemplateok": //Code taken from BIS_fnc_arsenal and modified to be compatible with Tv
   {
-params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
+    params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock","_HideTemplate","_LoadoutName","_FncReturn","_TvParent","_Center","_SelectedTab","_Inventory","_LoadoutData","_Name","_NameID","_Inventory","_InventoryCustom"];
 
     _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-
-    Params ["_HideTemplate","_LoadoutName","_FncReturn","_TvParrent","_Center","_SelectedTab","_Inventory","_LoadoutData","_Name","_NameID","_Inventory","_InventoryCustom"];
 
     _SelectedTab = TvCursel _CtrlTreeView;
     _HideTemplate = True;
@@ -453,11 +505,9 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
       _FncReturn = [_CtrlTreeView, _LoadoutName] call VANA_fnc_TvSaveLoadout;
       if (_FncReturn select 0 isequalto [-1]) exitwith {};
 
-      _TvParrent = +(_FncReturn select 0);
+      _TvParent = (_FncReturn select 0) call VANA_fnc_TvGetParent;
 
-      _TvParrent resize ((Count _TvParrent)-1);
-
-      [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
+      [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
       [_CtrlTreeView] call VANA_fnc_TvSaveData;
     } else {
       //Load
@@ -505,7 +555,7 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
   ///////////////////////////////////////////////////////////////////////////////////////////
   Case "create":
   {
-    params ["_CtrlTreeView","_FncReturn","_TvParrent"];
+    params ["_CtrlTreeView","_FncReturn","_TvParent"];
 
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 
@@ -513,12 +563,10 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
 
     if !(_FncReturn isequalto [-1]) then
     {
-      _TvParrent = +_FncReturn;
-
-      _TvParrent resize ((Count _TvParrent)-1);
+      _TvParent = _FncReturn call VANA_fnc_TvGetParent;
 
       [_ArsenalDisplay,"TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
-      [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
+      [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
       [_CtrlTreeView] call VANA_fnc_TvSaveData;
 
       True
@@ -535,18 +583,16 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
     _TargetTv = tvCurSel _CtrlTreeView;
     _DeleteFnc =
     {
-      params ["_FncReturn","_TvParrent"];
+      params ["_FncReturn","_TvParent"];
 
       _FncReturn = [_CtrlTreeView, _TargetTv] call VANA_fnc_TvDelete;
 
       if (_FncReturn isequaltype []) then
       {
-        _TvParrent = +_FncReturn;
-
-        _TvParrent resize ((Count _TvParrent)-1);
+        _TvParent = _FncReturn call VANA_fnc_TvGetParent;
 
         [_CtrlTreeView] call VANA_fnc_TvSaveData;
-        [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
+        [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
         [_ArsenalDisplay,"TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
       };
     };
@@ -572,7 +618,7 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
   ///////////////////////////////////////////////////////////////////////////////////////////
   Case "rename":
   {
-    params ["_CtrlTreeView","_CtrlRenameEdit","_Return","_TargetTv","_FncReturn","_Name","_TvParrent"];
+    params ["_CtrlTreeView","_CtrlRenameEdit","_Return","_TargetTv","_FncReturn","_Name","_TvParent"];
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
     _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_RenameEdit;
@@ -588,12 +634,10 @@ params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTemplate","_CtrlMouseBlock"];
 
       if _FncReturn then
       {
-        _TvParrent = +_TargetTv;
-
-        _TvParrent resize ((Count _TvParrent)-1);
+        _TvParent = _TargetTv call VANA_fnc_TvGetParent;
 
         [_ArsenalDisplay, "TreeViewSelChanged"] call VANA_fnc_ArsenalTreeView;
-        [_CtrlTreeView, _TvParrent, False] call VANA_fnc_TvSorting;
+        [_CtrlTreeView, _TvParent, False] call VANA_fnc_TvSorting;
         [_CtrlTreeView] call VANA_fnc_TvSaveData;
       };
     };

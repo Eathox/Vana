@@ -29,10 +29,12 @@ _DuplicateLoadout = _LoadoutName in (profilenamespace getvariable ["bis_fnc_save
 
 if _DuplicateLoadout exitwith
 {
-	["showMessage",[(ctrlparent _CtrlTreeView), (format ["Overwriting existing loadout: ""%1""", _LoadoutName])]] spawn BIS_fnc_arsenal;
+	[_CtrlTreeView, _LoadoutName, ([_CtrlTreeView, [_LoadoutName], "TvLoadout"] Call VANA_fnc_TvGetPosition)] call VANA_fnc_TvValidateLoadout;
+	["showMessage",[(ctrlparent _CtrlTreeView), (format ["Replaced existing loadout: ""%1""", _LoadoutName])]] spawn BIS_fnc_arsenal;
 
  	[[-1], _LoadoutName]
 };
+
 
 //Create Subtv for loadout
 _TargetTv = tvCurSel _CtrlTreeView;
@@ -40,7 +42,7 @@ _TvData = tolower (_CtrlTreeView tvData _TargetTv);
 
 if (_TvData isEqualto "tvloadout") then
 {
-  _TargetTv resize ((Count _TargetTv) - 1);
+  _TargetTv resize (Count _TargetTv-1);
 };
 
 _ReturnValue = [_CtrlTreeView, _TargetTv, _LoadoutName] call VANA_fnc_TvCreateLoadout;

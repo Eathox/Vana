@@ -1,7 +1,7 @@
 disableserialization;
 
-#include "\VANA_LoadoutManagement\UI\defineDIKCodes.inc"
-#include "\VANA_LoadoutManagement\UI\defineResinclDesign.inc"
+#include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
+#include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
 
 #define ShowUI(BOOL)\
   Private _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_UIPopupControlGroup;\
@@ -65,12 +65,12 @@ switch (toLower _Mode) do
     _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_RenameEdit;
 
     //Waituntil Confirm or cancel button was pressed
-    waituntil {!isnil {_CtrlTvUIPopup getvariable "VANA_fnc_TvUIPopup_Status"}};
-    _Status = (_CtrlTvUIPopup getvariable "VANA_fnc_TvUIPopup_Status");
+    waituntil {!isnil {_CtrlTvUIPopup getvariable "TvUIPopup_Status"}};
+    _Status = (_CtrlTvUIPopup getvariable "TvUIPopup_Status");
 
     ShowUI(False)
 
-    _CtrlTvUIPopup setvariable ["VANA_fnc_TvUIPopup_Status",nil];
+    _CtrlTvUIPopup setvariable ["TvUIPopup_Status",nil];
     ctrlsetfocus _CtrlTemplate;
 
     _Status

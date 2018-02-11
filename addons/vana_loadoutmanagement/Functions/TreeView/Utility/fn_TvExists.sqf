@@ -3,7 +3,7 @@ disableserialization;
 params
 [
 	["_CtrlTreeView", controlnull, [controlnull]],
-	["_TargetTv", (tvCurSel _CtrlTreeView), [[]]],
+	["_TargetTv", (tvCurSel (_this select 0)), [[]]],
   "_HasName",
   "_HasData"
 ];

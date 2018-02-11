@@ -17,7 +17,7 @@ class CfgPatches
 
 class CfgScriptPaths
 {
-  VANAInit="\VANA_LoadoutManagement\Functions\";
+  VANAInit="\vana_LoadoutManagement\Functions\";
 };
 
 class cfgFunctions

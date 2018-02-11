@@ -20,17 +20,20 @@ switch (toLower _Mode) do
     _CtrlTreeView Setvariable ["TvDragDrop_TargetTv", nil];
     _CtrlTreeView Setvariable ["TvDragDrop_ReleaseTv", nil];
 
+    //Check if user is using scroll bar
+    If (_CtrlTreeView getvariable ["MouseOverScrollBar", False]) exitwith {["mousedown", False]};
+
     //Tell script to get Target
-    _CtrlTreeView Setvariable ["VANA_fnc_TvDragDrop_GetTarget", True];
+    _CtrlTreeView Setvariable ["TvDragDrop_GetTarget", True];
 
     //Double check user is initiating TvDragDrop action
-    _CtrlTreeView Setvariable ["VANA_fnc_TvDragDrop_InAction", "Double Check"];
+    _CtrlTreeView Setvariable ["TvDragDrop_InAction", "Double Check"];
     sleep 0.1;
 
-    _InAction = _CtrlTreeView Getvariable ["VANA_fnc_TvDragDrop_InAction", False];
-    _CtrlTreeView Setvariable ["VANA_fnc_TvDragDrop_InAction", ([False, True] select (_InAction isequalto "Double Check"))];
+    _InAction = _CtrlTreeView Getvariable ["TvDragDrop_InAction", False];
+    _CtrlTreeView Setvariable ["TvDragDrop_InAction", ([False, True] select (_InAction isequalto "Double Check"))];
 
-    ["mousedown", (_CtrlTreeView Getvariable ["VANA_fnc_TvDragDrop_InAction", False])]
+    ["mousedown", (_CtrlTreeView Getvariable ["TvDragDrop_InAction", False])]
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -38,16 +41,16 @@ switch (toLower _Mode) do
   {
     params ["_Return","_GetTarget","_InAction","_CursorTab"];
 
-    _Return = ["mousemove", false];
-    _GetTarget = _CtrlTreeView Getvariable ["VANA_fnc_TvDragDrop_GetTarget", False];
-    _InAction = _CtrlTreeView Getvariable ["VANA_fnc_TvDragDrop_InAction", False];
+    _Return = ["mousemove", False];
+    _GetTarget = _CtrlTreeView Getvariable ["TvDragDrop_GetTarget", False];
+    _InAction = _CtrlTreeView Getvariable ["TvDragDrop_InAction", False];
     _CursorTab = _Arguments;
 
     //Get Target
     if _GetTarget then
     {
       _CtrlTreeView Setvariable ["TvDragDrop_TargetTv", _CursorTab];
-      _CtrlTreeView Setvariable ["VANA_fnc_TvDragDrop_GetTarget", nil];
+      _CtrlTreeView Setvariable ["TvDragDrop_GetTarget", nil];
 
       _Return = ["mousemove", True];
     };
@@ -76,7 +79,7 @@ switch (toLower _Mode) do
     {
       _FncReturn = [_CtrlTreeView, "DragDropFnc", [_TargetTv, _ReleaseTv]] call VANA_fnc_TvDragDrop;
 
-      ["MouseUp", _FncReturn]
+      ["DragDropFnc", _FncReturn]
     };
 
     ["MouseUp", False]
@@ -92,12 +95,9 @@ switch (toLower _Mode) do
       "_TargetTvData",
       "_TargetTvText",
       "_TargetTvValue",
-      "_ReleaseTvData",
       "_TargetTvParent",
-      "_ReleaseTvParent",
       "_IsParent",
       "_IsChild",
-      "_HasSameParent",
       "_MovedSubtv",
       "_NewSubTVPath",
       "_TargetTvChildren",
@@ -105,33 +105,35 @@ switch (toLower _Mode) do
       "_MovedSubtvParent"
     ];
 
-    _TargetTvData = (_CtrlTreeView tvData _TargetTv);
-    _TargetTvText = (_CtrlTreeView tvText _TargetTv);
-    _TargetTvValue = (_CtrlTreeView tvValue _TargetTv);
+    _TargetTvData = _CtrlTreeView tvData _TargetTv;
+    _TargetTvText = _CtrlTreeView tvText _TargetTv;
+    _TargetTvValue = _CtrlTreeView tvValue _TargetTv;
 
-    _ReleaseTv = +_ReleaseTv;
-    _ReleaseTvData = (_CtrlTreeView tvData _ReleaseTv);
+    if (_ReleaseTv isequalto [-1] || _TargetTv isequalto [] || _TargetTv isequalto _ReleaseTv) exitwith {False};
 
-    if (_ReleaseTv isequalto [-1] || _TargetTv isequalto [] || !(_TargetTv isequalto _ReleaseTv)) exitwith {False};
-
-    _TargetTvParent = +_TargetTv;
-    _TargetTvParent resize ((Count _TargetTvParent)-1);
-
-    _ReleaseTvParent = +_ReleaseTv;
-    if !(_ReleaseTv isequalto []) then
+    if (_CtrlTreeView tvData _ReleaseTv isequalto "tvloadout") then
     {
-      _ReleaseTvParent resize ((Count _ReleaseTvParent)-1);
+      _ReleaseTv = +_ReleaseTv;
+      _ReleaseTv resize ((Count _ReleaseTv)-1);
     };
+
+    _TargetTvParent = _TargetTv call VANA_fnc_TvGetParent;
 
     _IsParent = _TargetTvParent isequalto _ReleaseTv;
     _IsChild = _ReleaseTv select [0,(count _TargetTv)] isequalto _TargetTv;
-    _HasSameParent = _TargetTvParent isequalto _ReleaseTvParent;
 
+    if (_IsParent || _IsChild) exitwith {systemchat "False"; False};
+
+    systemchat "True";
+
+    True
+
+    /*
     if (!_IsParent && !_IsChild && (_ReleaseTvData isequalto "tvtab" || !_HasSameParent)) then
     {
       if (_ReleaseTvData isequalto "tvloadout") then
       {
-        _ReleaseTv resize ((Count _ReleaseTv)-1);
+        _ReleaseTv resize (Count _ReleaseTv-1);
       };
 
       _CtrlTreeView tvExpand _ReleaseTv;
@@ -139,7 +141,7 @@ switch (toLower _Mode) do
       _MovedSubtv = +_ReleaseTv;
       _NewSubTvPath = _CtrlTreeView tvadd [_ReleaseTv, _TargetTvText];
 
-      _MovedSubtv pushback _NewSubTVPath;
+      _MovedSubtv pushback _NewSubTvPath;
 
       _CtrlTreeView tvSetData [_MovedSubtv, _TargetTvData];
       _CtrlTreeView TvSetValue [_MovedSubtv, _TargetTvValue];
@@ -151,7 +153,7 @@ switch (toLower _Mode) do
 
       if (_TargetTvData isequalto "tvtab") then
       {
-        _CtrlTreeView tvSetPicture [_MovedSubtv , "\VANA_LoadoutManagement\UI\Data_Icons\icon_ca.paa"];
+        _CtrlTreeView tvSetPicture [_MovedSubtv, "\vana_LoadoutManagement\UI\Data_Icons\icon_ca.paa"];
         _TargetTvChildren = [_CtrlTreeView, _TargetTv] call VANA_fnc_TvGetData;
         //Form wich data is saved in is [["Name",[Position],"DataType"],["Name",[Position],"DataType"],["Name",[Position],"DataType"]] ect.
         {
@@ -193,11 +195,13 @@ switch (toLower _Mode) do
 
       _MovedSubtvParent = +_MovedSubtv; //Duplicates _MovedSubtv so it doesnt get redefined
       _MovedSubtvParent resize ((Count _MovedSubtvParent)-1); //Removes last number from aray (So this is now the parent)
+
       _CtrlTreeView tvSetCurSel ([_CtrlTreeView,[_TargetTvText,_MovedSubtvParent],_TargetTvData] call VANA_fnc_TvGetPosition);
 
       _MovedSubtv
     } else {
       False
     };
+    */
   };
 };

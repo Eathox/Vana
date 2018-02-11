@@ -4,7 +4,7 @@ params
 [
 	["_CtrlTreeView", controlnull, [controlnull]],
 	["_Name", "", [""]],
-	["_TargetTv", (tvCurSel _CtrlTreeView), [[]]],
+	["_TargetTv", (tvCurSel (_this select 0)), [[]]],
 	"_TvData",
 	"_TvName",
 	"_LoadoutData",

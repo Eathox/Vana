@@ -17,6 +17,7 @@ switch _mode do
 		} else {
 			['Init',_params] call (uinamespace getvariable "VANA_fnc_arsenal");
 		};
+		[_params select 0, "Init"] call VANA_fnc_ArsenalTreeView;
 	};
 	case "onUnload":
 	{

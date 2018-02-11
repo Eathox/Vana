@@ -1,4 +1,4 @@
-//an edited version of BIS_fnc_arsenal - (ctrl+f: VANA to find all vana related chagnes)
+//an edited version of BIS_fnc_arsenal - (All Changes marked with "VANA")
 
 #include "\A3\ui_f\hpp\defineDIKCodes.inc"
 #include "\A3\Ui_f\hpp\defineResinclDesign.inc"
@@ -134,7 +134,6 @@ switch _mode do {
 		["Preload"] call BIS_fnc_arsenal;
 		["ListAdd",[_display]] call BIS_fnc_arsenal;
 		["ListSelectCurrent",[_display]] call BIS_fnc_arsenal;
-		[_display,"Init"] call VANA_fnc_ArsenalTreeView; //VANA - Initialization Of VANA
 
 		//--- Save default weapon type
 		BIS_fnc_arsenal_selectedWeaponType = switch true do {

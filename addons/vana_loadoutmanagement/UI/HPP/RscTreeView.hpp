@@ -24,6 +24,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       colorPictureDisabled[]={1,1,1,1};
       disableKeyboardSearch = false;
       multiselectEnabled = 0;
+      expandOnDoubleclick = 0;
 
       class ScrollBar: ScrollBar
       {
@@ -59,7 +60,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       y="0.05 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="1.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      text="\VANA_LoadoutManagement\UI\Data_Icons\Vana (Small) - WhiteText NoBackground.paa";
+      text="\vana_LoadoutManagement\UI\Data_Icons\Vana (Small) - WhiteText NoBackground.paa";
     };
     class VANA_DecorativeBar: RscBackgroundGUI
     {
@@ -74,7 +75,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     class VANA_ButtonCreate: RscVANAPictureButton
     {
       idc=978002;
-      text="\VANA_LoadoutManagement\UI\Data_Icons\entityList_layer_ca.paa";
+      text="\vana_LoadoutManagement\UI\Data_Icons\entityList_layer_ca.paa";
       tooltip=$STR_VANA_ButtonCreate_ToolTip;
       x="18.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="19.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -84,7 +85,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     class VANA_ButtonRename: RscVANAPictureButton
     {
       idc=978003;
-      text="\VANA_LoadoutManagement\UI\Data_Icons\portraitMissionName_ca.paa";
+      text="\vana_LoadoutManagement\UI\Data_Icons\portraitMissionName_ca.paa";
       tooltip=$STR_VANA_ButtonRename_ToolTip;
       x="17.3  * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="19.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
