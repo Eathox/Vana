@@ -12,7 +12,7 @@ params
 if (_ParentTv isequalto [-1]) exitwith {False};
 
 //Add ! to all loadouts
-_TargetTvLoadouts = [_CtrlTreeView, _ParentTv, "Tvloadout", [], False] call VANA_fnc_TvGetData;
+_TargetTvLoadouts = [_CtrlTreeView, [_ParentTv, "Tvloadout"], [], False] call VANA_fnc_TvGetData;
 {
   _CtrlTreeView tvsettext [_x select 1, (Format ["!!!!!!!!!!%1", _x select 0])];
 } foreach _TargetTvLoadouts;
@@ -21,7 +21,7 @@ _TargetTvLoadouts = [_CtrlTreeView, _ParentTv, "Tvloadout", [], False] call VANA
 _CtrlTreeView tvsort [_ParentTv, True];
 _CtrlTreeView tvsort [_ParentTv, False];
 
-_TargetTvChildren = [_CtrlTreeView, _ParentTv, "All", [], False] call VANA_fnc_TvGetData;
+_TargetTvChildren = [_CtrlTreeView, [_ParentTv, "All"], [], False] call VANA_fnc_TvGetData;
 {
   params ["_TvName","_TvPosition"];
 

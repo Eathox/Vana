@@ -3,21 +3,27 @@ disableserialization;
 params
 [
 	["_CtrlTreeView", controlnull, [controlnull]],
-	["_TargetTv", (tvCurSel (_this select 0)), [[]]],
-	["_LoadoutName", "", [""]],
-	["_FirstTimeSetup", False, [False]],
+	["_Arguments", [[-1], ""], [[]]],
+	["_Behavior", "", [""]],
 	"_LoadoutData",
 	"_LoadoutPath",
 	"_LoadoutAdd"
 ];
 
+_Arguments params
+[
+	["_TargetTv", (tvCurSel _CtrlTreeView), [[]]],
+	["_LoadoutName", "", [""]]
+];
+
+_Behavior = tolower _Behavior;
 _LoadoutData = profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]];
 
-if (_LoadoutName isequalto "" && _FirstTimeSetup) exitwith
+if (_LoadoutName isequalto "" && _Behavior isequalto "firsttimesetup") exitwith
 {
 	//Load all Loadouts
 	{
-		[_CtrlTreeView, [], _x] call VANA_fnc_TvCreateLoadout;
+		[_CtrlTreeView, [[], _x], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
 	} foreach (_LoadoutData select {_x isequaltype ""});
 
 	[[-1], ""]
@@ -34,9 +40,12 @@ _LoadoutPath pushback _LoadoutAdd;
 //Visualy/Technical classify Tab
 _CtrlTreeView tvSetData [_LoadoutPath, "tvloadout"];
 
-_CtrlTreeView tvExpand _TargetTv;
-_CtrlTreeView tvSetCurSel ([_CtrlTreeView,[_LoadoutName,_TargetTv],"tvloadout"] call VANA_fnc_TvGetPosition);
+if !(_Behavior in ["firsttimesetup", "dragdrop"]) then
+{
+	_CtrlTreeView tvExpand _TargetTv;
+	_CtrlTreeView tvSetCurSel ([_CtrlTreeView,[_LoadoutName,_TargetTv],"tvloadout"] call VANA_fnc_TvGetPosition);
 
-if _FirstTimeSetup then {_CtrlTreeView setvariable ["TvLoadData_Count", (_CtrlTreeView getvariable ["TvLoadData_Count", 0])+1]};
+	[_CtrlTreeView, _LoadoutName, _LoadoutPath] call VANA_fnc_TvValidateLoadout;
+};
 
 [_LoadoutPath,_LoadoutName]

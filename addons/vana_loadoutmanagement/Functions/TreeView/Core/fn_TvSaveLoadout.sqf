@@ -45,7 +45,7 @@ if (_TvData isEqualto "tvloadout") then
   _TargetTv resize (Count _TargetTv-1);
 };
 
-_ReturnValue = [_CtrlTreeView, _TargetTv, _LoadoutName] call VANA_fnc_TvCreateLoadout;
+_ReturnValue = [_CtrlTreeView, [_TargetTv, _LoadoutName]] call VANA_fnc_TvCreateLoadout;
 _TargetTv =  (_ReturnValue Select 0);
 
 ["showMessage",[(ctrlparent _CtrlTreeView), (format ["Loadout: ""%1"" Saved", _LoadoutName])]] spawn BIS_fnc_arsenal;

@@ -23,12 +23,12 @@ switch _TvData do
 	case "tvtab":
 	{
 		//Recreates all loadouts under tab
-		_TargetTvChildren = [_CtrlTreeView, _TargetTv] call VANA_fnc_TvGetData;
+		_TargetTvChildren = [_CtrlTreeView, [_TargetTv]] call VANA_fnc_TvGetData;
 
 		{
 			if (tolower (_x select 2) isEqualto "tvloadout") then
 			{
-				[_CtrlTreeView, _TargetTvParent, _x select 0] call VANA_fnc_TvCreateLoadout;
+				[_CtrlTreeView, [_TargetTvParent, _x] select 0] call VANA_fnc_TvCreateLoadout;
 			};
 		} foreach _TargetTvChildren;
 	};

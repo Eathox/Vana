@@ -54,10 +54,8 @@ GETVIRTUALCARGO
 
   if (_LoadoutName in _LoadoutData) then
   {
-
-    //Code directly taken from BIS_fnc_arsenal
+    //First Phase Validation
     _InventoryData = _LoadoutData select ((_LoadoutData find _LoadoutName) + 1);
-
     _InventoryDataWeapons =
     [
     	(_InventoryData select 5), //Binocular
@@ -68,6 +66,7 @@ GETVIRTUALCARGO
 
     if ({_Item = _x; !CONDITION(_VirtualWeaponCargo) || !isclass(configfile >> "cfgweapons" >> _Item)} count _InventoryDataWeapons > 0) exitwith {MarkTv};
 
+    //Second Phase Validation
     _InventoryDataMagazines =
     (
     	(_InventoryData select 0 select 1) + //Uniform
@@ -77,6 +76,7 @@ GETVIRTUALCARGO
 
     if ({_Item = _x; !CONDITION(_VirtualItemCargo + _VirtualMagazineCargo) || {isclass(configfile >> _x >> _Item)} count ["cfgweapons","cfgglasses","cfgmagazines"] == 0} count _InventoryDataMagazines > 0) exitwith {MarkTv};
 
+    //Third Phase Validation
     _InventoryDataItems =
     (
       [_InventoryData select 0 select 0] + (_InventoryData select 0 select 1) + //Uniform
@@ -92,15 +92,11 @@ GETVIRTUALCARGO
 
     if ({_Item = _x; !CONDITION(_VirtualItemCargo + _VirtualMagazineCargo) || {isclass(configfile >> _x >> _Item)} count ["cfgweapons","cfgglasses","cfgmagazines"] == 0} count _InventoryDataItems > 0) exitwith {MarkTv};
 
+    //Forth Phase Validation
     _InventoryDataBackpacks = [_InventoryData select 2 select 0] - [""];
 
     if ({_Item = _x; !CONDITION(_VirtualBackpackCargo) || !isclass(configfile >> "cfgvehicles" >> _Item)} count _InventoryDataBackpacks > 0) exitwith {MarkTv};
   };
 } foreach _TargetLoadouts;
 
-if !(_TargetLoadouts isequalto []) then
-{
-  True
-} else {
-  False
-};
+[False, True] select !(_TargetLoadouts isequalto []);

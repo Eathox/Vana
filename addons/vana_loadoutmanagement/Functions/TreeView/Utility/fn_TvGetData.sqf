@@ -3,12 +3,17 @@ disableserialization;
 params
 [
 	["_CtrlTreeView", controlnull, [controlnull]],
-	["_ParentTv", [], [[]]],
-	["_TypeData", "All", [""]],
+	["_Arguments", [[-1], ""], [[]]],
 	["_ExportDataArray", [], [[],0]],
 	["_CheckSubTv", True, [True]],
 	["_Count", False, [False]],
 	"_ExportDataArray"
+];
+
+_Arguments params
+[
+  ["_ParentTv", [], [[]]],
+  ["_TypeData", "All", [""]]
 ];
 
 _TypeData = toLower _TypeData;
@@ -29,24 +34,20 @@ for "_i" from 0 to (_CtrlTreeView tvCount _ParentTv)-1 do
 	[
 		(_CtrlTreeView tvText _TargetTv), //"Name"
 		_TargetTv, //Position
-		_TvData //"Data"
+		_TvData, //"Data"
+		(_CtrlTreeView tvValue _TargetTv) //"Value"
 	];
 
 	//Add data to Export Array/Value
 	if (_TypeData isequalto _TvData || _TypeData isequalto "all") then
 	{
-		if _Count then
-		{
-			_ExportDataArray = _ExportDataArray +1;
-		} else {
-			_ExportDataArray append [_DataExport];
-		};
+		call ([{_ExportDataArray append [_DataExport]}, {_ExportDataArray = _ExportDataArray +1}] select _Count);
 	};
 
 	//Execute function for all Subtv's
 	if (_CheckSubTv && _CtrlTreeView tvCount _TargetTv > 0) then
 	{
-		_ExportDataArray = [_CtrlTreeView, _TargetTv, _TypeData, _ExportDataArray, True, False] call VANA_fnc_TvGetData;
+		_ExportDataArray = [_CtrlTreeView, [_TargetTv, _TypeData], _ExportDataArray, True, False] call VANA_fnc_TvGetData;
 	};
 };
 

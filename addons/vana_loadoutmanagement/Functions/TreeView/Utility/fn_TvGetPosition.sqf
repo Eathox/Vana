@@ -11,14 +11,14 @@ params
   "_Target"
 ];
 
-_Arguments  params
+_Arguments params
 [
   ["_Name", "", [""]],
   ["_TvParent", [-1], [[]]]
 ];
 
 //Find Correct SubTv
-_FncArguments = [[_CtrlTreeView, _TvParent, (toLower _TypeData), [], False], [_CtrlTreeView]] select (_TvParent isequalto [-1]);
+_FncArguments = [[_CtrlTreeView, [_TvParent, (toLower _TypeData)], [], False], [_CtrlTreeView]] select (_TvParent isequalto [-1]);
 _Target = (_FncArguments call VANA_fnc_TvGetData) select {(_x select 0) isequalto _Name};
 
 if (_Target isequalto []) exitwith {[-1]};

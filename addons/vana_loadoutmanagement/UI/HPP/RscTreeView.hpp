@@ -31,7 +31,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
         color[] = {0.94999999,0.94999999,0.94999999,1};
       };
     };
-    class TextName: RscText //Relocationg of Vanila UI
+    class TextName: RscText //Relocation of Vanila UI
     {
       style=1;
       idc=34621;

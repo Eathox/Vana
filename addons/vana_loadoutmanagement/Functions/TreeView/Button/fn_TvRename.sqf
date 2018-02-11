@@ -3,12 +3,17 @@ disableserialization;
 params
 [
 	["_CtrlTreeView", controlnull, [controlnull]],
-	["_Name", "", [""]],
-	["_TargetTv", (tvCurSel (_this select 0)), [[]]],
+	["_Arguments", [[-1],""], [[]]],
 	"_TvData",
 	"_TvName",
 	"_LoadoutData",
 	"_DataPosistion"
+];
+
+_Arguments params
+[
+	["_TargetTv", (tvCurSel _CtrlTreeView), [[]]],
+	["_Name", "", [""]]
 ];
 
 _TvData = tolower (_CtrlTreeView tvData _TargetTv);
