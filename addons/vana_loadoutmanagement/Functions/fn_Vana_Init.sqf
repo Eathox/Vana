@@ -3,11 +3,8 @@
 params
 [
 	["_mode", "", [""]],
-	["_params", [], [[]]],
-	"_ArsenalDisplay"
+	["_params", [], [[]]]
 ];
-
-_ArsenalDisplay = _params select 0;
 
 switch _mode do
 {
@@ -20,8 +17,6 @@ switch _mode do
 		} else {
 			['Init',_params] call (uinamespace getvariable "VANA_fnc_arsenal");
 		};
-		[_ArsenalDisplay, "Init"] call VANA_fnc_ArsenalTreeView;
-		[_ArsenalDisplay, "Init"] call VANA_fnc_UIPopup;
 	};
 	case "onUnload":
 	{

@@ -135,6 +135,14 @@ switch _mode do {
 		["ListAdd",[_display]] call BIS_fnc_arsenal;
 		["ListSelectCurrent",[_display]] call BIS_fnc_arsenal;
 
+		//Vana Init
+		call
+		{
+			[_display, "Init"] call VANA_fnc_ArsenalTreeView;
+			if !(_display getvariable ["Vana_Initialised", False]) exitwith {};
+			[_display, "Init"] call VANA_fnc_UIPopup;
+		};
+
 		//--- Save default weapon type
 		BIS_fnc_arsenal_selectedWeaponType = switch true do {
 			case (currentweapon _center == primaryweapon _center): {0};
