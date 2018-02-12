@@ -25,11 +25,6 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       disableKeyboardSearch = false;
       multiselectEnabled = 0;
       expandOnDoubleclick = 0;
-
-      class ScrollBar: ScrollBar
-      {
-        color[] = {0.95,0.95,0.95,1};
-      };
     };
     class TextName: RscText //Relocation of Vanila UI
     {
@@ -71,7 +66,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     };
     class VANA_TitlePicture: RscPictureKeepAspect
     {
-      idc=978000;
+      idc=-1;
       text="\vana_LoadoutManagement\UI\Data_Icons\Vana (Small) - WhiteText NoBackground.paa";
       x="17.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="0.1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -81,7 +76,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     class VANA_DecorativeBar: RscBackgroundGUI
     {
       show=false;
-      idc=978001;
+      idc=978000;
       x="17 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="19.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -90,17 +85,21 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     };
     class VANA_ButtonOptions: RscVANAPictureButton
     {
-      idc=978002;
+      idc=978001;
       text="\vana_LoadoutManagement\UI\Data_Icons\ButtonOptions.paa";
       x="19 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       colorBackground[]={0,0,0, "(profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])"};
+      colorBackgroundFocused[] ={0,0,0, "(profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])"};
+      colorBackgroundHover[] ={0,0,0, "(profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])"};
+      colorBackgroundPressed[] ={0,0,0, "(profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])"};
+      colorBackgroundDisabled[] ={0,0,0, "(profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])"};
     };
     class VANA_ButtonCreate: RscVANAPictureButton
     {
-      idc=978003;
+      idc=978002;
       text="\vana_LoadoutManagement\UI\Data_Icons\ButtonTabCreate.paa";
       tooltip=$STR_VANA_ButtonCreate_ToolTip;
       x="18.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -110,7 +109,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     };
     class VANA_ButtonRename: RscVANAPictureButton
     {
-      idc=978004;
+      idc=978003;
       text="\vana_LoadoutManagement\UI\Data_Icons\ButtonRename.paa";
       tooltip=$STR_VANA_ButtonRename_ToolTip;
       x="17.3  * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -121,7 +120,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     class VANA_DelConfirmToggle: RscCheckbox
     {
       default=0;
-      idc=978005;
+      idc=978004;
       tooltip=$STR_VANA_TempCheckbox_ToolTip;
       x="5.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -136,7 +135,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     /*
     class VANA_ButtonColapseAll: RscVANAPictureButton
     {
-      idc=978006;
+      idc=978005;
       text="\vana_LoadoutManagement\UI\Data_Icons\ButtonColapseAll.paa";
       x="6.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -146,7 +145,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     };
     class VANA_ButtonExpandAll: RscVANAPictureButton
     {
-      idc=978007;
+      idc=978006;
       text="\vana_LoadoutManagement\UI\Data_Icons\ButtonExpandAll.paa";
       x="7.3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";

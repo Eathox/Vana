@@ -10,6 +10,13 @@ class VANA
     class Vana_Init {};
   };
 
+  class OptionsMenu
+  {
+    file="vana_LoadoutManagement\Functions\OptionsMenu";
+
+    class OptionsMenu {};
+  };
+
   class TreeView
   {
     file="vana_LoadoutManagement\Functions\TreeView";

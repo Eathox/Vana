@@ -47,14 +47,8 @@
                 <English>Vana didn't initialize</English>
             </Key>
             <Key ID="STR_VANA_Text_Text">
-                <Original>
-                  Something went wrong in the initialization
-                  (You wont be able to open the loadout screen)
-                </Original>
-                <English>
-                  Something went wrong in the initialization
-                  (You wont be able to open the loadout screen)
-                </English>
+                <Original>Something went wrong in the initialization&lt;br/&gt;(You wont be able to open the loadout screen)</Original>
+                <English>Something went wrong in the initialization&lt;br/&gt;(You wont be able to open the loadout screen)</English>
             </Key>
             <Key ID="STR_VANA_ButtonOK_Text">
                 <Original>Confirm</Original>

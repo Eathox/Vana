@@ -28,7 +28,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     };
     class VANA_Picture: RscPictureKeepAspect
     {
-      idc=979002;
+      idc=-1;
       text="\vana_LoadoutManagement\UI\Data_Icons\Vana (Small) - WhiteText NoBackground.paa";
       x="17.0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="0.1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -37,7 +37,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     };
     class VANA_BackGround: RscBackgroundGUI
     {
-      idc=979003;
+      idc=-1;
       x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="1.1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="18.8 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -47,17 +47,16 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     class VANA_Text: RscStructuredText
     {
       text=$STR_VANA_Text_Text;
-      idc=979004;
+      idc=979002;
       x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-      y="1.3 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      y="1.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="18.8 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      sizeEx="0.9 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
     };
     class VANA_ButtonCancel: RscButtonMenuCancel
     {
-      onButtonClick="with uinamespace do {If !((ctrlparent (_this select 0)) getvariable ['Vana_Initialised', False]) then {(ctrlparent (_this select 0) displayctrl 979000) ctrlshow False;}}";
-      idc=979005;
+      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', False]) then {_Display displayctrl 979000 ctrlshow False;}";
+      idc=979003;
       colorBackground[]={0,0,0,1.21};
       x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="3.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -66,16 +65,16 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     };
     class VANA_BackgroundButtonMiddle: BackgroundButtonOK
     {
-      idc=979006;
+      idc=-1;
       x="6.3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="3.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       colorBackground[]={0,0,0,1.21};
     };
     class VANA_ButtonOK: RscButtonMenuOk
     {
-      onButtonClick="with uinamespace do {If !((ctrlparent (_this select 0)) getvariable ['Vana_Initialised', False]) then {(ctrlparent (_this select 0) displayctrl 979000) ctrlshow False;}}";
+      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', False]) then {_Display displayctrl 979000 ctrlshow False;}";
       text=$STR_VANA_ButtonOK_Text;
-      idc=979007;
+      idc=979004;
       colorBackground[]={0,0,0,1.21};
       x="12.6 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="3.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -86,7 +85,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     {
       show=false;
       default=0;
-      idc=979008;
+      idc=979005;
       x="0.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="2.65 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -96,7 +95,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     class VANA_CheckboxText: RscText
     {
       show=false;
-      idc=979009;
+      idc=979006;
       text=$STR_VANA_CheckboxText_Text;
       x="0.8 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="2.66 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -107,7 +106,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     class VANA_HintText: RscText
     {
       show=false;
-      idc=979010;
+      idc=979007;
       style=1;
       text=$STR_VANA_HintText_Text;
       x="9.25 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -119,7 +118,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     class VANA_RenameEdit: RscEdit
     {
       show=false;
-      idc=979011;
+      idc=979008;
       x="0.3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="2.45 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="18.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";

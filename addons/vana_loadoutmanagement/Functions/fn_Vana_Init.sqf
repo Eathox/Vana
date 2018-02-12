@@ -20,8 +20,13 @@ switch _mode do
 		} else {
 			['Init',_params] call (uinamespace getvariable "VANA_fnc_arsenal");
 		};
+
 		[_ArsenalDisplay, "Init"] call VANA_fnc_ArsenalTreeView;
+
+		if !(_ArsenalDisplay getvariable ["Vana_Initialised", False]) exitwith {};
+
 		[_ArsenalDisplay, "Init"] call VANA_fnc_UIPopup;
+		[_ArsenalDisplay, "Init"] call VANA_fnc_OptionsMenu;
 	};
 	case "onUnload":
 	{

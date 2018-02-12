@@ -11,6 +11,7 @@ class RscDisplayArsenal //Path to add code to allready exsisting Rsc class
   {
     #include "RscTreeView.hpp"
     #include "RscUIPopup.hpp"
+    #include "RscOptionsMenu.hpp"
 
     class VANA_Mouseblock: RscBackgroundGUI
     {

@@ -56,7 +56,8 @@ switch tolower _Mode do
     _CtrlTemplateEdit ctrladdeventhandler ["KeyDown","[ctrlparent (_this select 0), 'CheckOverWrite'] spawn VANA_fnc_ArsenalTreeView;"];
     _CtrlTemplateEdit ctrladdeventhandler ["char","[ctrlparent (_this select 0), 'CheckOverWrite'] spawn VANA_fnc_ArsenalTreeView;"];
 
-    _CtrlTButtonOptions = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonOptions; //WIP
+    _CtrlTButtonOptions = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonOptions;
+    _CtrlTButtonOptions ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Open'] call VANA_fnc_OptionsMenu;"];
 
     _CtrlButtonSave = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_CONTROLSBAR_BUTTONSAVE;
     _CtrlButtonSave ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonSave'] call VANA_fnc_ArsenalTreeView;"];
@@ -229,19 +230,23 @@ switch tolower _Mode do
       ["_Alt", False, [False]],
       "_CtrlTemplate",
       "_CtrlTvUIPopup",
+      "_CtrlOptionsMenu",
       "_CtrlTemplateEdit",
       "_CtrlRenameEdit",
-      "_inTemplate",
-      "_InPopupUI"
+      "_InTemplate",
+      "_InPopupUI",
+      "_InOptionsMenu"
     ];
 
     _CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;
-    _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_UIPopupControlGroup;
+    _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_UIPopupControlGroup;
+    _CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenuControlGroup;
     _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
-    _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_RenameEdit;
+    _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_RenameEdit;
 
     _InTemplate = ctrlFade _CtrlTemplate == 0;
     _InPopupUI = ctrlShown _CtrlTvUIPopup;
+    _InOptionsMenu = ctrlShown _CtrlOptionsMenu;
 
     switch True do
     {
@@ -298,17 +303,26 @@ switch tolower _Mode do
       //Close
       case (_key == DIK_ESCAPE):
       {
-        if _inTemplate then
+        switch true do
         {
-          if _InPopupUI then
+          case _InTemplate:
           {
-            _CtrlTvUIPopup setvariable ["TvUIPopup_Status",False];
-          } else {
-            ShowUI(False)
+            if _InPopupUI then
+            {
+              _CtrlTvUIPopup setvariable ["TvUIPopup_Status",False];
+            } else {
+              ShowUI(False)
+            };
           };
-        } else {
-          Private _FullVersion = missionnamespace getvariable ["BIS_fnc_arsenal_fullArsenal", False];
-          if _fullVersion then {["buttonClose",[_ArsenalDisplay]] spawn BIS_fnc_arsenal;} else {_ArsenalDisplay closedisplay 2;};
+          case _InOptionsMenu:
+          {
+            [_ArsenalDisplay, "Close"] call VANA_fnc_OptionsMenu;
+          };
+          case (!_InTemplate || !_InOptionsMenu):
+          {
+            Private _FullVersion = missionnamespace getvariable ["BIS_fnc_arsenal_fullArsenal", False];
+            if _fullVersion then {["buttonClose",[_ArsenalDisplay]] spawn BIS_fnc_arsenal;} else {_ArsenalDisplay closedisplay 2;};
+          }
         };
         True
       };
@@ -320,7 +334,7 @@ switch tolower _Mode do
         {
           if _InPopupUI then
           {
-            private _CtrlPopupButtonOk = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_ButtonOK;
+            private _CtrlPopupButtonOk = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_ButtonOK;
             if (ctrlenabled _CtrlPopupButtonOk) then {_CtrlTvUIPopup setvariable ["TvUIPopup_Status",True];};
           } else {
             private _CtrlTemplateBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
@@ -340,7 +354,7 @@ switch tolower _Mode do
         {
           True
         } else {
-          ['KeyDown',_Arguments] call VANA_fnc_arsenal;
+          ["KeyDown", _Arguments] call VANA_fnc_arsenal;
         };
       };
     };
@@ -455,7 +469,7 @@ switch tolower _Mode do
     params ["_CtrlTreeView","_CtrlRenameEdit","_Return","_TargetTv","_FncReturn","_Name","_TvParent"];
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-    _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_RenameEdit;
+    _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_RenameEdit;
 
     _Return = [_ArsenalDisplay, "Rename"] call VANA_fnc_UIPopup;
 
