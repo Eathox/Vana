@@ -18,7 +18,7 @@ switch (toLower _Mode) do
     params ["_InAction"];
 
     //Check if user is using scroll bar
-    If (_CtrlTreeView getvariable ["MouseOverScrollBar", False]) exitwith {["mousedown", False]};
+    If !(_CtrlTreeView getvariable ["MouseInTreeView", True]) exitwith {["mousedown", False]};
 
     //Tell script to get Target
     _CtrlTreeView Setvariable ["TvDragDrop_GetTarget", True];
@@ -102,6 +102,7 @@ switch (toLower _Mode) do
       "_IsParent",
       "_IsChild",
       "_MovedSubtv",
+      "_MovedLoadouts",
       "_NewSubTVPath",
       "_MovedSubtvGrandParent"
     ];
@@ -141,11 +142,12 @@ switch (toLower _Mode) do
 
     if (_TargetTvData isequalto "tvtab") then
     {
-      _CtrlTreeView tvSetPicture [_MovedSubtv, "\vana_LoadoutManagement\UI\Data_Icons\icon_ca.paa"];
+      _CtrlTreeView tvSetPicture [_MovedSubtv, "\vana_LoadoutManagement\UI\Data_Icons\Tab_Icon.paa"];
+      _MovedLoadouts = [];
 
       //Move Child SubTv's
       {
-        params ["_TvName","_TvPosition","_TvNewParent"];
+        params ["_TvName","_TvPosition","_TvNewParent","_Return"];
 
         _TvName = _x select 0;
         _TvPosition = (_x select 1) select [(count _TargetTv), (count (_x select 1) - count _TargetTv)]; //Selects [Position] and removes _TargetTv array from the front of it
@@ -158,11 +160,20 @@ switch (toLower _Mode) do
           case "tvtab":
           {
             Private _Tab = [_CtrlTreeView, [_TvNewParent, _TvName], "DragDrop"] call VANA_fnc_TvCreateTab;
-            If ((_x select 3) isequalto Expanded) then {_CtrlTreeView TvExpand _Tab};
+            Private _Expanded = (_x select 3) isequalto Expanded;
+
+            If _Expanded then {_CtrlTreeView TvExpand _Tab};
+            _CtrlTreeView TvSetValue [_Tab, ([Collapsed, Expanded] select _Expanded)];
           };
-          case "tvloadout": {[_CtrlTreeView, [_TvNewParent, _TvName], "DragDrop"] call VANA_fnc_TvCreateLoadout};
+          case "tvloadout":
+          {
+            _Return = [_CtrlTreeView, [_TvNewParent, _TvName], "DragDrop"] call VANA_fnc_TvCreateLoadout;
+            _MovedLoadouts pushback [_TvName, (_Return select 0)];
+          };
         };
       } foreach ([_CtrlTreeView, [_TargetTv]] call VANA_fnc_TvGetData);
+
+      [_CtrlTreeView, _MovedLoadouts] call VANA_fnc_TvValidateLoadouts;
     };
 
     _CtrlTreeView tvSetCurSel _MovedSubtv;

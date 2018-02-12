@@ -16,7 +16,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       style=16;
       shadow=0;
       font="RobotoCondensed";
-      color[]={0.94999999,0.94999999,0.94999999,1};
+      color[]={0.95,0.95,0.95,1};
       colorText[]={1,1,1,1};
       colorDisabled[]={1,1,1,0.25};
       colorPicture[]={1,1,1,1};
@@ -28,7 +28,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
 
       class ScrollBar: ScrollBar
       {
-        color[] = {0.94999999,0.94999999,0.94999999,1};
+        color[] = {0.95,0.95,0.95,1};
       };
     };
     class TextName: RscText //Relocation of Vanila UI
@@ -52,15 +52,31 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       sizeEx="0.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
     };
-    class VANA_TitlePicture: RscVANAPictureButton
+    class Title: RscTitle //Relocation of Vanila UI
     {
-      type=0;
-      idc=978000;
-      x="18.19 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-      y="0.05 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      w="1.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      style=0;
+      colorBackground[]=
+      {
+        "(profilenamespace getvariable ['GUI_BCG_RGB_R',0.13])",
+        "(profilenamespace getvariable ['GUI_BCG_RGB_G',0.54])",
+        "(profilenamespace getvariable ['GUI_BCG_RGB_B',0.21])",
+        "(profilenamespace getvariable ['GUI_BCG_RGB_A',0.8])"
+      };
+      idc=34619;
+      text="";
+      x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      w="18.9 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+    };
+    class VANA_TitlePicture: RscPictureKeepAspect
+    {
+      idc=978000;
       text="\vana_LoadoutManagement\UI\Data_Icons\Vana (Small) - WhiteText NoBackground.paa";
+      x="17.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      y="0.1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      w="1.6 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      h="0.80 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
     };
     class VANA_DecorativeBar: RscBackgroundGUI
     {
@@ -72,10 +88,20 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       colorBackground[]={0,0,0,0.2};
     };
-    class VANA_ButtonCreate: RscVANAPictureButton
+    class VANA_ButtonOptions: RscVANAPictureButton
     {
       idc=978002;
-      text="\vana_LoadoutManagement\UI\Data_Icons\entityList_layer_ca.paa";
+      text="\vana_LoadoutManagement\UI\Data_Icons\ButtonOptions.paa";
+      x="19 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      colorBackground[]={0,0,0, "(profilenamespace getvariable ['GUI_BCG_RGB_A',0.7])"};
+    };
+    class VANA_ButtonCreate: RscVANAPictureButton
+    {
+      idc=978003;
+      text="\vana_LoadoutManagement\UI\Data_Icons\ButtonTabCreate.paa";
       tooltip=$STR_VANA_ButtonCreate_ToolTip;
       x="18.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="19.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -84,8 +110,8 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     };
     class VANA_ButtonRename: RscVANAPictureButton
     {
-      idc=978003;
-      text="\vana_LoadoutManagement\UI\Data_Icons\portraitMissionName_ca.paa";
+      idc=978004;
+      text="\vana_LoadoutManagement\UI\Data_Icons\ButtonRename.paa";
       tooltip=$STR_VANA_ButtonRename_ToolTip;
       x="17.3  * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="19.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -95,17 +121,39 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     class VANA_DelConfirmToggle: RscCheckbox
     {
       default=0;
-      idc=978004;
+      idc=978005;
       tooltip=$STR_VANA_TempCheckbox_ToolTip;
       x="5.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      colorBackground[]={0,0,0,0.80000001};
-      colorBackgroundFocused[] ={0,0,0,0.80000001};
-      colorBackgroundHover[] ={0,0,0,0.80000001};
-      colorBackgroundPressed[] ={0,0,0,0.80000001};
-      colorBackgroundDisabled[] ={0,0,0,0.80000001};
+      colorBackground[]={0,0,0,0.8};
+      colorBackgroundFocused[] ={0,0,0,0.8};
+      colorBackgroundHover[] ={0,0,0,0.8};
+      colorBackgroundPressed[] ={0,0,0,0.8};
+      colorBackgroundDisabled[] ={0,0,0,0.8};
     };
+    /*
+    class VANA_ButtonColapseAll: RscVANAPictureButton
+    {
+      idc=978006;
+      text="\vana_LoadoutManagement\UI\Data_Icons\ButtonColapseAll.paa";
+      x="6.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      colorBackground[]={0,0,0,0.8};
+    };
+    class VANA_ButtonExpandAll: RscVANAPictureButton
+    {
+      idc=978007;
+      text="\vana_LoadoutManagement\UI\Data_Icons\ButtonExpandAll.paa";
+      x="7.3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      colorBackground[]={0,0,0,0.8};
+    };
+    */
   };
 };

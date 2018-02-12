@@ -40,7 +40,7 @@ _NewSubTvPath pushback _AddSubTv;
 
 //Visualy/Technical classify Tab
 _CtrlTreeView tvSetData [_NewSubTVPath, "tvtab"];
-_CtrlTreeView tvSetPicture [_NewSubTVPath, "\vana_LoadoutManagement\UI\Data_Icons\icon_ca.paa"];
+_CtrlTreeView tvSetPicture [_NewSubTVPath, "\vana_LoadoutManagement\UI\Data_Icons\Tab_Icon.paa"];
 
 if !(_Behavior in ["firsttimesetup", "dragdrop"]) then {_CtrlTreeView tvExpand _TargetTv;};
 

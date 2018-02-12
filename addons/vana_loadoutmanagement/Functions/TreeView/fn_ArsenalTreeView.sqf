@@ -33,9 +33,8 @@ switch tolower _Mode do
   ///////////////////////////////////////////////////////////////////////////////////////////
   Case "init":
   {
-    params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlButtonSave","_CtrlButtonLoad","_CtrlTemplateOKButton","_CtrlVANA_ButtonTabCreate","_CtrlVANA_ButtonRename","_CtrlVANA_DeleteButton","_CtrlTvUIPopup"];
+    params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlButtonSave","_CtrlButtonLoad","_CtrlTemplateOKButton","_CtrlButtonTabCreate","_CtrlButtonRename","_CtrlDeleteButton","_CtrlTvUIPopup"];
 
-    [_ArsenalDisplay, "Init"] call VANA_fnc_UIPopup;
     _ArsenalDisplay setvariable ["Vana_Initialised", True];
 
     //Add EventHandlers
@@ -57,6 +56,8 @@ switch tolower _Mode do
     _CtrlTemplateEdit ctrladdeventhandler ["KeyDown","[ctrlparent (_this select 0), 'CheckOverWrite'] spawn VANA_fnc_ArsenalTreeView;"];
     _CtrlTemplateEdit ctrladdeventhandler ["char","[ctrlparent (_this select 0), 'CheckOverWrite'] spawn VANA_fnc_ArsenalTreeView;"];
 
+    _CtrlTButtonOptions = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonOptions; //WIP
+
     _CtrlButtonSave = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_CONTROLSBAR_BUTTONSAVE;
     _CtrlButtonSave ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonSave'] call VANA_fnc_ArsenalTreeView;"];
 
@@ -66,21 +67,14 @@ switch tolower _Mode do
     _CtrlTemplateOKButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
     _CtrlTemplateOKButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonTemplateOK'] call VANA_fnc_ArsenalTreeView;"];
 
-    _CtrlVANA_ButtonTabCreate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonTabCreate;
-    _CtrlVANA_ButtonTabCreate ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Create'] call VANA_fnc_ArsenalTreeView;"];
+    _CtrlButtonTabCreate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonTabCreate;
+    _CtrlButtonTabCreate ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Create'] call VANA_fnc_ArsenalTreeView;"];
 
-    _CtrlVANA_ButtonRename = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonRename;
-    _CtrlVANA_ButtonRename ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Rename'] spawn VANA_fnc_ArsenalTreeView;"];
+    _CtrlButtonRename = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonRename;
+    _CtrlButtonRename ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Rename'] spawn VANA_fnc_ArsenalTreeView;"];
 
-    _CtrlVANA_DeleteButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONDELETE;
-    _CtrlVANA_DeleteButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Delete'] spawn VANA_fnc_ArsenalTreeView;"];
-
-    //Hide Vana dint init popup
-    _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_UIPopupControlGroup;
-    _CtrlTvUIPopup ctrlshow False;
-    {
-      (_ArsenalDisplay displayctrl _x) ctrlshow true;
-    } foreach [IDC_RSCDISPLAYARSENALPOPUP_VANA_RenameEdit,IDC_RSCDISPLAYARSENALPOPUP_VANA_HintText,IDC_RSCDISPLAYARSENALPOPUP_VANA_CheckboxText,IDC_RSCDISPLAYARSENALPOPUP_VANA_TogglePopup];
+    _CtrlDeleteButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONDELETE;
+    _CtrlDeleteButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Delete'] spawn VANA_fnc_ArsenalTreeView;"];
 
     //Load and Sort treeview
     [_CtrlTreeView] call VANA_fnc_TvLoadData;
@@ -122,7 +116,7 @@ switch tolower _Mode do
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "treeviewselchanged":
   {
-    params ["_CtrlTreeView","_SelectedTab","_IsEnabledLoadout","_CtrlVANA_DeleteButton","_CtrlVANA_ButtonRename","_CtrlTemplateEdit","_CtrlTemplateOKButton"];
+    params ["_CtrlTreeView","_SelectedTab","_IsEnabledLoadout","_CtrlDeleteButton","_CtrlButtonRename","_CtrlTemplateEdit","_CtrlTemplateOKButton"];
 
     [_ArsenalDisplay, "CheckOverWrite"] spawn VANA_fnc_ArsenalTreeView;
 
@@ -132,11 +126,11 @@ switch tolower _Mode do
     _IsEnabledLoadout = tolower (_CtrlTreeView tvData _SelectedTab) isEqualto "tvloadout" && (_CtrlTreeView tvValue _SelectedTab) >= 0;
 
     //Make sure something is selected
-    _CtrlVANA_DeleteButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONDELETE;
-    _CtrlVANA_DeleteButton ctrlenable !(_SelectedTab isequalto []);
+    _CtrlDeleteButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONDELETE;
+    _CtrlDeleteButton ctrlenable !(_SelectedTab isequalto []);
 
-    _CtrlVANA_ButtonRename = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonRename;
-    _CtrlVANA_ButtonRename ctrlenable !(_SelectedTab isequalto []);
+    _CtrlButtonRename = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonRename;
+    _CtrlButtonRename ctrlenable !(_SelectedTab isequalto []);
 
     //SetText to selected Subtv Text
     _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
@@ -202,7 +196,7 @@ switch tolower _Mode do
     _SelectedTab = tvCurSel _CtrlTreeView;
     _TvData = tolower (_CtrlTreeView tvData _SelectedTab);
 
-    if (_CtrlTreeView getvariable ["MouseOverScrollBar", False]) exitwith {False};
+    if !(_CtrlTreeView getvariable ["MouseInTreeView", True]) exitwith {False};
 
     switch _TvData do
     {
@@ -362,12 +356,7 @@ switch tolower _Mode do
       ["_YCoord", 0, [0]]
     ];
 
-    if (_XCoord >= 0.566) then
-    {
-      _CtrlTreeView setvariable ["MouseOverScrollBar", True];
-    } else {
-      _CtrlTreeView setvariable ["MouseOverScrollBar", False];
-    };
+    _CtrlTreeView setvariable ["MouseInTreeView", ([True, False] select (_XCoord >= 0.566 || _XCoord <= 0.046))];
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////

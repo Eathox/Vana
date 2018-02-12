@@ -2,16 +2,16 @@
 <Project Name="VANA">
     <Package Name="Mod.ccp">
         <Key ID="STR_VANA_Tooltip">
-            <Original>Vana - Loadout Management 0.87</Original>
-            <English>Vana - Loadout Management 0.87</English>
+            <Original>Vana - Loadout Management 0.90</Original>
+            <English>Vana - Loadout Management 0.90</English>
         </Key>
         <Key ID="STR_VANA_TooltipOwned">
-            <Original>Vana - Loadout Management 0.87</Original>
-            <English>Vana - Loadout Management 0.87</English>
+            <Original>Vana - Loadout Management 0.90</Original>
+            <English>Vana - Loadout Management 0.90</English>
         </Key>
         <Key ID="STR_VANA_OverviewText">
-            <Original>Vana - Loadout Management 0.87</Original>
-            <English>Vana - Loadout Management 0.87</English>
+            <Original>Vana - Loadout Management 0.90</Original>
+            <English>Vana - Loadout Management 0.90</English>
         </Key>
         <Key ID="STR_VANA_Overview">
             <Original>Vana Purpose is to add extra loadout sorting options to the Virtual Arsenal.</Original>

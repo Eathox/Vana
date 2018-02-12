@@ -35,6 +35,9 @@ switch (toLower _Mode) do
   {
     params ["_CtrlRenameEdit","_CtrlButtonCancel","_CtrlButtonOk","_CtrlPopupCheckBox","_CtrlTempCheckbox"];
 
+    //Hide Vana dint init popup
+    ShowUI(False)
+
     //Apply Event handlers
     _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENALPOPUP_VANA_RenameEdit;
     _CtrlRenameEdit ctrladdeventhandler ["killFocus","[ctrlparent (_this select 0),'KeepFocus'] spawn VANA_fnc_UIPopup;"];
@@ -172,8 +175,8 @@ switch (toLower _Mode) do
     TvInfo
 
     //Check if name duplicate and color edit field accordingly
-    _Duplicate = [False, (_Name in _LoadoutData || _Name isequalto _TvName)] select (_TvData isequalto "tvloadout");
-    _CtrlButtonOk ctrlenable ([True, False] select (_Duplicate || _Name isequalto ""));
+    _Duplicate = [False, _Name in _LoadoutData] select (_TvData isequalto "tvloadout");
+    _CtrlButtonOk ctrlenable ([True, False] select (_Duplicate || _Name isequalto "" || _Name isequalto _TvName));
 
     _Duplicate
   };
