@@ -23,7 +23,9 @@ diag_log text "[VANA_fnc_TvLoadData]: Loading Data...";
 //Create all loadouts if there is no saved data
 if (_VANAData isequalto []) exitwith
 {
-	[_CtrlTreeView, [[], ""], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
+	{
+		[_CtrlTreeView, [[], _x], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
+	} foreach (_LoadoutData select {_x isequaltype ""});
 
 	EndSegment(False)
 };
