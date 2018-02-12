@@ -115,6 +115,9 @@ class RscSlider;
 class ScrollBar;
 class RscListNBox;
 class RscTree;
+class RscTitle;
+class RscPicture;
+class RscPictureKeepAspect;
 class ctrlDefault
 {
 	access=0;
@@ -530,8 +533,8 @@ class RscVANAPictureButton:	RscButtonMenu
 	style="0x02 + 0x30 + 0x800";
 	colorBackground[]={0,0,0,0};
 	colorBackgroundDisabled[]={0,0,0,0};
-	colorBackgroundActive[]={1,1,1,0.69999999};
-	colorFocused[]={1,1,1,0.69999999};
+	colorBackgroundActive[]={1,1,1,0.7};
+	colorFocused[]={1,1,1,0.7};
 	borderSize=0;
 	colorBorder[]={0,0,0,0};
 	colorShadow[]={0,0,0,0};
