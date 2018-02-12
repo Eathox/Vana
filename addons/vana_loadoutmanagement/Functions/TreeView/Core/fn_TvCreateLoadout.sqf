@@ -19,17 +19,7 @@ _Arguments params
 _Behavior = tolower _Behavior;
 _LoadoutData = profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]];
 
-if (_LoadoutName isequalto "" && _Behavior isequalto "firsttimesetup") exitwith
-{
-	//Load all Loadouts
-	{
-		[_CtrlTreeView, [[], _x], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
-	} foreach (_LoadoutData select {_x isequaltype ""});
-
-	[[-1], ""]
-};
-
-If (!(_LoadoutName in _LoadoutData) && !(_LoadoutName isEqualType "")) exitwith {[[-1], ""]};
+If !(_LoadoutName in _LoadoutData) exitwith {[[-1], ""]};
 
 //Create Loadout in treeview
 _LoadoutPath = +_TargetTv;
