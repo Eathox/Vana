@@ -19,7 +19,7 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
         "(profilenamespace getvariable ['GUI_BCG_RGB_B',0.21])",
         "(profilenamespace getvariable ['GUI_BCG_RGB_A',0.8])"
       };
-      text="Options Menu";
+      text="Options";
       x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="20 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
