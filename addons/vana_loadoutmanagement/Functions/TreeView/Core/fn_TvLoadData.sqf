@@ -53,10 +53,7 @@ if (_VANAData isequalto []) exitwith
 
 //Create loadouts that werent created
 {
-	if !(_x in _LoadoutNames) then
-	{
-		[_CtrlTreeView, [], _x] call VANA_fnc_TvCreateLoadout;
-	};
-} foreach (_LoadoutData select {_x isequaltype ""});
+	[_CtrlTreeView, [], _x] call VANA_fnc_TvCreateLoadout;
+} foreach (_LoadoutData select {_x isequaltype "" && !(_x in _LoadoutNames)});
 
 EndSegment(True)

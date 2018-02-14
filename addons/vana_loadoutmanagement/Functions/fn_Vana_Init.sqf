@@ -6,8 +6,6 @@ params
 	["_params", [], [[]]]
 ];
 
-_ArsenalDisplay = _params select 0;
-
 switch _mode do
 {
 	case "onLoad":

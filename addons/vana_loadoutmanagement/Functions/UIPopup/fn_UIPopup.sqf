@@ -4,9 +4,9 @@ disableserialization;
 #include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
 
 #define ShowUI(BOOL)\
-  Private _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_UIPopupControlGroup;\
+  Private _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_UIPopup;\
   Private _CtrlVanaMouseBlock = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_Mouseblock;\
-  {_x ctrlshow BOOL} foreach [_CtrlTvUIPopup,_CtrlVanaMouseBlock];
+  {_x ctrlshow BOOL; _x ctrlenable BOOL;} foreach [_CtrlTvUIPopup,_CtrlVanaMouseBlock];
 
 #define ShowDeleteUI(BOOL)\
   Private _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_RenameEdit;\
@@ -64,7 +64,7 @@ switch (toLower _Mode) do
     params ["_CtrlTemplate","_CtrlTvUIPopup","_CtrlRenameEdit","_Status"];
 
     _CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;
-    _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_UIPopupControlGroup;
+    _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_UIPopup;
     _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_RenameEdit;
 
     //Waituntil Confirm or cancel button was pressed
@@ -84,7 +84,7 @@ switch (toLower _Mode) do
   {
     params ["_CtrlTvUIPopup","_CtrlPopupCheckBox","_CtrlRenameEdit"];
 
-    _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_UIPopupControlGroup;
+    _CtrlTvUIPopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_UIPopup;
     _CtrlPopupCheckBox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_TogglePopup;
     _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_RenameEdit;
 

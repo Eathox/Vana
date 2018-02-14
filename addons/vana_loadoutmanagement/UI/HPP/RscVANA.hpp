@@ -1,6 +1,3 @@
-#define true 1
-#define false 0
-
 class RscDisplayArsenal //Path to add code to allready exsisting Rsc class
 {
   scriptName="fn_Vana_Init";

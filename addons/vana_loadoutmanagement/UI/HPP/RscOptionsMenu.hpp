@@ -1,6 +1,3 @@
-#define true 1
-#define false 0
-
 class VANA_OptionsMenuControlGroup: RscControlsGroup
 {
   idc=980000;
@@ -28,7 +25,7 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
       w="20 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
     };
-    class TitlePicture: RscPictureKeepAspect
+    class VANA_TitlePicture: RscPictureKeepAspect
     {
       idc=-1;
       text="\vana_LoadoutManagement\UI\Data_Icons\Vana (Small) - WhiteText NoBackground.paa";
@@ -46,16 +43,7 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
       h="20 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       colorBackground[]={0,0,0,0.8};
     };
-    class SecondaryBackground: RscBackgroundGUI
-    {
-      idc=-1;
-      x="0.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-      y="1.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      w="19 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-      h="16 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      colorBackground[]={1,1,1,0.2};
-    };
-    class TextField: RscStructuredText
+    class Description: RscStructuredText
     {
       text="Theres room for some text here<br/>Yep<br/>Wo, wo";
       idc=980002;
@@ -64,9 +52,9 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
       w="19 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="2.5 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       size="0.82 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      colorBackground[]={0,0,0,0.4};
+      colorBackground[]={0,0,0,0.3};
     };
-    class ButtonOK: RscButtonMenu
+    class ButtonApply: RscButtonMenu
     {
       idc=980003;
       text="Apply";
@@ -84,32 +72,98 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
       w="5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
     };
-
-    class OptionsList: RscControlsGroupNoScrollbars
+    class OptionsListBackground: RscBackgroundGUI
     {
-      idc=981000;
+      idc=-1;
       x="0.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="1.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="19 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="16 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      colorBackground[]={1,1,1,0.2};
+    };
+
+    class OptionsList: RscControlsGroupNoScrollbars
+    {
+      idc=981000;
+      x="0.45 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      y="1.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      w="19.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      h="16 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 
       class VScrollbar: ScrollBar
       {
-        width=0.02;
+        width=0.019;
         autoScrollEnabled=1;
       };
 
       class controls
       {
-        class TextField1: RscStructuredText
+        class VissualOptions: RscVANAOptionGroup
         {
-          text="Theres room for some text here<br/>Yep<br/>Wo, wo";
-          idc=-1;
+        	idc=981100;
           x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
           y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-          w="19 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-          h="22 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-          size="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+          h="3 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+
+        	class controls
+        	{
+            class BackGroundList: RscVANABackGroundList
+            {
+              idc=981101;
+            };
+            class VissualOptionsTitle: RscVANAOptionCategoryTitle
+            {
+              idc=-1;
+              text="VISSUAL OPTIONS";
+              x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+            };
+            class LoadoutIcontext: RscVANAOptionText
+            {
+              idc=-1;
+              text="LOADOUT ICON";
+              optiondescription="Lets you select the icon";
+              y="(1* 1.35) * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+            };
+            class ColorCoding: RscVANAOptionText
+            {
+              idc=-1;
+              text="COLOR CODING FOR";
+              optiondescription="Color code tabs and loadouts";
+              y="(2* 1.35) * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+            };
+          };
+        };
+        class DummyOptions: RscVANAOptionGroup
+        {
+          idc=981200;
+          x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+          y="4 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+          h="3 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+
+          class controls
+          {
+            class BackGroundList: RscVANABackGroundList
+            {
+              idc=981201;
+            };
+            class DummyOptionsTitle: RscVANAOptionCategoryTitle
+            {
+              idc=-1;
+              x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+            };
+            class LoadoutIcontext: RscVANAOptionText
+            {
+              idc=-1;
+              y="(1* 1.35) * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+            };
+            class ColorCoding: RscVANAOptionText
+            {
+              idc=-1;
+              y="(2* 1.35) * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+            };
+          };
         };
       };
     };

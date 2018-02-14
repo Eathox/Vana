@@ -1,6 +1,3 @@
-#define true 1
-#define false 0
-
 class Template: RscControlsGroup //Path to add code to allready exsisting Rsc class
 {
   class controls //Path to add code to allready exsisting Rsc class
@@ -13,7 +10,6 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       w="19 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="17.5 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       sizeEx="0.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      style=16;
       shadow=0;
       font="RobotoCondensed";
       color[]={0.95,0.95,0.95,1};
@@ -22,7 +18,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       colorPicture[]={1,1,1,1};
       colorPictureSelected[]={1,1,1,1};
       colorPictureDisabled[]={1,1,1,1};
-      disableKeyboardSearch = false;
+      disableKeyboardSearch = 0;
       multiselectEnabled = 0;
       expandOnDoubleclick = 0;
     };

@@ -1,6 +1,3 @@
-#define true 1
-#define false 0
-
 class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
 {
   idc=979000;
@@ -10,7 +7,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
   h="5.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
   class Controls
   {
-    class VANA_Title: RscVANATitleBar
+    class VANA_Title: RscTitle
     {
       idc=979001;
       text=$STR_VANA_Title_Text;
@@ -26,14 +23,14 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
         "(profilenamespace getvariable ['GUI_BCG_RGB_A',1.21])"
       };
     };
-    class VANA_Picture: RscPictureKeepAspect
+    class VANA_TitlePicture: RscPictureKeepAspect
     {
       idc=-1;
       text="\vana_LoadoutManagement\UI\Data_Icons\Vana (Small) - WhiteText NoBackground.paa";
       x="17.0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="0.1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      w="1.6 *					(			((safezoneW / safezoneH) min 1.2) / 40)";
-      h="0.80 * 			(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      w="1.6 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      h="0.80 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
     };
     class VANA_BackGround: RscBackgroundGUI
     {
@@ -55,7 +52,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     };
     class VANA_ButtonCancel: RscButtonMenuCancel
     {
-      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', False]) then {_Display displayctrl 979000 ctrlshow False;}";
+      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', 0]) then {_Display displayctrl 979000 ctrlshow false;}";
       idc=979003;
       colorBackground[]={0,0,0,1.21};
       x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -63,7 +60,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
       w="6.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
     };
-    class VANA_BackgroundButtonMiddle: BackgroundButtonOK
+    class VANA_BackgroundButtonMiddle: RscBackgroundGUI
     {
       idc=-1;
       x="6.3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -72,7 +69,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     };
     class VANA_ButtonOK: RscButtonMenuOk
     {
-      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', False]) then {_Display displayctrl 979000 ctrlshow False;}";
+      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', 0]) then {_Display displayctrl 979000 ctrlshow false;}";
       text=$STR_VANA_ButtonOK_Text;
       idc=979004;
       colorBackground[]={0,0,0,1.21};
