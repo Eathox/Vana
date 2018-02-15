@@ -33,7 +33,7 @@ switch (toLower _Mode) do
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "init":
   {
-    params ["_CtrlRenameEdit","_CtrlButtonCancel","_CtrlButtonOk","_CtrlPopupCheckBox","_CtrlTempCheckbox"];
+    params ["_CtrlRenameEdit","_CtrlButtonCancel","_CtrlButtonOk","_CtrlPopupCheckBox"];
 
     //Hide Vana dint init popup
     ShowUI(False)
@@ -51,11 +51,8 @@ switch (toLower _Mode) do
     _CtrlButtonOk ctrladdeventhandler ["buttonclick","(ctrlParent (_this select 0) displayctrl 979000) setvariable ['TvUIPopup_Status', true]"];
 
     _CtrlPopupCheckBox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_TogglePopup;
-    _CtrlPopupCheckBox ctrladdeventhandler ["killFocus","[ctrlparent (_this select 0),'KeepFocus'] spawn VANA_fnc_UIPopup;"];
-    _CtrlPopupCheckBox ctrladdeventhandler ["CheckedChanged","if (Profilenamespace getvariable ['TEMP_Popup_Value', False]) then {Profilenamespace setvariable ['TEMP_Popup_Value', False];} else {Profilenamespace setvariable ['TEMP_Popup_Value', True];}; [ctrlparent (_this select 0),'TreeViewSelChanged'] call VANA_fnc_ArsenalTreeView;"];
-
-    _CtrlTempCheckbox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelConfirmToggle; //Temp
-    _CtrlTempCheckbox ctrladdeventhandler ["CheckedChanged","if (Profilenamespace getvariable ['TEMP_Popup_Value', False]) then {Profilenamespace setvariable ['TEMP_Popup_Value', False];} else {Profilenamespace setvariable ['TEMP_Popup_Value', True];};"];
+    _CtrlPopupCheckBox ctrladdeventhandler ["killFocus","[ctrlparent (_this select 0), 'KeepFocus'] spawn VANA_fnc_UIPopup;"];
+    _CtrlPopupCheckBox ctrladdeventhandler ["CheckedChanged","Profilenamespace setvariable ['TEMP_Popup_Value', ([True, False] select (Profilenamespace getvariable ['TEMP_Popup_Value', False]))]; [ctrlparent (_this select 0),'UpDateCheckBox'] call VANA_fnc_ArsenalTreeView;"];
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -123,10 +120,7 @@ switch (toLower _Mode) do
 
     //Set checkbox state
     _CtrlPopupCheckBox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_TogglePopup;
-    if !(Profilenamespace getvariable ['TEMP_Popup_Value', False]) then
-    {
-      _CtrlPopupCheckBox cbSetChecked False;
-    };
+    _CtrlPopupCheckBox cbSetChecked ([False, true] select (Profilenamespace getvariable ['TEMP_Popup_Value', False]));
     ctrlSetFocus _CtrlPopupCheckBox;
 
     [_ArsenalDisplay,"WaituntilStatus"] call VANA_fnc_UIPopup;

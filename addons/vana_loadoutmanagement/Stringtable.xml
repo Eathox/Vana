@@ -36,9 +36,9 @@
                 <Original>Rename Loadouts/Tabs [Ctrl + E]</Original>
                 <English>Rename Loadouts/Tabs [Ctrl + E]</English>
             </Key>
-            <Key ID="STR_VANA_TempCheckbox_ToolTip">
-                <Original>Disable delete confirmation (Temporary button)</Original>
-                <English>Disable delete confirmation (Temporary button)</English>
+            <Key ID="STR_VANA_DelConfirmToggle_ToolTip">
+                <Original>Disable delete confirmation</Original>
+                <English>Disable delete confirmation</English>
             </Key>
         </Container>
         <Container Name="VANA_UIPopupControlGroup">

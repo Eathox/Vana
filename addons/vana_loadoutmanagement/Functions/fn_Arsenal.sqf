@@ -86,6 +86,12 @@ switch _mode do {
 	Default {[_mode,_this] call BIS_fnc_arsenal;};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
+	case "Exit": {
+		[_this select 0, _mode] call VANA_fnc_arsenaltreeview;
+		[_mode,_this] call BIS_fnc_arsenal;
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////
 	case "Init": {
 		["bis_fnc_arsenal"] call bis_fnc_startloadingscreen;
 		_display = _this select 0;
@@ -515,6 +521,8 @@ switch _mode do {
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "KeyDown": {
+		BIS_fnc_arsenal_type = uinamespace getvariable ["BIS_fnc_arsenal_type", 0]; //VANA
+
 		_display = _this select 0;
 		_key = _this select 1;
 		_shift = _this select 2;
@@ -627,7 +635,7 @@ switch _mode do {
 							[_center,_soldiers call bis_fnc_selectrandom] call bis_fnc_loadinventory;
 							_center switchmove "";
 							["ListSelectCurrent",[_display]] call BIS_fnc_arsenal;
-						}else {
+						} else {
 							['buttonRandom',[_display]] call BIS_fnc_arsenal;
 						};
 					} else {
@@ -649,7 +657,6 @@ switch _mode do {
 			case (_key in (actionkeys "timeDec")): {
 				if (acctime != 0) then {setacctime 0;};
 				_return = true;
-
 			};
 
 			//--- Vision mode
@@ -676,7 +683,6 @@ switch _mode do {
 				};
 				playsound ["RscDisplayCurator_visionMode",true];
 				_return = true;
-
 			};
 			/*
 			//--- Delete template

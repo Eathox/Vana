@@ -4,12 +4,15 @@ disableserialization;
 #include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
 
 #define ShowUI(BOOL)\
-  Private _CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;\
+  params ["_CtrlTemplate","_ctrlMouseBlock","_CtrlCONTROLBAR"];\
+  _CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;\
   _CtrlTemplate ctrlsetfade ([1, 0] select BOOL);\
   _CtrlTemplate ctrlcommit 0;\
   _CtrlTemplate ctrlenable BOOL;\
-  private _ctrlMouseBlock = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_MOUSEBLOCK;\
-  _ctrlMouseBlock ctrlenable BOOL;
+  _ctrlMouseBlock = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_MOUSEBLOCK;\
+  _ctrlMouseBlock ctrlenable BOOL;\
+  _ctrlMouseBlock ctrlshow BOOL;
+
 
 #define ShowSaveUIParts(BOOL)\
   {\
@@ -77,6 +80,9 @@ switch tolower _Mode do
     _CtrlDeleteButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONDELETE;
     _CtrlDeleteButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Delete'] spawn VANA_fnc_ArsenalTreeView;"];
 
+    _CtrlDelConfirmToggle = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelConfirmToggle;
+    _CtrlDelConfirmToggle ctrladdeventhandler ["CheckedChanged","Profilenamespace setvariable ['TEMP_Popup_Value', ([True, False] select (Profilenamespace getvariable ['TEMP_Popup_Value', False]))]"];
+
     //Load and Sort treeview
     [_CtrlTreeView] call VANA_fnc_TvLoadData;
     [_CtrlTreeView] call VANA_fnc_TvSorting;
@@ -115,6 +121,17 @@ switch tolower _Mode do
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
+  case "updatecheckbox":
+  {
+    params ["_CtrlDelConfirmToggle"];
+
+    _CtrlDelConfirmToggle = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelConfirmToggle;
+    _CtrlDelConfirmToggle cbSetChecked ([False, true] select (Profilenamespace getvariable ['TEMP_Popup_Value', False]));
+
+    True
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
   case "treeviewselchanged":
   {
     params ["_CtrlTreeView","_SelectedTab","_IsEnabledLoadout","_CtrlDeleteButton","_CtrlButtonRename","_CtrlTemplateEdit","_CtrlTemplateOKButton"];
@@ -140,15 +157,6 @@ switch tolower _Mode do
     //Disable button if loadout is missing items
     _CtrlTemplateOKButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
     _CtrlTemplateOKButton ctrlenable ([_IsEnabledLoadout, True] select ctrlenabled _CtrlTemplateEdit);
-
-    //Temp code WIP
-    private _CtrlTempCheckbox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelConfirmToggle;
-    if (Profilenamespace getvariable ['TEMP_Popup_Value', False]) then
-    {
-      _CtrlTempCheckbox cbSetChecked true;
-    } else {
-      _CtrlTempCheckbox cbSetChecked False;
-    };
 
     True
   };
@@ -255,7 +263,7 @@ switch tolower _Mode do
       {
         if (_InTemplate && !_InPopupUI) then
         {
-          [_ArsenalDisplay,"Create"] call VANA_fnc_ArsenalTreeView;
+          [_ArsenalDisplay, "Create"] call VANA_fnc_ArsenalTreeView;
         };
         True
       };
@@ -265,7 +273,7 @@ switch tolower _Mode do
       {
         if (_InTemplate && !_InPopupUI) then
         {
-          [_ArsenalDisplay,"Delete"] spawn VANA_fnc_ArsenalTreeView;
+          [_ArsenalDisplay, "Delete"] spawn VANA_fnc_ArsenalTreeView;
         };
         True
       };
@@ -275,7 +283,7 @@ switch tolower _Mode do
       {
         if (_InTemplate && !_InPopupUI) then
         {
-          [_ArsenalDisplay,"Rename"] spawn VANA_fnc_ArsenalTreeView;
+          [_ArsenalDisplay, "Rename"] spawn VANA_fnc_ArsenalTreeView;
         };
         True
       };
@@ -283,9 +291,9 @@ switch tolower _Mode do
       //Save
       Case (_key == DIK_S && _Ctrl):
       {
-        if !_InPopupUI then
+        if (!_InPopupUI && !_InOptionsMenu) then
         {
-          [_ArsenalDisplay,"ButtonSave"] call VANA_fnc_ArsenalTreeView;
+          [_ArsenalDisplay, "ButtonSave"] call VANA_fnc_ArsenalTreeView;
         };
         True
       };
@@ -293,9 +301,9 @@ switch tolower _Mode do
       //Open
       Case (_key == DIK_O && _Ctrl):
       {
-        if !_InPopupUI then
+        if (!_InPopupUI && !_InOptionsMenu) then
         {
-          [_ArsenalDisplay,"ButtonLoad"] call VANA_fnc_ArsenalTreeView;
+          [_ArsenalDisplay, "ButtonLoad"] call VANA_fnc_ArsenalTreeView;
         };
         True
       };
@@ -314,10 +322,12 @@ switch tolower _Mode do
               ShowUI(False)
             };
           };
+
           case _InOptionsMenu:
           {
-            [_ArsenalDisplay, "Close"] call VANA_fnc_OptionsMenu;
+            [_ArsenalDisplay, "Cancel"] call VANA_fnc_OptionsMenu;
           };
+
           case (!_InTemplate || !_InOptionsMenu):
           {
             Private _FullVersion = missionnamespace getvariable ["BIS_fnc_arsenal_fullArsenal", False];
@@ -330,15 +340,23 @@ switch tolower _Mode do
       //Enter
       case (_key in [DIK_RETURN,DIK_NUMPADENTER]):
       {
-        if _InTemplate then
+        switch True do
         {
-          if _InPopupUI then
+          case _InTemplate:
           {
-            private _CtrlPopupButtonOk = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_ButtonOK;
-            if (ctrlenabled _CtrlPopupButtonOk) then {_CtrlTvUIPopup setvariable ["TvUIPopup_Status",True];};
-          } else {
-            private _CtrlTemplateBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
-            if (ctrlenabled _CtrlTemplateBUTTONOK) then {[_ArsenalDisplay,"ButtonTemplateOK"] call VANA_fnc_ArsenalTreeView;};
+            if _InPopupUI then
+            {
+              private _CtrlPopupButtonOk = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_ButtonOK;
+              if (ctrlenabled _CtrlPopupButtonOk) then {_CtrlTvUIPopup setvariable ["TvUIPopup_Status",True];};
+            } else {
+              private _CtrlTemplateBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
+              if (ctrlenabled _CtrlTemplateBUTTONOK) then {[_ArsenalDisplay,"ButtonTemplateOK"] call VANA_fnc_ArsenalTreeView;};
+            };
+          };
+
+          case _InOptionsMenu:
+          {
+            [_ArsenalDisplay, "Apply"] call VANA_fnc_OptionsMenu;
           };
         };
         True
@@ -350,7 +368,10 @@ switch tolower _Mode do
         //Allow Ctrl + C in edit bars
         if ((_key == DIK_C && _Ctrl) && (_InTemplate || _InPopupUI)) exitwith {};
 
-        if ((_InTemplate || _InPopupUI) && _key == DIK_TAB) then
+        //Disable Hiding of UI while in optionsmenu
+        if (_key == DIK_BACKSPACE && _InOptionsMenu) exitwith {};
+
+        if ((_InTemplate || _InPopupUI || _InOptionsMenu) && _key == DIK_TAB) then
         {
           True
         } else {

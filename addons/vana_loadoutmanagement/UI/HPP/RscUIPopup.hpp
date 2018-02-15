@@ -52,7 +52,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     };
     class VANA_ButtonCancel: RscButtonMenuCancel
     {
-      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', 0]) then {_Display displayctrl 979000 ctrlshow false;}";
+      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', false]) then {_Display displayctrl 979000 ctrlshow false;}";
       idc=979003;
       colorBackground[]={0,0,0,1.21};
       x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -63,13 +63,15 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
     class VANA_BackgroundButtonMiddle: RscBackgroundGUI
     {
       idc=-1;
+      colorBackground[]={0,0,0,1.21};
       x="6.3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="3.8 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      colorBackground[]={0,0,0,1.21};
+      w="6.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
     };
     class VANA_ButtonOK: RscButtonMenuOk
     {
-      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', 0]) then {_Display displayctrl 979000 ctrlshow false;}";
+      onButtonClick="Private _Display = ctrlparent (_this select 0); If !(_Display getvariable ['Vana_Initialised', false]) then {_Display displayctrl 979000 ctrlshow false;}";
       text=$STR_VANA_ButtonOK_Text;
       idc=979004;
       colorBackground[]={0,0,0,1.21};

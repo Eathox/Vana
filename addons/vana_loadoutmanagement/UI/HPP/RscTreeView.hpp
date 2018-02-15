@@ -117,7 +117,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     {
       default=0;
       idc=978004;
-      tooltip=$STR_VANA_TempCheckbox_ToolTip;
+      tooltip=$STR_VANA_DelConfirmToggle_ToolTip;
       x="5.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";

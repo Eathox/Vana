@@ -150,8 +150,7 @@ class RscVANAPictureButton:	RscButtonMenu
 class RscVANABackGroundList: RscListBox
 {
 	idc=-1;
-	period=1.2;
-	colorselectBackground[]={1,1,1,0.25};
+	colorselectBackground[]={1,1,1,0.5};
 	colorBackground[]={0,0,0,0};
 	canDrag=false;
 	onload="[ctrlparent (_this select 0), 'PopulateList', _this] call VANA_fnc_OptionsMenu"
