@@ -4,7 +4,7 @@ class CfgPatches
   {
     name = "Vana - Loadout Management";
     author = "Eathox";
-    version = "0.87";
+    version = "0.88";
     requiredVersion = 1.3;
     units[] = {};
     requiredAddons[] =

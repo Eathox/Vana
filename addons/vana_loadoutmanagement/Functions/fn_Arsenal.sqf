@@ -512,6 +512,8 @@ switch _mode do {
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "KeyDown": {
+		BIS_fnc_arsenal_type = uinamespace getvariable ["BIS_fnc_arsenal_type", 0]; //VANA
+
 		_display = _this select 0;
 		_key = _this select 1;
 		_shift = _this select 2;
