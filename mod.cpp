@@ -1,8 +1,8 @@
 name = "Vana - Loadout Management";
 author = "Eathox";
-tooltip = "$STR_VANA_Tooltip";
-tooltipOwned = "$STR_VANA_TooltipOwned";
-overviewText = "$STR_VANA_OverviewText";
+tooltip = "$STR_VANA_Header";
+tooltipOwned = "$STR_VANA_Header";
+overviewText = "$STR_VANA_Header";
 Overview = "$STR_VANA_Overview";
 ActionName = "$STR_VANA_ActionName";
 picture = "\vana_loadoutmanagement\UI\Data_Icons\Vana - WhiteBackGround.paa";
