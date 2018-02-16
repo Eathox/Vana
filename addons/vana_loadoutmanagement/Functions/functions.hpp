@@ -15,6 +15,8 @@ class VANA
     file="vana_LoadoutManagement\Functions\OptionsMenu";
 
     class OptionsMenu {};
+    class GetOptionValue {};
+    class SetOptionValue {};
   };
 
   class TreeView

@@ -28,7 +28,7 @@ switch _TvData do
 		{
 			if (tolower (_x select 2) isEqualto "tvloadout") then
 			{
-				[_CtrlTreeView, [_TargetTvParent, _x] select 0] call VANA_fnc_TvCreateLoadout;
+				[_CtrlTreeView, [_TargetTvParent, _x]] call VANA_fnc_TvCreateLoadout;
 			};
 		} foreach _TargetTvChildren;
 	};
