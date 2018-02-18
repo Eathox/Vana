@@ -25,7 +25,7 @@ switch (toLower _Mode) do
 
     //Double check user is initiating TvDragDrop action
     _CtrlTreeView Setvariable ["TvDragDrop_InAction", "Double Check"];
-    sleep 0.1;
+    UiSleep 0.1;
 
     _InAction = _CtrlTreeView Getvariable ["TvDragDrop_InAction", False];
     _CtrlTreeView Setvariable ["TvDragDrop_InAction", ([False, True] select (_InAction isequalto "Double Check"))];
@@ -147,7 +147,7 @@ switch (toLower _Mode) do
 
       //Move Child SubTv's
       {
-        params ["_TvName","_TvPosition","_TvNewParent","_Return"];
+        params ["_TvName","_TvPosition","_TvNewParent","_Tab","_Expanded","_Return"];
 
         _TvName = _x select 0;
         _TvPosition = (_x select 1) select [(count _TargetTv), (count (_x select 1) - count _TargetTv)]; //Selects [Position] and removes _TargetTv array from the front of it
@@ -159,8 +159,8 @@ switch (toLower _Mode) do
         {
           case "tvtab":
           {
-            Private _Tab = [_CtrlTreeView, [_TvNewParent, _TvName], "DragDrop"] call VANA_fnc_TvCreateTab;
-            Private _Expanded = (_x select 3) isequalto Expanded;
+            _Tab = [_CtrlTreeView, [_TvNewParent, _TvName], "DragDrop"] call VANA_fnc_TvCreateTab;
+            _Expanded = (_x select 3) isequalto Expanded;
 
             If _Expanded then {_CtrlTreeView TvExpand _Tab};
             _CtrlTreeView TvSetValue [_Tab, ([Collapsed, Expanded] select _Expanded)];
@@ -171,7 +171,8 @@ switch (toLower _Mode) do
             _MovedLoadouts pushback [_TvName, (_Return select 0)];
           };
         };
-      } foreach ([_CtrlTreeView, [_TargetTv]] call VANA_fnc_TvGetData);
+        True
+      } count ([_CtrlTreeView, [_TargetTv]] call VANA_fnc_TvGetData);
 
       [_CtrlTreeView, _MovedLoadouts] call VANA_fnc_TvValidateLoadouts;
     };

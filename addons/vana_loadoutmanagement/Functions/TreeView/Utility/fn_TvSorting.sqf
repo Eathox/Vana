@@ -15,7 +15,8 @@ if (_ParentTv isequalto [-1]) exitwith {False};
 _TargetTvLoadouts = [_CtrlTreeView, [_ParentTv, "Tvloadout"], [], False] call VANA_fnc_TvGetData;
 {
   _CtrlTreeView tvsettext [_x select 1, (Format ["!!!!!!!!!!%1", _x select 0])];
-} foreach _TargetTvLoadouts;
+  True
+} count _TargetTvLoadouts;
 
 //Sort treeview (All loadouts will be above)
 _CtrlTreeView tvsort [_ParentTv, True];
@@ -42,6 +43,7 @@ _TargetTvChildren = [_CtrlTreeView, [_ParentTv, "All"], [], False] call VANA_fnc
       };
     };
   };
-} foreach _TargetTvChildren;
+  True
+} count _TargetTvChildren;
 
 True

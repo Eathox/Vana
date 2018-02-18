@@ -30,7 +30,8 @@ disableserialization;
 #define MarkTv\
   private _LoadoutPosistion = _x select 1;\
   _CtrlTreeView tvSetColor [_LoadoutPosistion, [1,1,1,0.25]];\
-  _CtrlTreeView tvSetValue [_LoadoutPosistion, -1];
+  _CtrlTreeView tvSetValue [_LoadoutPosistion, -1];\
+  True
 
 params
 [
@@ -97,6 +98,6 @@ GETVIRTUALCARGO
 
     if ({_Item = _x; !CONDITION(_VirtualBackpackCargo) || !isclass(configfile >> "cfgvehicles" >> _Item)} count _InventoryDataBackpacks > 0) exitwith {MarkTv};
   };
-} foreach _TargetLoadouts;
+} count _TargetLoadouts;
 
 [False, True] select !(_TargetLoadouts isequalto []);

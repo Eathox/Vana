@@ -52,7 +52,7 @@ switch (toLower _Mode) do
 
     _CtrlPopupCheckBox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_TogglePopup;
     _CtrlPopupCheckBox ctrladdeventhandler ["killFocus","[ctrlparent (_this select 0), 'KeepFocus'] spawn VANA_fnc_UIPopup;"];
-    _CtrlPopupCheckBox ctrladdeventhandler ["CheckedChanged","Profilenamespace setvariable ['TEMP_Popup_Value', ([True, False] select (Profilenamespace getvariable ['TEMP_Popup_Value', False]))]; [ctrlparent (_this select 0),'UpDateCheckBox'] call VANA_fnc_ArsenalTreeView;"];
+    _CtrlPopupCheckBox ctrladdeventhandler ["CheckedChanged","['DeleteConfirmation', !(['DeleteConfirmation', True] call VANA_fnc_GetOptionValue)] call VANA_fnc_SetOptionValue; [ctrlparent (_this select 0),'UpDateCheckBox'] call VANA_fnc_ArsenalTreeView;"];
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@ switch (toLower _Mode) do
 
     //Set checkbox state
     _CtrlPopupCheckBox = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_TogglePopup;
-    _CtrlPopupCheckBox cbSetChecked ([False, true] select (Profilenamespace getvariable ['TEMP_Popup_Value', False]));
+    _CtrlPopupCheckBox cbSetChecked !(["DeleteConfirmation", True] call VANA_fnc_GetOptionValue);
     ctrlSetFocus _CtrlPopupCheckBox;
 
     [_ArsenalDisplay,"WaituntilStatus"] call VANA_fnc_UIPopup;

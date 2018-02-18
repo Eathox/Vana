@@ -103,7 +103,7 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
         	idc=981100;
           x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
           y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-          h="3 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+          h="(3* 1.01) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 
         	class controls
         	{
@@ -139,7 +139,7 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
           idc=981200;
           x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
           y="4 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-          h="3 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+          h="(3* 1.01) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 
           class controls
           {
@@ -156,6 +156,7 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
             class LoadoutIcontext: RscVANAOptionText
             {
               idc=-1;
+              optiondescription="$STR_VANA_Text_Text";
               y="(1* 1.35) * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
             };
             class ColorCoding: RscVANAOptionText

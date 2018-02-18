@@ -27,7 +27,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       style=1;
       idc=34621;
       text=$STR_VANA_TextName_Text;
-      x="-2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      x="-3.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="19.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="5.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -37,7 +37,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     class EditName: RscEdit //Relocationg of Vanila UI
     {
       idc=35020;
-      x="3.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      x="2.3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="19.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       w="13.5 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -73,9 +73,9 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
     {
       show=false;
       idc=978000;
-      x="17 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      x="15.7 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="19.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      w="3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      w="4.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
       colorBackground[]={0,0,0,0.2};
     };
@@ -113,10 +113,19 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
     };
+    class VANA_ButtonToggleAll: RscVANAPictureButton
+    {
+      idc=978004;
+      text="\vana_LoadoutManagement\UI\Data_Icons\ButtonColapseAll.paa";
+      x="16.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      y="19.6 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+      w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+      h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+    };
     class VANA_DelConfirmToggle: RscCheckbox
     {
       default=0;
-      idc=978004;
+      idc=978005;
       tooltip=$STR_VANA_DelConfirmToggle_ToolTip;
       x="5.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
       y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -128,27 +137,5 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
       colorBackgroundPressed[] ={0,0,0,0.8};
       colorBackgroundDisabled[] ={0,0,0,0.8};
     };
-    /*
-    class VANA_ButtonColapseAll: RscVANAPictureButton
-    {
-      idc=978005;
-      text="\vana_LoadoutManagement\UI\Data_Icons\ButtonColapseAll.paa";
-      x="6.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-      y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-      h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      colorBackground[]={0,0,0,0.8};
-    };
-    class VANA_ButtonExpandAll: RscVANAPictureButton
-    {
-      idc=978006;
-      text="\vana_LoadoutManagement\UI\Data_Icons\ButtonExpandAll.paa";
-      x="7.3 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-      y="21.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-      h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-      colorBackground[]={0,0,0,0.8};
-    };
-    */
   };
 };

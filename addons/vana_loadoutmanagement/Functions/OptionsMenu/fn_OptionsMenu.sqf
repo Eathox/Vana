@@ -17,13 +17,18 @@ disableserialization;
   LIST ctrlsetfade FADE;\
   LIST ctrlcommit 1.2;\
   if(CtrlFade LIST == 1) exitwith {ListFade(LIST,1)};\
-  sleep 1.2;
+  UiSleep 1.2;
 
 #define ShowTemplateUI(BOOL)\
-  Private _CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;\
+  params ["_CtrlTemplate","_ctrlMouseBlock"];\
+  _CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;\
+  if(BOOL)then{ctrlsetfocus _CtrlTemplate};\
   _CtrlTemplate ctrlsetfade ([1, 0] select BOOL);\
   _CtrlTemplate ctrlcommit 0;\
   _CtrlTemplate ctrlenable BOOL;\
+  _ctrlMouseBlock = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_MOUSEBLOCK;\
+  _ctrlMouseBlock ctrlenable BOOL;\
+  _ctrlMouseBlock ctrlshow BOOL;
 
 params
 [
@@ -31,8 +36,6 @@ params
   ["_Mode", "", [""]],
   ["_Arguments", [], [[]]]
 ];
-
-//dont forget to port over "TEMP_Popup_Value" to the new options system
 
 switch tolower _mode do
 {
@@ -60,7 +63,12 @@ switch tolower _mode do
       };
     } foreach IDCS_Lists;
 
-
+    //Porting over old Varibale to new system
+    if !(isnil {Profilenamespace getvariable "TEMP_Popup_Value"}) then
+    {
+      ["DeleteConfirmation", (Profilenamespace getvariable "TEMP_Popup_Value")] call VANA_fnc_SetOptionValue;
+      Profilenamespace setvariable ["TEMP_Popup_Value", nil];
+    };
 
     True
   };
@@ -97,16 +105,14 @@ switch tolower _mode do
     ];
     _CtrlList lbsetcursel _selected;
 
-    _ctrlMouseBlock = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_MOUSEBLOCK;\
+    _ctrlMouseBlock = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_MOUSEBLOCK;
     _ctrlMouseBlock ctrlenable True;
 
     _CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;
-    if (CtrlFade _CtrlTemplate < 1) then
-    {
-      _CtrlOptionsMenu setvariable ["TemplateWasOpen", True];
+    _InTemplate = ctrlFade _CtrlTemplate == 0;
 
-      ShowTemplateUI(False)
-    };
+    _CtrlOptionsMenu setvariable ["TemplateWasOpen", ([False, True] select _InTemplate)];
+    if _InTemplate then {ShowTemplateUI(False)};
 
     True
   };
@@ -114,15 +120,18 @@ switch tolower _mode do
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "close":
   {
-    params ["_CtrlOptionsMenu"];
+    params ["_CtrlOptionsMenu", "_CtrlCONTROLBAR"];
 
     _CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
     _CtrlOptionsMenu ctrlenable False;
     _CtrlOptionsMenu ctrlshow False;
 
-    if (_CtrlOptionsMenu getvariable ["TemplateWasOpen", False]) then
+    if (_CtrlOptionsMenu getvariable ["TemplateWasOpen", False] && !(_ArsenalDisplay getvariable ["ControlIsBeingHeld", False])) then
     {
       ShowTemplateUI(True)
+    } else {
+      _CtrlCONTROLBAR = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_CONTROLSBAR_CONTROLBAR;
+      ctrlsetfocus _CtrlCONTROLBAR;
     };
 
     True
@@ -171,7 +180,7 @@ switch tolower _mode do
     _CtrlOptionsMenu setvariable ["CurrentList", [_CtrlList, (lbcursel _CtrlList)]];
 
     _CtrlDescription = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_Description;
-    _CtrlDescription ctrlsettext (_CtrlList lbdata lbcursel _CtrlList);
+    _CtrlDescription ctrlSetStructuredText parseText (_CtrlList lbdata lbcursel _CtrlList);
 
     ListFade(_CtrlList, 0)
     [_ArsenalDisplay, "ListBlink", [_CtrlList]] spawn VANA_fnc_OptionsMenu;
@@ -185,12 +194,21 @@ switch tolower _mode do
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "listblink":
   {
-    _Arguments params [["_CtrlList", controlnull, [controlnull]]];
+    _Arguments params
+    [
+      ["_CtrlList", controlnull, [controlnull]],
+      "_CtrlOptionsMenu"
+    ];
+
+    _CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
+
+    if ((_CtrlOptionsMenu getvariable "BlinkingList") isequalto _CtrlList) exitwith {};
+    _CtrlOptionsMenu setvariable ["BlinkingList", _CtrlList];
 
     while {CtrlFade _CtrlList < 1} do
     {
-      ListBlink(_CtrlList, 0.7)
-      ListBlink(_CtrlList, 0)
+      ListBlink(_CtrlList, 0.55)
+      ListBlink(_CtrlList, 0.20)
     };
   };
 };

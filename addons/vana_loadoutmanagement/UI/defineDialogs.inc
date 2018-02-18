@@ -189,5 +189,5 @@ class RscVANAOptionGroup: RscControlsGroupNoScrollbars
 {
 	idc=-1;
 	w="19.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-	h="16 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	h="(1* 1.01) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 };

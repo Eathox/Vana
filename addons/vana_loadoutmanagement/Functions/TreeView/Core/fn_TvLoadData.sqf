@@ -25,7 +25,8 @@ if (_VANAData isequalto []) exitwith
 {
 	{
 		[_CtrlTreeView, [[], _x], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
-	} foreach (_LoadoutData select {_x isequaltype ""});
+		True
+	} count (_LoadoutData select {_x isequaltype ""});
 
 	EndSegment(False)
 };
@@ -35,25 +36,27 @@ if (_VANAData isequalto []) exitwith
 	params ["_TvName","_TvPosition","_TvData"];
 
 	_TvName = _x select 0;
-	_TvPosition = +_x select 1;
+	_TvPosition = _x select 1;
 	_TvData = tolower (_x select 2);
 
 	_TvPosition resize (Count _TvPosition-1);
 
 	call
 	{
-		if (_TvData isequalto "tvtab") exitwith {[_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateTab;};
+		if (_TvData isequalto "tvtab") exitwith {[_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateTab;	True};
 		if (_TvData isequalto "tvloadout") exitwith
 		{
 			_LoadoutNames pushback _TvName;
 			[_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
+			True
 		};
 	};
-} foreach _VANAData;
+} count _VANAData;
 
 //Create loadouts that werent created
 {
 	[_CtrlTreeView, [[], _x]] call VANA_fnc_TvCreateLoadout;
-} foreach (_LoadoutData select {_x isequaltype "" && !(_x in _LoadoutNames)});
+	True
+} count (_LoadoutData select {_x isequaltype "" && !(_x in _LoadoutNames)});
 
 EndSegment(True)

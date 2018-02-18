@@ -27,7 +27,6 @@ if (_TvData isequalto "tvloadout") then
 	_DataPosistion = _LoadoutData find _TvName;
 
 	_LoadoutData set [_DataPosistion, _Name];
-	saveProfileNamespace;
 };
 
 True
