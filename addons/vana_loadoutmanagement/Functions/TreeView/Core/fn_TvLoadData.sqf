@@ -24,8 +24,8 @@ diag_log text "[VANA_fnc_TvLoadData]: Loading Data...";
 if (_VANAData isequalto []) exitwith
 {
 	{
-		[_CtrlTreeView, [[], _x], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
-		True
+		private _Return = [_CtrlTreeView, [[], _x], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
+		_Return isequaltype []
 	} count (_LoadoutData select {_x isequaltype ""});
 
 	EndSegment(False)
@@ -33,30 +33,29 @@ if (_VANAData isequalto []) exitwith
 
 //Send data to co responding create fucntions
 {
-	params ["_TvName","_TvPosition","_TvData"];
+	params ["_Return","_TvName","_TvPosition","_TvData"];
 
+	_Return = false;
 	_TvName = _x select 0;
 	_TvPosition = _x select 1;
 	_TvData = tolower (_x select 2);
 
 	_TvPosition resize (Count _TvPosition-1);
 
-	call
+	if (_TvData isequalto "tvtab") then {_Return = [_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateTab;};
+	if (_TvData isequalto "tvloadout") then
 	{
-		if (_TvData isequalto "tvtab") exitwith {[_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateTab;	True};
-		if (_TvData isequalto "tvloadout") exitwith
-		{
-			_LoadoutNames pushback _TvName;
-			[_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
-			True
-		};
+		_LoadoutNames pushback _TvName;
+		_Return = [_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
 	};
+	
+	_Return isequaltype []
 } count _VANAData;
 
 //Create loadouts that werent created
 {
-	[_CtrlTreeView, [[], _x]] call VANA_fnc_TvCreateLoadout;
-	True
+	private _Return = [_CtrlTreeView, [[], _x]] call VANA_fnc_TvCreateLoadout;
+	_Return isequaltype []
 } count (_LoadoutData select {_x isequaltype "" && !(_x in _LoadoutNames)});
 
 EndSegment(True)

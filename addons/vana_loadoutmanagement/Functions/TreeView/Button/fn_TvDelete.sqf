@@ -28,9 +28,9 @@ switch _TvData do
 		{
 			if (tolower (_x select 2) isEqualto "tvloadout") then
 			{
-				[_CtrlTreeView, [_TargetTvParent, _x select 0]] call VANA_fnc_TvCreateLoadout;
+				private _Return = [_CtrlTreeView, [_TargetTvParent, _x select 0]] call VANA_fnc_TvCreateLoadout;
+				_Return isequaltype []
 			};
-			True
 		} count _TargetTvChildren;
 	};
 

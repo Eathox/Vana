@@ -1,9 +1,7 @@
 disableserialization;
 
-#define AllOptions\
-  [\
-    "deleteconfirmation"\
-  ]
+#define AllowedOptions\
+  ["deleteconfirmation"]
 
 params
 [
@@ -18,7 +16,7 @@ _Location = -1;
 _OptionName = tolower _OptionName;
 _VANAOptionsData = profilenamespace getvariable ["VANA_fnc_OptionsMenu_Data", []];
 
-if !(_OptionName in AllOptions) exitwith {False};
+if !(_OptionName in AllowedOptions) exitwith {False};
 
 (_VANAOptionsData select {(_x select 0) isequalto _OptionName}) params [["_OptionArray", [_OptionName]]];
 if (Count _OptionArray isequalto 2) then {_Location = _VANAOptionsData find _OptionArray};

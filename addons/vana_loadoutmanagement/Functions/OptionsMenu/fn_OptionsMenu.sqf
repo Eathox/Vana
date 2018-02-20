@@ -57,9 +57,6 @@ switch tolower _mode do
       if (_x isequalto (IDCS_Lists select 0)) then
       {
         _CtrlList lbsetcursel 0;
-
-        Private _CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
-        _CtrlOptionsMenu setvariable ["CurrentList", [_CtrlList, (lbcursel _CtrlList)]];
       };
     } foreach IDCS_Lists;
 
@@ -98,13 +95,6 @@ switch tolower _mode do
     _CtrlOptionsMenu ctrlenable True;
     _CtrlOptionsMenu ctrlshow True;
 
-    (_CtrlOptionsMenu getvariable ["CurrentList", [controlnull]]) params
-    [
-      ["_CtrlList", controlnull, [controlnull]],
-      ["_selected", 0, [0]]
-    ];
-    _CtrlList lbsetcursel _selected;
-
     _ctrlMouseBlock = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_MOUSEBLOCK;
     _ctrlMouseBlock ctrlenable True;
 
@@ -138,6 +128,15 @@ switch tolower _mode do
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
+  case "toupper":
+  {
+    //this is called from RscVANAOptionCategoryTitle and RscVANAOptionText 'Onload'
+    _Arguments params [["_Control", controlnull, [controlnull]]];
+
+    _Control ctrlSetText (toUpper (CtrlText _Control));
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
   case "populatelist":
   {
     //this is called from RscVANABackGroundList 'Onload'
@@ -153,12 +152,14 @@ switch tolower _mode do
     _AllOptionTexts = "!isnil {(_x >> 'optiondescription') call BIS_fnc_getCfgData}" configClasses (_ConfigParent >> "controls");
 
     {
-      params ["_OptionDescription", "_Index"];
+      params ["_OptionDescription", "_OptioButtonIdc", "_Index"];
 
       _OptionDescription = gettext (_x >> "optiondescription");
+      _OptioButtonIdc = getnumber (_x >> "optionbuttonidc");
       _Index = _CtrlList lbadd "";
 
       _CtrlList lbsetdata [_index, _OptionDescription];
+      _CtrlList lbsetvalue [_index, _OptioButtonIdc];
     } foreach _AllOptionTexts;
 
     (ctrlposition _CtrlList) params ["_x","_y","_w","_h"];
@@ -172,12 +173,11 @@ switch tolower _mode do
     _Arguments params
     [
       ["_CtrlList", controlnull, [controlnull]],
-      "_CtrlOptionsMenu",
       "_CtrlDescription"
     ];
 
-    _CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
-    _CtrlOptionsMenu setvariable ["CurrentList", [_CtrlList, (lbcursel _CtrlList)]];
+    _CtrlOptionButton = _ArsenalDisplay displayctrl (_CtrlList lbvalue lbcursel _CtrlList);
+    ctrlsetfocus _CtrlOptionButton;
 
     _CtrlDescription = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_Description;
     _CtrlDescription ctrlSetStructuredText parseText (_CtrlList lbdata lbcursel _CtrlList);

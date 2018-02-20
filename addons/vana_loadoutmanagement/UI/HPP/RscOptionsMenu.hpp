@@ -103,7 +103,7 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
         	idc=981100;
           x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
           y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-          h="(3* 1.01) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+          h="(3* 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 
         	class controls
         	{
@@ -114,32 +114,32 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
             class VissualOptionsTitle: RscVANAOptionCategoryTitle
             {
               idc=-1;
-              text="VISSUAL OPTIONS";
+              text="Vissual";
               x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-              y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
             };
             class LoadoutIcontext: RscVANAOptionText
             {
               idc=-1;
-              text="LOADOUT ICON";
+              text="Loadout Icon";
               optiondescription="Lets you select the icon";
-              y="(1* 1.35) * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              y="(1.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
             };
             class ColorCoding: RscVANAOptionText
             {
               idc=-1;
-              text="COLOR CODING FOR";
+              text="Color Coding For";
               optiondescription="Color code tabs and loadouts";
-              y="(2* 1.35) * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              y="(2.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
             };
           };
         };
-        class DummyOptions: RscVANAOptionGroup
+
+        class MiscOptions: RscVANAOptionGroup
         {
           idc=981200;
           x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
           y="4 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-          h="(3* 1.01) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+          h="(4* 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 
           class controls
           {
@@ -147,22 +147,89 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
             {
               idc=981201;
             };
-            class DummyOptionsTitle: RscVANAOptionCategoryTitle
+            class MiscOptionsTitle: RscVANAOptionCategoryTitle
             {
               idc=-1;
+              text="Miscellaneous";
               x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-              y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
             };
-            class LoadoutIcontext: RscVANAOptionText
+            class LayoutText: RscVANAOptionText
             {
               idc=-1;
-              optiondescription="$STR_VANA_Text_Text";
-              y="(1* 1.35) * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              text="TreeView Layout";
+              optiondescription="Dummy";
+              optionbuttonidc=981202;
+              y="(1.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
             };
-            class ColorCoding: RscVANAOptionText
+            class ExportButton: RscVANAPictureButton
+            {
+              idc=981202;
+              text="\vana_LoadoutManagement\UI\Data_Icons\ButtonExport.paa";
+              index=1;
+              periodFocus=0;
+              period=0;
+              y="(1.08 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+              x="16.85 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              h="1* 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+              colorBackground[]={0,0,0,0.8};
+              colorBackgroundFocused[] ={0,0,0,0.8};
+              colorBackgroundHover[] ={0,0,0,0.8};
+              colorBackgroundPressed[] ={0,0,0,0.8};
+              colorBackgroundDisabled[] ={0,0,0,0.8};
+            };
+            class ImportButton: RscVANAPictureButton
+            {
+              idc=981203;
+              text="\vana_LoadoutManagement\UI\Data_Icons\ButtonImport.paa";
+              index=1;
+              periodFocus=0;
+              period=0;
+              y="(1.08 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+              x="17.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              h="1* 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+              colorBackground[]={0,0,0,0.8};
+              colorBackgroundFocused[] ={0,0,0,0.8};
+              colorBackgroundHover[] ={0,0,0,0.8};
+              colorBackgroundPressed[] ={0,0,0,0.8};
+              colorBackgroundDisabled[] ={0,0,0,0.8};
+            };
+            class ResetText: RscVANAOptionText
             {
               idc=-1;
-              y="(2* 1.35) * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              text="Reset TreeView";
+              optiondescription="Dummy";
+              optionbuttonidc=981204;
+              y="(2.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+            };
+            class ResetButton: RscVANAOptionButton
+            {
+              idc=981204;
+              text="Reset";
+              index=2;
+              y="(2.07 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+              x="14.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              w="4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              h="1* 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+            };
+            class WipeDataText: RscVANAOptionText
+            {
+              idc=-1;
+              text="Wipe Data";
+              optiondescription="Dummy";
+              optionbuttonidc=981205;
+              y="(3.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+            };
+            class WipeDataButton: RscVANAOptionButton
+            {
+              idc=981205;
+              text="WIPE";
+              index=3;
+              y="(3.07 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+              x="14.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              w="4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+              h="1* 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
             };
           };
         };
