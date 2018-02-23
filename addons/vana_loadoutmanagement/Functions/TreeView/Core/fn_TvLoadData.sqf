@@ -10,13 +10,15 @@ params
 	["_CtrlTreeView", controlnull, [controlnull]],
 	["_VANAData", (profilenamespace getvariable ["VANA_fnc_TreeViewSave_Data",[]]), [[]]],
 	//Form wich data is saved in is [["Name",[Position],"DataType",Value],["Name",[Position],"DataType",Value],["Name",[Position],"DataType",Value]] ect.
-	"_LoadoutData",
-	"_LoadoutNames"
+	"_SavedLoadouts",
+	"_LoadoutNames",
+	"_NonExsistandLoadouts"
 ];
 
 _VANAData = +_VANAData;
-_LoadoutData = profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]];
+_SavedLoadouts = (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]) select {_x isequaltype ""};
 _LoadoutNames = [];
+_NonExsistandLoadouts = [];
 
 diag_log text "[VANA_fnc_TvLoadData]: Loading Data...";
 
@@ -26,7 +28,7 @@ if (_VANAData isequalto []) exitwith
 	{
 		private _Return = [_CtrlTreeView, [[], _x], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
 		_Return isequaltype []
-	} count (_LoadoutData select {_x isequaltype ""});
+	} count (_SavedLoadouts);
 
 	EndSegment(False)
 };
@@ -45,17 +47,21 @@ if (_VANAData isequalto []) exitwith
 	if (_TvData isequalto "tvtab") then {_Return = [_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateTab;};
 	if (_TvData isequalto "tvloadout") then
 	{
-		_LoadoutNames pushback _TvName;
 		_Return = [_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
+		call ([{_LoadoutNames pushback _TvName}, {_NonExsistandLoadouts pushback (_Return select 0)}] select !(_TvName in _SavedLoadouts));
 	};
-	
+
 	_Return isequaltype []
 } count _VANAData;
+
+//Remove nonexsistand
+reverse _NonExsistandLoadouts;
+{_CtrlTreeView tvdelete _x; true} count _NonExsistandLoadouts;
 
 //Create loadouts that werent created
 {
 	private _Return = [_CtrlTreeView, [[], _x]] call VANA_fnc_TvCreateLoadout;
 	_Return isequaltype []
-} count (_LoadoutData select {_x isequaltype "" && !(_x in _LoadoutNames)});
+} count (_SavedLoadouts select {!(_x in _LoadoutNames)});
 
 EndSegment(True)

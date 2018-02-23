@@ -147,25 +147,27 @@ class RscVANAPictureButton:	RscButtonMenu
 	offsetPressedY="pixelH";
 };
 
+class RscVANAOptionGroup: RscControlsGroupNoScrollbars
+{
+	idc=-1;
+	y="(0 + -0.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	w="19.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+	h="(1 * 1.222) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+};
+
 class RscVANABackGroundList: RscListBox
 {
 	idc=-1;
 	colorselectBackground[]={1,1,1,0.5};
 	colorBackground[]={0,0,0,0};
 	canDrag=false;
-	onload="[ctrlparent (_this select 0), 'PopulateList', _this] call VANA_fnc_OptionsMenu"
+	Onload="With UiNameSpace Do {if (isnil 'VANA_OptionsMenu_PopulateLists') then {VANA_OptionsMenu_PopulateLists = [_this]} else {VANA_OptionsMenu_PopulateLists pushback _this};}";
 	x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 	y="(1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	w="19.15 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-	h="1.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-	rowHeight="1.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-};
-
-class RscVANAOptionGroup: RscControlsGroupNoScrollbars
-{
-	idc=-1;
-	w="19.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-	h="(1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	h="1.222 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	rowHeight="1.20 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	soundSelect[] = {"",0.1,1};
 };
 
 class RscVANAOptionCategoryTitle: RscText
@@ -174,7 +176,7 @@ class RscVANAOptionCategoryTitle: RscText
 	shadow=0;
 	Text="DUMMY";
 	font="RobotoCondensedBold";
-	onload="[ctrlparent (_this select 0), 'ToUpper', _this] call VANA_fnc_OptionsMenu";
+	Onload="With UiNameSpace Do {if (isnil 'VANA_OptionsMenu_ToUpper') then {VANA_OptionsMenu_ToUpper = [_this]} else {VANA_OptionsMenu_ToUpper pushback _this};}";
 	y="0.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	w="19 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 	h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -187,7 +189,7 @@ class RscVANAOptionText: RscText
 	Text="DUMMY OPTION";
 	optiondescription="Dummy";
 	optionbuttonidc=980003;
-	onload="[ctrlparent (_this select 0), 'ToUpper', _this] call VANA_fnc_OptionsMenu";
+	Onload="With UiNameSpace Do {if (isnil 'VANA_OptionsMenu_ToUpper') then {VANA_OptionsMenu_ToUpper = [_this]} else {VANA_OptionsMenu_ToUpper pushback _this};}";
 	y="(1.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	x="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 	w="18 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -201,7 +203,7 @@ class RscVANAOptionButton: RscButtonMenu
 	text="Dummy";
 	index=0;
 	periodFocus=0;
-	onload="[ctrlparent (_this select 0), 'ToUpper', _this] call VANA_fnc_OptionsMenu";
+	Onload="With UiNameSpace Do {if (isnil 'VANA_OptionsMenu_ToUpper') then {VANA_OptionsMenu_ToUpper = [_this]} else {VANA_OptionsMenu_ToUpper pushback _this};}";
 	y="(1.07 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	x="14.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 	w="4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";

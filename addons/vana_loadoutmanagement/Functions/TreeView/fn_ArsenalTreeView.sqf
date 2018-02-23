@@ -38,8 +38,6 @@ switch tolower _Mode do
   {
     params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlButtonSave","_CtrlButtonLoad","_CtrlTemplateOKButton","_CtrlButtonToggleAll","_CtrlButtonTabCreate","_CtrlButtonRename","_CtrlDeleteButton","_CtrlTvUIPopup"];
 
-    _ArsenalDisplay setvariable ["Vana_Initialised", True];
-
     //Add EventHandlers
     _ArsenalDisplay displayseteventhandler ["keyDown","[(_this select 0), 'KeyDown', _this] call VANA_fnc_ArsenalTreeView;"];
     _ArsenalDisplay displayseteventhandler ["keyUp","[(_this select 0), 'KeyUp', _this] call VANA_fnc_ArsenalTreeView;"];
@@ -67,7 +65,7 @@ switch tolower _Mode do
     _CtrlButtonSave ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonOpenTemplate', ['ButtonSave']] call VANA_fnc_ArsenalTreeView;"];
 
     _CtrlButtonLoad = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_CONTROLSBAR_BUTTONLOAD;
-    _CtrlButtonLoad ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonOpenTemplate', ['ButtonSave']] call VANA_fnc_ArsenalTreeView;"];
+    _CtrlButtonLoad ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonOpenTemplate', ['ButtonLoad']] call VANA_fnc_ArsenalTreeView;"];
 
     _CtrlTemplateOKButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
     _CtrlTemplateOKButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonTemplateOK'] call VANA_fnc_ArsenalTreeView;"];
@@ -96,6 +94,8 @@ switch tolower _Mode do
     _CtrlTreeView TvExpand [];
     _CtrlTreeView tvsetcursel [0];
 
+    _ArsenalDisplay setvariable ["Vana_Initialised", True];
+
     True
   };
 
@@ -110,6 +110,9 @@ switch tolower _Mode do
     _CtrlTreeView setvariable ["TvDragDrop_GetTarget", nil];
     _CtrlTreeView setvariable ["TvDragDrop_TargetTv", nil];
     _CtrlTreeView setvariable ["TvDragDrop_ReleaseSubTv", nil];
+
+    UiNameSpace setvariable ["VANA_OptionsMenu_ToUpper", nil];
+    UiNameSpace setvariable ["VANA_OptionsMenu_PopulateLists", nil];
 
     True
   };
@@ -169,22 +172,20 @@ switch tolower _Mode do
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "checkoverwrite":
   {
-    params ["_CtrlTemplateBUTTONOK","_CtrlTemplateEdit","_LoadoutData","_Name","_Duplicate"];
+    params ["_CtrlTemplateBUTTONOK","_CtrlTemplateEdit","_SavedLoadouts","_Name","_Duplicate"];
 
-    _CtrlTemplateBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
     _CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
-    _LoadoutData = (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]) select {_x isequaltype ""};
-
-    //Check if name duplicate and change text accordingly
-    _Name = ctrltext _CtrlTemplateEdit;
 
     if (ctrlenabled _CtrlTemplateEdit) then
     {
-      _Duplicate = _Name in _LoadoutData;
+      //Check if name duplicate and change text accordingly
+      _SavedLoadouts = (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]) select {_x isequaltype ""};
+      _Name = ctrltext _CtrlTemplateEdit;
+      _Duplicate = _Name in _SavedLoadouts;
+
+      _CtrlTemplateBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONOK;
       _CtrlTemplateBUTTONOK Ctrlsettext (["Save", "Replace"] select _Duplicate);
       _CtrlTemplateBUTTONOK Ctrlenable ([True, False] select (_Name isequalto ""));
-
-      _Duplicate
     };
   };
 
@@ -330,7 +331,12 @@ switch tolower _Mode do
 
           case _InOptionsMenu:
           {
-            [_ArsenalDisplay, "Cancel"] call VANA_fnc_OptionsMenu;
+            if _InPopupUI then
+            {
+              _CtrlTvUIPopup setvariable ["TvUIPopup_Status",False];
+            } else {
+              [_ArsenalDisplay, "Cancel"] call VANA_fnc_OptionsMenu;
+            };
           };
 
           case (!_InTemplate || !_InOptionsMenu):
@@ -389,7 +395,7 @@ switch tolower _Mode do
         {
           True
         } else {
-          ["KeyDown", _Arguments] call VANA_fnc_arsenal;
+          with UiNameSpace do {["KeyDown", _Arguments] call VANA_fnc_arsenal};
         };
       };
     };
@@ -549,14 +555,12 @@ switch tolower _Mode do
   ///////////////////////////////////////////////////////////////////////////////////////////
   Case "buttonrename":
   {
-    params ["_CtrlTreeView","_CtrlRenameEdit","_Return","_TargetTv","_FncReturn","_Name","_TvParent"];
+    params ["_CtrlTreeView","_CtrlRenameEdit","_TargetTv","_FncReturn","_Name","_TvParent"];
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
     _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_RenameEdit;
 
-    _Return = [_ArsenalDisplay, "Rename"] call VANA_fnc_UIPopup;
-
-    if !_Return exitwith {False};
+    if !([_ArsenalDisplay, "Rename"] call VANA_fnc_UIPopup) exitwith {False};
 
     _TargetTv = tvCurSel _CtrlTreeView;
     _Name = ctrltext _CtrlRenameEdit;
@@ -575,12 +579,9 @@ switch tolower _Mode do
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "buttonopentemplate":
   {
-    _Arguments params
-    [
-      ["_ButtonPressed", "", [""]]
-    ];
+    _Arguments params [["_ButtonPressed", "", [""]]];
 
-    if (_ArsenalDisplay getvariable ['ControlIsBeingHeld', False]) then
+    if (_ArsenalDisplay getvariable ["ControlIsBeingHeld", False]) then
     {
       [_ArsenalDisplay, "Open"] call VANA_fnc_OptionsMenu
     } else {

@@ -100,6 +100,15 @@ switch _mode do {
 		BIS_fnc_arsenal_type = 0; //--- 0 - Arsenal, 1 - Garage
 		BIS_fnc_arsenal_toggleSpace = nil;
 
+		//VANA Init
+		[_display, "Init"] call VANA_fnc_ArsenalTreeView;
+
+		if (_display getvariable ["Vana_Initialised", True]) then
+		{
+			[_display, "Init"] call VANA_fnc_UIPopup;
+			[_display, "Init"] call VANA_fnc_OptionsMenu;
+		};
+
 		if !(is3DEN) then {
 			if (_fullVersion) then {
 				if (missionname == "Arsenal") then {
@@ -140,17 +149,6 @@ switch _mode do {
 		["Preload"] call BIS_fnc_arsenal;
 		["ListAdd",[_display]] call BIS_fnc_arsenal;
 		["ListSelectCurrent",[_display]] call BIS_fnc_arsenal;
-
-		//VANA Init
-		call
-		{
-			[_display, "Init"] call VANA_fnc_ArsenalTreeView;
-
-			if !(_display getvariable ["Vana_Initialised", False]) exitwith {};
-
-			[_display, "Init"] call VANA_fnc_UIPopup;
-			[_display, "Init"] call VANA_fnc_OptionsMenu;
-		};
 
 		//--- Save default weapon type
 		BIS_fnc_arsenal_selectedWeaponType = switch true do {
@@ -521,8 +519,6 @@ switch _mode do {
 
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "KeyDown": {
-		BIS_fnc_arsenal_type = uinamespace getvariable ["BIS_fnc_arsenal_type", 0]; //VANA
-
 		_display = _this select 0;
 		_key = _this select 1;
 		_shift = _this select 2;

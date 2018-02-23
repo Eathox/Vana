@@ -6,8 +6,7 @@ params
 	["_Arguments", [], [[]]],
 	"_TvData",
 	"_TvName",
-	"_LoadoutData",
-	"_DataPosistion"
+	"_LoadoutData"
 ];
 
 _Arguments params
@@ -24,9 +23,7 @@ if (_TvData isequalto "tvloadout") then
 {
 	//rename loadout in profile data
 	_LoadoutData = profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]];
-	_DataPosistion = _LoadoutData find _TvName;
-
-	_LoadoutData set [_DataPosistion, _Name];
+	_LoadoutData set [(_LoadoutData find _TvName), _Name];
 };
 
 True

@@ -5,8 +5,7 @@ disableserialization;
 
 #define IDCS_Lists\
   [\
-    IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_VissualOptions_BackGroundList,\
-    981201\
+    IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_BackGroundList\
   ]
 
 #define ListFade(LIST,FADE)\
@@ -37,12 +36,15 @@ params
   ["_Arguments", [], [[]]]
 ];
 
-switch tolower _mode do
+switch (tolower _mode) do
 {
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "init":
   {
-    params ["_CtrlButtonApply","_CtrlButtonCancel"];
+    params ["_CtrlOptionsMenu","_CtrlButtonApply","_CtrlButtonCancel","_CtrlMiscOptions_ExportButton","_CtrlMiscOptions_ImportButton"];
+
+    _CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
+    _CtrlOptionsMenu ctrladdeventhandler ["MouseButtonDown","Private _CtrlList = (_this select 0) getvariable 'BlinkingList'; ctrlsetfocus ((ctrlparent _CtrlList) displayctrl (_CtrlList lbvalue lbcursel _CtrlList));"];
 
     _CtrlButtonApply = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_ButtonApply;
     _CtrlButtonApply ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Apply'] call VANA_fnc_OptionsMenu;"];
@@ -50,13 +52,24 @@ switch tolower _mode do
     _CtrlButtonCancel = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_ButtonCancel;
     _CtrlButtonCancel ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Cancel'] call VANA_fnc_OptionsMenu;"];
 
+    _CtrlMiscOptions_ExportButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_ExportButton;
+    _CtrlMiscOptions_ExportButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ExportButton'] call VANA_fnc_OptionsMenu;"];
+
+    _CtrlMiscOptions_ImportButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_ImportButton;
+    _CtrlMiscOptions_ImportButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ImportButton'] spawn VANA_fnc_OptionsMenu;"];
+
+    [_ArsenalDisplay, "ToUpper"] Spawn VANA_fnc_OptionsMenu;
+    [_ArsenalDisplay, "PopulateLists"] call VANA_fnc_OptionsMenu;
+
     {
       private _CtrlList = _ArsenalDisplay displayctrl _x;
-      _CtrlList ctrladdeventhandler ["LBSelChanged", "[ctrlparent (_this select 0), 'ListCurSelChanged', [(_this select 0)]] call VANA_fnc_OptionsMenu;"];
+      _CtrlList ctrladdeventhandler ["LBSelChanged","[ctrlparent (_this select 0), 'ListCurSelChanged', [(_this select 0)]] call VANA_fnc_OptionsMenu;"];
+      _CtrlList ctrladdeventhandler ["MouseButtonDown","Private _CtrlList = _this select 0; ctrlsetfocus ((ctrlparent _CtrlList) displayctrl (_CtrlList lbvalue lbcursel _CtrlList));"];
 
       if (_x isequalto (IDCS_Lists select 0)) then
       {
         _CtrlList lbsetcursel 0;
+        [_ArsenalDisplay, "ListBlink", [_CtrlList]] spawn VANA_fnc_OptionsMenu;
       };
     } foreach IDCS_Lists;
 
@@ -68,6 +81,76 @@ switch tolower _mode do
     };
 
     True
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "toupper":
+  {
+    {
+      Private _ctrl = _x select 0;
+      _Ctrl ctrlSetText (toUpper CtrlText _Ctrl);
+    } foreach (UiNameSpace getvariable "VANA_OptionsMenu_ToUpper"); //Elements are added to this array from RscVANAOptionCategoryTitle, RscVANAOptionText and RscVANAOptionButton 'Onload'
+
+    UiNameSpace setvariable ["VANA_OptionsMenu_ToUpper", nil];
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "populatelists":
+  {
+    {
+      _x params
+      [
+        ["_CtrlList", controlnull, [controlnull]],
+        ["_CurrentConfig", confignull, [confignull]],
+        "_ConfigParent",
+        "_AllOptionTexts",
+        "_AllOptionButtons"
+      ];
+
+      _ConfigParent = (configHierarchy _CurrentConfig) select 7;
+      _AllOptionTexts = "!isnil {(_x >> 'optiondescription') call BIS_fnc_getCfgData}" configClasses (_ConfigParent >> "controls");
+      _AllOptionButtons = "!isnil {(_x >> 'index') call BIS_fnc_getCfgData}" configClasses (_ConfigParent >> "controls");
+
+      {
+        params ["_OptionDescription", "_OptioButtonIdc", "_Index"];
+
+        _OptionDescription = gettext (_x >> "optiondescription");
+        _OptioButtonIdc = getnumber (_x >> "optionbuttonidc");
+        _Index = _CtrlList lbadd "";
+
+        _CtrlList lbsetdata [_index, _OptionDescription];
+        _CtrlList lbsetvalue [_index, _OptioButtonIdc];
+      } foreach _AllOptionTexts;
+
+      (ctrlposition _CtrlList) params ["_x","_y","_w","_h"];
+      _CtrlList ctrlsetposition [_x,_y,_w,(_h * lbSize _CtrlList)];
+      _CtrlList ctrlcommit 0;
+
+      {
+        params ["_Ctrl","_Script"];
+
+        _Ctrl = _ArsenalDisplay displayctrl ((_x >> "idc") call BIS_fnc_getCfgData);
+        _Ctrl setvariable ["_Arguments", [_CtrlList, ((_x >> "index") call BIS_fnc_getCfgData)]];
+
+        _Script =
+        {
+          params ["_Arguments","_CtrlList","_Index","_CtrlOptionsMenu","_CtrlBlinkingList"];
+
+          _Arguments = (_this select 0) getvariable "_Arguments";
+          _CtrlList = _Arguments select 0;
+          _Index = _Arguments Select 1;
+
+          _CtrlOptionsMenu = (Ctrlparent _CtrlList) displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
+          _CtrlBlinkingList = _CtrlOptionsMenu getvariable "BlinkingList";
+
+          If (_CtrlBlinkingList isequalto _CtrlList && lbcursel _CtrlBlinkingList isequalto _Index) exitwith {};
+          _CtrlList lbsetcursel _Index;
+        };
+
+        _Ctrl ctrladdeventhandler ["ButtonDown", _Script];
+      } foreach _AllOptionButtons;
+    } foreach (UiNameSpace getvariable "VANA_OptionsMenu_PopulateLists"); //Elements are added to this array from RscVANABackGroundList 'Onload'
+    UiNameSpace setvariable ["VANA_OptionsMenu_PopulateLists", nil];
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
@@ -95,8 +178,8 @@ switch tolower _mode do
     _CtrlOptionsMenu ctrlenable True;
     _CtrlOptionsMenu ctrlshow True;
 
-    _ctrlMouseBlock = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_MOUSEBLOCK;
-    _ctrlMouseBlock ctrlenable True;
+    _CtrlMouseBlock = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_MOUSEBLOCK;
+    _CtrlMouseBlock ctrlenable True;
 
     _CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;
     _InTemplate = ctrlFade _CtrlTemplate == 0;
@@ -110,62 +193,45 @@ switch tolower _mode do
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "close":
   {
-    params ["_CtrlOptionsMenu", "_CtrlCONTROLBAR"];
+    params ["_CtrlOptionsMenu","_CtrlBUTTONOK","_GoToTemplate"];
 
     _CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
     _CtrlOptionsMenu ctrlenable False;
     _CtrlOptionsMenu ctrlshow False;
 
-    if (_CtrlOptionsMenu getvariable ["TemplateWasOpen", False] && !(_ArsenalDisplay getvariable ["ControlIsBeingHeld", False])) then
+    _GoToTemplate = _CtrlOptionsMenu getvariable ["TemplateWasOpen", False];
+    if (_ArsenalDisplay getvariable ["ControlIsBeingHeld", False]) then {_GoToTemplate = !_GoToTemplate};
+
+    if _GoToTemplate then
     {
       ShowTemplateUI(True)
     } else {
-      _CtrlCONTROLBAR = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_CONTROLSBAR_CONTROLBAR;
-      ctrlsetfocus _CtrlCONTROLBAR;
+      _CtrlBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_CONTROLSBAR_BUTTONOK;
+      ctrlsetfocus _CtrlBUTTONOK;
     };
 
     True
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-  case "toupper":
+  case "exportbutton":
   {
-    //this is called from RscVANAOptionCategoryTitle and RscVANAOptionText 'Onload'
-    _Arguments params [["_Control", controlnull, [controlnull]]];
+    params ["_VanaData","_LoadoutData","_Spacer"];
 
-    _Control ctrlSetText (toUpper (CtrlText _Control));
+    if ismultiplayer exitwith {["showMessage",[_ArsenalDisplay, "Data export disabled when in multiplayer"]] spawn BIS_fnc_arsenal};
+
+    _VanaData = profilenamespace getvariable ["VANA_fnc_TreeViewSave_Data",[]];
+    _LoadoutData = profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]];
+
+    _Spacer = (toString [13,10]) + "||" + (toString [13,10]);
+    copytoclipboard ([_VanaData, _LoadoutData] joinstring _Spacer);
+
+    ["showMessage",[_ArsenalDisplay, localize "STR_a3_RscDisplayArsenal_message_clipboard"]] spawn BIS_fnc_arsenal;
+    true
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-  case "populatelist":
-  {
-    //this is called from RscVANABackGroundList 'Onload'
-    _Arguments params
-    [
-      ["_CtrlList", controlnull, [controlnull]],
-      ["_CurrentConfig", confignull, [confignull]],
-      "_ConfigParent",
-      "_AllOptionTexts"
-    ];
-
-    _ConfigParent = (configHierarchy _CurrentConfig) select 7;
-    _AllOptionTexts = "!isnil {(_x >> 'optiondescription') call BIS_fnc_getCfgData}" configClasses (_ConfigParent >> "controls");
-
-    {
-      params ["_OptionDescription", "_OptioButtonIdc", "_Index"];
-
-      _OptionDescription = gettext (_x >> "optiondescription");
-      _OptioButtonIdc = getnumber (_x >> "optionbuttonidc");
-      _Index = _CtrlList lbadd "";
-
-      _CtrlList lbsetdata [_index, _OptionDescription];
-      _CtrlList lbsetvalue [_index, _OptioButtonIdc];
-    } foreach _AllOptionTexts;
-
-    (ctrlposition _CtrlList) params ["_x","_y","_w","_h"];
-    _CtrlList ctrlsetposition [_x,_y,_w,(_h * lbSize _CtrlList)];
-    _CtrlList ctrlcommit 0;
-  };
+  case "importbutton": {[_ArsenalDisplay] call VANA_fnc_TvImport};
 
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "listcurselchanged":
@@ -173,7 +239,9 @@ switch tolower _mode do
     _Arguments params
     [
       ["_CtrlList", controlnull, [controlnull]],
-      "_CtrlDescription"
+      "_CtrlOptionButton",
+      "_CtrlDescription",
+      "_CtrlOptionsMenu"
     ];
 
     _CtrlOptionButton = _ArsenalDisplay displayctrl (_CtrlList lbvalue lbcursel _CtrlList);
@@ -182,13 +250,19 @@ switch tolower _mode do
     _CtrlDescription = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_Description;
     _CtrlDescription ctrlSetStructuredText parseText (_CtrlList lbdata lbcursel _CtrlList);
 
-    ListFade(_CtrlList, 0)
-    [_ArsenalDisplay, "ListBlink", [_CtrlList]] spawn VANA_fnc_OptionsMenu;
-
+    _CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
+    if !((_CtrlOptionsMenu getvariable "BlinkingList") isequalto _CtrlList) then
     {
-      private _Ctrl = _ArsenalDisplay displayctrl _x;
-      if !(_Ctrl isequalto _CtrlList) then {ListFade(_Ctrl, 1)};
-    } foreach IDCS_Lists;
+      ListFade(_CtrlList, 0)
+      [_ArsenalDisplay, "ListBlink", [_CtrlList]] spawn VANA_fnc_OptionsMenu;
+
+      {
+        private _Ctrl = _ArsenalDisplay displayctrl _x;
+        if !(_Ctrl isequalto _CtrlList) then {ListFade(_Ctrl, 1)};
+      } foreach IDCS_Lists;
+    };
+
+    True
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////

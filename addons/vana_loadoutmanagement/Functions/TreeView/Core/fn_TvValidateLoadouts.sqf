@@ -27,10 +27,10 @@ disableserialization;
 	_virtualMagazineCargo = (missionnamespace call bis_fnc_getVirtualMagazineCargo) + (_Cargo call bis_fnc_getVirtualMagazineCargo) + magazines _Center;\
 	_virtualBackpackCargo = (missionnamespace call bis_fnc_getVirtualBackpackCargo) + (_Cargo call bis_fnc_getVirtualBackpackCargo) + [backpack _Center];
 
-#define MarkTv\
+#define MarkTv(BOOL)\
   private _LoadoutPosistion = _x select 1;\
-  _CtrlTreeView tvSetColor [_LoadoutPosistion, [1,1,1,0.25]];\
-  _CtrlTreeView tvSetValue [_LoadoutPosistion, -1];\
+  _CtrlTreeView tvSetColor [_LoadoutPosistion, ([[1,1,1,0.25], [0.95,0.95,0.95,1]] select BOOL)];\
+  _CtrlTreeView tvSetValue [_LoadoutPosistion, ([-1, 0] select BOOL)];\
   True
 
 params
@@ -65,7 +65,7 @@ GETVIRTUALCARGO
     	(_InventoryData select 8 select 0) //Handgun
     ] - [""];
 
-    if ({_Item = _x; !CONDITION(_VirtualWeaponCargo) || !isclass(configfile >> "cfgweapons" >> _Item)} count _InventoryDataWeapons > 0) exitwith {MarkTv};
+    if ({_Item = _x; !CONDITION(_VirtualWeaponCargo) || !isclass(configfile >> "cfgweapons" >> _Item)} count _InventoryDataWeapons > 0) exitwith {MarkTv(False)};
 
     //Second Phase Validation
     _InventoryDataMagazines =
@@ -75,7 +75,7 @@ GETVIRTUALCARGO
     	(_InventoryData select 2 select 1) //Backpack items
     ) - [""];
 
-    if ({_Item = _x; !CONDITION(_VirtualItemCargo + _VirtualMagazineCargo) || {isclass(configfile >> _x >> _Item)} count ["cfgweapons","cfgglasses","cfgmagazines"] == 0} count _InventoryDataMagazines > 0) exitwith {MarkTv};
+    if ({_Item = _x; !CONDITION(_VirtualItemCargo + _VirtualMagazineCargo) || {isclass(configfile >> _x >> _Item)} count ["cfgweapons","cfgglasses","cfgmagazines"] == 0} count _InventoryDataMagazines > 0) exitwith {MarkTv(False)};
 
     //Third Phase Validation
     _InventoryDataItems =
@@ -91,12 +91,14 @@ GETVIRTUALCARGO
       (_InventoryData select 9) //Assigned items
     ) - [""];
 
-    if ({_Item = _x; !CONDITION(_VirtualItemCargo + _VirtualMagazineCargo) || {isclass(configfile >> _x >> _Item)} count ["cfgweapons","cfgglasses","cfgmagazines"] == 0} count _InventoryDataItems > 0) exitwith {MarkTv};
+    if ({_Item = _x; !CONDITION(_VirtualItemCargo + _VirtualMagazineCargo) || {isclass(configfile >> _x >> _Item)} count ["cfgweapons","cfgglasses","cfgmagazines"] == 0} count _InventoryDataItems > 0) exitwith {MarkTv(False)};
 
     //Forth Phase Validation
     _InventoryDataBackpacks = [_InventoryData select 2 select 0] - [""];
 
-    if ({_Item = _x; !CONDITION(_VirtualBackpackCargo) || !isclass(configfile >> "cfgvehicles" >> _Item)} count _InventoryDataBackpacks > 0) exitwith {MarkTv};
+    if ({_Item = _x; !CONDITION(_VirtualBackpackCargo) || !isclass(configfile >> "cfgvehicles" >> _Item)} count _InventoryDataBackpacks > 0) exitwith {MarkTv(False)};
+
+    MarkTv(True)
   };
 
   false

@@ -156,20 +156,44 @@ switch (toLower _Mode) do
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
+  case "import":
+  {
+    params ["_CtrlTreeView","_CtrlTitle","_CtrlTextMessage","_CtrlButtonOk"];
+
+    ShowUI(True)
+
+    //Show Delete UI
+    ShowDeleteUI(True)
+    ctrlSetFocus _CtrlPopupCheckBox;
+
+    //Apply header and Message text
+    _CtrlTitle = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_Title;
+    _CtrlTitle ctrlsettext "Import Confirmation";
+
+    _CtrlTextMessage = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_Text;
+    _CtrlTextMessage ctrlsetstructuredtext parsetext "This will overwride all current data";
+
+    _CtrlButtonOk = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_ButtonOK;
+    _CtrlButtonOk ctrlenable True;
+    
+    [_ArsenalDisplay, "WaituntilStatus"] call VANA_fnc_UIPopup;
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
   case "checknametaken":
   {
-    params ["_CtrlTreeView","_CtrlRenameEdit","_CtrlButtonOk","_LoadoutData","_Name","_TargetTv","_TvName","_TvData","_TvDataString","_Duplicate"];
+    params ["_CtrlTreeView","_CtrlRenameEdit","_CtrlButtonOk","_SavedLoadouts","_Name","_TargetTv","_TvName","_TvData","_TvDataString","_Duplicate"];
 
     _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
     _CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_RenameEdit;
     _CtrlButtonOk = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_ButtonOK;
-    _LoadoutData = (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]) select {_x isequaltype ""};
+    _SavedLoadouts = (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]) select {_x isequaltype ""};
 
     _Name = ctrltext _CtrlRenameEdit;
     TvInfo
 
     //Check if name duplicate and color edit field accordingly
-    _Duplicate = [False, _Name in _LoadoutData] select (_TvData isequalto "tvloadout");
+    _Duplicate = [False, _Name in _SavedLoadouts] select (_TvData isequalto "tvloadout");
     _CtrlButtonOk ctrlenable ([True, False] select (_Duplicate || _Name isequalto "" || _Name isequalto _TvName));
 
     _Duplicate

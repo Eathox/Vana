@@ -5,7 +5,6 @@ params
 	["_CtrlTreeView", controlnull, [controlnull]],
 	["_Arguments", [], [[]]],
 	["_Behavior", "", [""]],
-	"_LoadoutData",
 	"_LoadoutPath",
 	"_LoadoutAdd"
 ];
@@ -17,9 +16,6 @@ _Arguments params
 ];
 
 _Behavior = tolower _Behavior;
-_LoadoutData = profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]];
-
-If !(_LoadoutName in _LoadoutData) exitwith {[[-1], ""]};
 
 //Create Loadout in treeview
 _LoadoutPath = +_TargetTv;
