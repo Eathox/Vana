@@ -96,12 +96,7 @@ if ([_ArsenalDisplay, "Import"] call VANA_fnc_UIPopup) then
   Tvclear _CtrlTreeView;
 
   [_CtrlTreeView, _VanaData] call VANA_fnc_TvLoadData;
-  [_CtrlTreeView] call VANA_fnc_TvSorting;
   //[_CtrlTreeView] Spawn VANA_fnc_TvSaveData; //WIP
-
-  TvCollapseAll _CtrlTreeView;
-  _CtrlTreeView TvExpand [];
-  _CtrlTreeView tvsetcursel [0];
 
   ["showMessage",[_ArsenalDisplay, "Data Imported"]] spawn BIS_fnc_arsenal;
   systemchat "Completed import";

@@ -2,6 +2,10 @@ disableserialization;
 
 #define EndSegment(BOOL)\
 	[_CtrlTreeView, ([_CtrlTreeView, [[], "TvLoadout"]] call VANA_fnc_TvGetData)] call VANA_fnc_TvValidateLoadouts;\
+	[_CtrlTreeView] call VANA_fnc_TvSorting;\
+	TvCollapseAll _CtrlTreeView;\
+  _CtrlTreeView TvExpand [];\
+  _CtrlTreeView tvsetcursel [0];\
 	diag_log text "[VANA_fnc_TvLoadData]: Data loaded.";\
 	BOOL
 

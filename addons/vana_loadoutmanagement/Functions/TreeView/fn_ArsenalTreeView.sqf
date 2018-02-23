@@ -86,14 +86,7 @@ switch tolower _Mode do
     _CtrlDelConfirmToggle ctrladdeventhandler ["CheckedChanged","['DeleteConfirmation', !(['DeleteConfirmation', True] call VANA_fnc_GetOptionValue)] call VANA_fnc_SetOptionValue;"];
     [_ArsenalDisplay ,"UpDateCheckBox"] call VANA_fnc_ArsenalTreeView;
 
-    //Load and Sort treeview
     [_CtrlTreeView] call VANA_fnc_TvLoadData;
-    [_CtrlTreeView] call VANA_fnc_TvSorting;
-
-    TvCollapseAll _CtrlTreeView;
-    _CtrlTreeView TvExpand [];
-    _CtrlTreeView tvsetcursel [0];
-
     _ArsenalDisplay setvariable ["Vana_Initialised", True];
 
     True
