@@ -41,6 +41,7 @@ class VANA
     //Utility
     class TvCount             {file="vana_LoadoutManagement\Functions\TreeView\Utility\fn_TvCount.sqf"};
     class TvExists            {file="vana_LoadoutManagement\Functions\TreeView\Utility\fn_TvExists.sqf"};
+    class TvExport            {file="vana_LoadoutManagement\Functions\TreeView\Utility\fn_TvExport.sqf"};
     class TvGetData           {file="vana_LoadoutManagement\Functions\TreeView\Utility\fn_TvGetData.sqf"};
     class TvGetParent         {file="vana_LoadoutManagement\Functions\TreeView\Utility\fn_TvGetParent.sqf"};
     class TvGetPosition       {file="vana_LoadoutManagement\Functions\TreeView\Utility\fn_TvGetPosition.sqf"};

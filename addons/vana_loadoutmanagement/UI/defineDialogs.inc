@@ -161,7 +161,7 @@ class RscVANABackGroundList: RscListBox
 	colorselectBackground[]={1,1,1,0.5};
 	colorBackground[]={0,0,0,0};
 	canDrag=false;
-	Onload="With UiNameSpace Do {if (isnil 'VANA_OptionsMenu_PopulateLists') then {VANA_OptionsMenu_PopulateLists = [_this]} else {VANA_OptionsMenu_PopulateLists pushback _this};}";
+	Onload="With UiNameSpace Do {if (isnil 'VANA_OptionsMenu_PopulateBackgroundLists') then {VANA_OptionsMenu_PopulateBackgroundLists = [_this]} else {VANA_OptionsMenu_PopulateBackgroundLists pushback _this};}";
 	x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 	y="(1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	w="19.15 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";

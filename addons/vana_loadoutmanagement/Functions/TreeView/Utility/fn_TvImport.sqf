@@ -19,7 +19,7 @@ params
 
 if ismultiplayer exitwith {["showMessage",[_ArsenalDisplay, "Data import disabled when in multiplayer"]] spawn BIS_fnc_arsenal};
 
-_Import = copyFromClipboard splitString (toString [13,10]) + "|";
+_Import = copyFromClipboard splitString (toString [13,10]);
 _WarningMessage =
 {
   ["showMessage",[_ArsenalDisplay, "Import abborted (corrupted/invalid Data)"]] spawn BIS_fnc_arsenal;

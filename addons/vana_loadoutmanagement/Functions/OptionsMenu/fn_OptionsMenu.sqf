@@ -41,16 +41,19 @@ switch (tolower _mode) do
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "init":
   {
-    params ["_CtrlOptionsMenu","_CtrlButtonApply","_CtrlButtonCancel","_CtrlMiscOptions_ExportButton","_CtrlMiscOptions_ImportButton"];
+    params ["_CtrlOptionsMenu","_CtrlButtonApply","_CtrlButtonCancel","_CtrlButtonDefault","_CtrlMiscOptions_ExportButton","_CtrlMiscOptions_ImportButton"];
 
     _CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
     _CtrlOptionsMenu ctrladdeventhandler ["MouseButtonDown","Private _CtrlList = (_this select 0) getvariable 'BlinkingList'; ctrlsetfocus ((ctrlparent _CtrlList) displayctrl (_CtrlList lbvalue lbcursel _CtrlList));"];
 
     _CtrlButtonApply = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_ButtonApply;
-    _CtrlButtonApply ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Apply'] call VANA_fnc_OptionsMenu;"];
+    _CtrlButtonApply ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonApply'] call VANA_fnc_OptionsMenu;"];
 
     _CtrlButtonCancel = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_ButtonCancel;
-    _CtrlButtonCancel ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'Cancel'] call VANA_fnc_OptionsMenu;"];
+    _CtrlButtonCancel ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonCancel'] call VANA_fnc_OptionsMenu;"];
+
+    _CtrlButtonDefault = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_ButtonDefault;
+    _CtrlButtonDefault ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonDefault'] call VANA_fnc_OptionsMenu;"];
 
     _CtrlMiscOptions_ExportButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_ExportButton;
     _CtrlMiscOptions_ExportButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ExportButton'] call VANA_fnc_OptionsMenu;"];
@@ -59,7 +62,7 @@ switch (tolower _mode) do
     _CtrlMiscOptions_ImportButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ImportButton'] spawn VANA_fnc_OptionsMenu;"];
 
     [_ArsenalDisplay, "ToUpper"] Spawn VANA_fnc_OptionsMenu;
-    [_ArsenalDisplay, "PopulateLists"] call VANA_fnc_OptionsMenu;
+    [_ArsenalDisplay, "PopulateBackGroundLists"] call VANA_fnc_OptionsMenu;
 
     {
       private _CtrlList = _ArsenalDisplay displayctrl _x;
@@ -95,7 +98,7 @@ switch (tolower _mode) do
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-  case "populatelists":
+  case "populatebackgroundlists":
   {
     {
       _x params
@@ -149,12 +152,12 @@ switch (tolower _mode) do
 
         _Ctrl ctrladdeventhandler ["ButtonDown", _Script];
       } foreach _AllOptionButtons;
-    } foreach (UiNameSpace getvariable "VANA_OptionsMenu_PopulateLists"); //Elements are added to this array from RscVANABackGroundList 'Onload'
-    UiNameSpace setvariable ["VANA_OptionsMenu_PopulateLists", nil];
+    } foreach (UiNameSpace getvariable "VANA_OptionsMenu_PopulateBackgroundLists"); //Elements are added to this array from RscVANABackGroundList 'Onload'
+    UiNameSpace setvariable ["VANA_OptionsMenu_PopulateBackgroundLists", nil];
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-  case "apply":
+  case "buttonapply":
   {
 
 
@@ -162,12 +165,24 @@ switch (tolower _mode) do
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////////
-  case "cancel":
+  case "buttoncancel":
   {
 
 
     [_ArsenalDisplay, "Close"] call VANA_fnc_OptionsMenu;
   };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "buttondefault":
+  {
+
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "exportbutton": {[_ArsenalDisplay] call VANA_fnc_TvExport};
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  case "importbutton": {[_ArsenalDisplay] call VANA_fnc_TvImport};
 
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "open":
@@ -212,26 +227,6 @@ switch (tolower _mode) do
 
     True
   };
-
-  ///////////////////////////////////////////////////////////////////////////////////////////
-  case "exportbutton":
-  {
-    params ["_VanaData","_LoadoutData","_Spacer"];
-
-    if ismultiplayer exitwith {["showMessage",[_ArsenalDisplay, "Data export disabled when in multiplayer"]] spawn BIS_fnc_arsenal};
-
-    _VanaData = profilenamespace getvariable ["VANA_fnc_TreeViewSave_Data",[]];
-    _LoadoutData = profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]];
-
-    _Spacer = (toString [13,10]) + "||" + (toString [13,10]);
-    copytoclipboard ([_VanaData, _LoadoutData] joinstring _Spacer);
-
-    ["showMessage",[_ArsenalDisplay, localize "STR_a3_RscDisplayArsenal_message_clipboard"]] spawn BIS_fnc_arsenal;
-    true
-  };
-
-  ///////////////////////////////////////////////////////////////////////////////////////////
-  case "importbutton": {[_ArsenalDisplay] call VANA_fnc_TvImport};
 
   ///////////////////////////////////////////////////////////////////////////////////////////
   case "listcurselchanged":
