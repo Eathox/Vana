@@ -48,10 +48,10 @@ params
 ];
 
 _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-_FullVersion = missionnamespace getvariable ["BIS_fnc_arsenal_fullArsenal",false];
-_LoadoutData = profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]];
-_Center = (missionnamespace getvariable ["BIS_fnc_arsenal_Center",player]);
-_Cargo = (missionnamespace getvariable ["BIS_fnc_arsenal_Cargo",objnull]);
+_FullVersion = missionnamespace getvariable ["BIS_fnc_arsenal_fullArsenal", false];
+_LoadoutData = profilenamespace getvariable ["bis_fnc_saveInventory_Data", []];
+_Center = (missionnamespace getvariable ["BIS_fnc_arsenal_Center", player]);
+_Cargo = (missionnamespace getvariable ["BIS_fnc_arsenal_Cargo", objnull]);
 
 GETVIRTUALCARGO
 {

@@ -108,9 +108,7 @@ switch (tolower _mode) do
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "import":
 	{
-		params ["_CtrlOptionsMenu","_ValidatedData","_DataType","_ImportData","_SelectedOption"];
-
-		_CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
+		params ["_ValidatedData","_DataTypes","_ImportData","_SelectedOption"];
 
 		[_ArsenalDisplay, "Toggle", _Arguments] call VANA_fnc_DropDownMenu;
 		{(_ArsenalDisplay displayctrl _x) ctrlenable false} foreach (IDCS_MiscOptions_DropDownMenu - [IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenu,IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenuBackground]);

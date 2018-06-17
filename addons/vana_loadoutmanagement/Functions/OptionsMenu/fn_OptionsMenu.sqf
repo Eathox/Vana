@@ -235,7 +235,7 @@ switch (tolower _mode) do
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "open":
 	{
-		params ["_CtrlOptionsMenu","_ctrlMouseBlock","_CtrlTemplate"];
+		params ["_CtrlOptionsMenu","_ctrlMouseBlock","_CtrlTemplate","_InTemplate"];
 
 		_CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
 		_CtrlOptionsMenu ctrlenable True;
@@ -336,9 +336,9 @@ switch (tolower _mode) do
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "buttonrestorebackup":
 	{
-		params ["_CtrlButtonRestoreBackup"];
+		params ["_CtrlMiscOptions_ButtonRestoreBackup"];
 
-		_CtrlButtonRestoreBackup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_ButtonRestoreBackup;
+		_CtrlMiscOptions_ButtonRestoreBackup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_ButtonRestoreBackup;
 		switch (Tolower (_Arguments select 0)) do
 		{
 			case "update": {_CtrlMiscOptions_ButtonRestoreBackup ctrlenable !((uinamespace Getvariable ["VANA_fnc_TreeViewSave_Backup", []]) isequalto [])}; //WIP DONT use CtrlEnable
