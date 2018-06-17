@@ -150,7 +150,7 @@ class RscVANAPictureButton:	RscButtonMenu
 class RscVANAOptionGroup: RscControlsGroupNoScrollbars
 {
 	idc=-1;
-	y="(0 + -0.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	y="(0 - 0.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	w="19.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 	h="(1 * 1.222) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 };
@@ -203,8 +203,21 @@ class RscVANAOptionButton: RscButtonMenu
 	text="Dummy";
 	index=0;
 	periodFocus=0;
+	period=0;
 	Onload="With UiNameSpace Do {if (isnil 'VANA_OptionsMenu_ToUpper') then {VANA_OptionsMenu_ToUpper = [_this]} else {VANA_OptionsMenu_ToUpper pushback _this};}";
+	y="(1.062 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	x="14.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+	w="5.4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+};
+
+class RscVANAOptionPictureButton: RscVANAPictureButton
+{
+	idc=-1;
+	text="";
+	index=0;
+	periodFocus=0;
+	period=0;
 	y="(1.07 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	x="14.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-	w="4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+	w="5.4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 };

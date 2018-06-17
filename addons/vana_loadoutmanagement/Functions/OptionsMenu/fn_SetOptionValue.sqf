@@ -1,15 +1,13 @@
-disableserialization;
-
 #define AllowedOptions\
-  ["deleteconfirmation"]
+	["deleteconfirmation"]
 
 params
 [
-  ["_OptionName", "", [""]],
-  ["_Value", nil],
-  "_Location",
-  "_VANAOptionsData",
-  "_OptionArray"
+	["_OptionName", "", [""]],
+	["_Value", nil],
+	"_Location",
+	"_VANAOptionsData",
+	"_OptionArray"
 ];
 
 _Location = -1;

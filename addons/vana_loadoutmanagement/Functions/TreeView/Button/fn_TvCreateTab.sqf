@@ -1,16 +1,21 @@
 disableserialization;
 
+#include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
+#include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
+
 params
 [
-	["_CtrlTreeView", controlnull, [controlnull]],
+	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Arguments", [], [[]]],
 	["_Behavior", "", [""]],
+	"_CtrlTreeView",
 	"_TvData",
 	"_NewSubTvPath",
 	"_TabCount",
 	"_AddSubTv"
 ];
 
+_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 _Arguments params
 [
 	["_TargetTv", (tvCurSel _CtrlTreeView), [[]]],
@@ -24,7 +29,7 @@ _TvData = tolower (_CtrlTreeView tvData _TargetTv);
 //Get parent
 if (!(_TvData isEqualto "tvtab") && !(_TargetTv isequalto [])) then
 {
-  _TargetTv resize (Count _TargetTv -1);
+	_TargetTv resize (Count _TargetTv -1);
 };
 
 //Create Tab in treeview
@@ -33,7 +38,7 @@ if !(_TabName isequalto "") then
 {
 	_AddSubTv = _CtrlTreeView tvAdd [_TargetTv, _TabName];
 } else {
-	_TabCount = [_CtrlTreeView, [_TargetTv, "tvtab"], False] call VANA_fnc_TvCount;
+	_TabCount = [_ArsenalDisplay, [_TargetTv, "tvtab"], False] call VANA_fnc_TvCount;
 	_AddSubTv = _CtrlTreeView tvAdd [_TargetTv, (format ["New Tab%1",(_TabCount+1)])];
 };
 _NewSubTvPath pushback _AddSubTv;

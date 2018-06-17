@@ -1,36 +1,38 @@
 disableserialization;
 
+#include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
+#include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
+
 #define EndSegment(BOOL)\
-	[_CtrlTreeView, ([_CtrlTreeView, [[], "TvLoadout"]] call VANA_fnc_TvGetData)] call VANA_fnc_TvValidateLoadouts;\
-	[_CtrlTreeView] call VANA_fnc_TvSorting;\
+	[_ArsenalDisplay, ([_ArsenalDisplay, [[], "TvLoadout"]] call VANA_fnc_TvGetData)] call VANA_fnc_TvValidateLoadouts;\
+	[_ArsenalDisplay] call VANA_fnc_TvSorting;\
 	TvCollapseAll _CtrlTreeView;\
-  _CtrlTreeView TvExpand [];\
-  _CtrlTreeView tvsetcursel [0];\
-	diag_log text "[VANA_fnc_TvLoadData]: Data loaded.";\
+	_CtrlTreeView TvExpand [];\
+	_CtrlTreeView tvsetcursel [0];\
 	BOOL
 
 params
 [
-	["_CtrlTreeView", controlnull, [controlnull]],
+	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_VANAData", (profilenamespace getvariable ["VANA_fnc_TreeViewSave_Data",[]]), [[]]],
 	//Form wich data is saved in is [["Name",[Position],"DataType",Value],["Name",[Position],"DataType",Value],["Name",[Position],"DataType",Value]] ect.
+	"_CtrlTreeView",
 	"_SavedLoadouts",
 	"_LoadoutNames",
 	"_NonExsistandLoadouts"
 ];
 
 _VANAData = +_VANAData;
+_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 _SavedLoadouts = (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]) select {_x isequaltype ""};
 _LoadoutNames = [];
 _NonExsistandLoadouts = [];
-
-diag_log text "[VANA_fnc_TvLoadData]: Loading Data...";
 
 //Create all loadouts if there is no saved data
 if (_VANAData isequalto []) exitwith
 {
 	{
-		private _Return = [_CtrlTreeView, [[], _x], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
+		private _Return = [_ArsenalDisplay, [[], _x], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
 		_Return isequaltype []
 	} count (_SavedLoadouts);
 
@@ -48,10 +50,10 @@ if (_VANAData isequalto []) exitwith
 
 	_TvPosition resize (Count _TvPosition-1);
 
-	if (_TvData isequalto "tvtab") then {_Return = [_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateTab;};
+	if (_TvData isequalto "tvtab") then {_Return = [_ArsenalDisplay, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateTab};
 	if (_TvData isequalto "tvloadout") then
 	{
-		_Return = [_CtrlTreeView, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
+		_Return = [_ArsenalDisplay, [_TvPosition, _TvName], "FirstTimeSetup"] call VANA_fnc_TvCreateLoadout;
 		call ([{_LoadoutNames pushback _TvName}, {_NonExsistandLoadouts pushback (_Return select 0)}] select !(_TvName in _SavedLoadouts));
 	};
 
@@ -64,7 +66,7 @@ reverse _NonExsistandLoadouts;
 
 //Create loadouts that werent created
 {
-	private _Return = [_CtrlTreeView, [[], _x]] call VANA_fnc_TvCreateLoadout;
+	private _Return = [_ArsenalDisplay, [[], _x]] call VANA_fnc_TvCreateLoadout;
 	_Return isequaltype []
 } count (_SavedLoadouts select {!(_x in _LoadoutNames)});
 

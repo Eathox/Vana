@@ -1,14 +1,19 @@
 disableserialization;
 
+#include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
+#include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
+
 params
 [
-	["_CtrlTreeView", controlnull, [controlnull]],
+	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Arguments", [], [[]]],
+	"_CtrlTreeView",
 	"_TvData",
 	"_TvName",
 	"_LoadoutData"
 ];
 
+_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 _Arguments params
 [
 	["_TargetTv", (tvCurSel _CtrlTreeView), [[]]],

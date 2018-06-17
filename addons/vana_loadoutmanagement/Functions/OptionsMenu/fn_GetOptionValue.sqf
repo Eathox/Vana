@@ -1,11 +1,9 @@
-disableserialization;
-
 params
 [
-  ["_OptionName", "", [""]],
-  ["_DefualtValue", nil],
-  "_Return",
-  "_VANAOptionsData"
+	["_OptionName", "", [""]],
+	["_DefualtValue", nil],
+	"_Return",
+	"_VANAOptionsData"
 ];
 
 _Return = _DefualtValue;

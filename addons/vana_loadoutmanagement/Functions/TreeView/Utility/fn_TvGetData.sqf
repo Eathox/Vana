@@ -1,19 +1,24 @@
 disableserialization;
 
+#include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
+#include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
+
 params
 [
-	["_CtrlTreeView", controlnull, [controlnull]],
+	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Arguments", [], [[]]],
 	["_ExportDataArray", [], [[],0]],
 	["_CheckSubTv", True, [True]],
 	["_Count", False, [False]],
+	"_CtrlTreeView",
 	"_ExportDataArray"
 ];
 
+_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 _Arguments params
 [
-  ["_ParentTv", [], [[]]],
-  ["_TypeData", "All", [""]]
+	["_ParentTv", [], [[]]],
+	["_TypeData", "All", [""]]
 ];
 
 _TypeData = toLower _TypeData;
@@ -47,7 +52,7 @@ for "_i" from 0 to (_CtrlTreeView tvCount _ParentTv)-1 do
 	//Execute function for all Subtv's
 	if (_CheckSubTv && _CtrlTreeView tvCount _TargetTv > 0) then
 	{
-		_ExportDataArray = [_CtrlTreeView, [_TargetTv, _TypeData], _ExportDataArray, True, _Count] call VANA_fnc_TvGetData;
+		_ExportDataArray = [_ArsenalDisplay, [_TargetTv, _TypeData], _ExportDataArray, True, _Count] call VANA_fnc_TvGetData;
 	};
 };
 
