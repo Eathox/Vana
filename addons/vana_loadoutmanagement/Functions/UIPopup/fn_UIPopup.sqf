@@ -154,7 +154,7 @@ switch (toLower _Mode) do
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "rename":
 	{
-		params ["_CtrlTreeView","_CtrlTitle","_CtrlRenameEdit","_TargetTv","_TvName","_TvData","_TvDataString"];
+		params ["_CtrlTreeView","_CtrlTitle","_CtrlRenameEdit","_CtrlTextMessage","_TargetTv","_TvName","_TvData","_TvDataString"];
 
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 		"Rename" call _ShowUI;
@@ -178,9 +178,8 @@ switch (toLower _Mode) do
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "import":
 	{
-		params ["_Title","_Message","_CtrlTitle","_CtrlTextMessage","_CtrlButtonOk"];
+		params ["_Message","_CtrlTitle","_CtrlTextMessage","_CtrlButtonOk"];
 
-		_Title = "";
 		_Message = "";
 
 		"Import" call _ShowUI;

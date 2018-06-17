@@ -125,7 +125,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
 			h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			sizeEx="0.9 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 		};
-		class VANA_CopyBackup: RscCheckbox //WIP Implement in UIPopup Import
+		class VANA_CopyBackup: RscCheckbox
 		{
 			show=0;
 			default=0;
