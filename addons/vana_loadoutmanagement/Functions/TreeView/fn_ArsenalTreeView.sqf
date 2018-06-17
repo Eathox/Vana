@@ -15,7 +15,7 @@ params
 	"_ShowSaveUIParts"
 ];
 
-_Showui =
+_ShowUI =
 {
 	params ["_CtrlTemplate","_ctrlMouseBlock"];
 
@@ -28,12 +28,13 @@ _Showui =
 
 	_ctrlMouseBlock ctrlenable _This;
 	_ctrlMouseBlock ctrlshow _This;
+	if _This then {ctrlsetfocus _ctrlMouseBlock};
 };
 
 _ShowSaveUIParts =
 {
 	{
-		_Ctrl = _ArsenalDisplay displayctrl _x;
+		private _Ctrl = _ArsenalDisplay displayctrl _x;
 		_Ctrl ctrlshow _This;
 		_Ctrl ctrlenable _This;
 	} foreach [IDC_RSCDISPLAYARSENAL_TEMPLATE_TEXTNAME,IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME,IDC_RSCDISPLAYARSENAL_VANA_DecorativeBar];
@@ -44,7 +45,7 @@ switch tolower _Mode do
 	///////////////////////////////////////////////////////////////////////////////////////////
 	Case "init":
 	{
-		params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlButtonSave","_CtrlButtonLoad","_CtrlTemplateOKButton","_CtrlButtonToggleAll","_CtrlButtonTabCreate","_CtrlButtonRename","_CtrlDeleteButton","_CtrlTvUIPopup"];
+		params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTButtonOptions","_CtrlButtonSave","_CtrlButtonLoad","_CtrlTemplateOKButton","_CtrlButtonToggleAll","_CtrlButtonTabCreate","_CtrlButtonRename","_CtrlDeleteButton","_CtrlDelTogglePopup"];
 
 		//Add EventHandlers
 		_ArsenalDisplay displayseteventhandler ["keyDown","[(_this select 0), 'KeyDown', _this] call VANA_fnc_ArsenalTreeView;"];
@@ -91,8 +92,8 @@ switch tolower _Mode do
 		_CtrlDeleteButton = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_BUTTONDELETE;
 		_CtrlDeleteButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonDelete'] spawn VANA_fnc_ArsenalTreeView;"];
 
-		_CtrlDelConfirmToggle = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelConfirmToggle;
-		_CtrlDelConfirmToggle ctrladdeventhandler ["CheckedChanged","['DeleteConfirmation', !(['DeleteConfirmation', True] call VANA_fnc_GetOptionValue)] call VANA_fnc_SetOptionValue;"];
+		_CtrlDelTogglePopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelTogglePopup;
+		_CtrlDelTogglePopup ctrladdeventhandler ["CheckedChanged","['DeleteConfirmation', !(['DeleteConfirmation', True] call VANA_fnc_GetOptionValue)] call VANA_fnc_SetOptionValue;"];
 		[_ArsenalDisplay ,"UpDateCheckBox"] call VANA_fnc_ArsenalTreeView;
 
 		[_ArsenalDisplay] call VANA_fnc_TvLoadData;
@@ -122,10 +123,10 @@ switch tolower _Mode do
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "updatecheckbox":
 	{
-		params ["_CtrlDelConfirmToggle"];
+		params ["_CtrlDelTogglePopup"];
 
-		_CtrlDelConfirmToggle = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelConfirmToggle;
-		_CtrlDelConfirmToggle cbSetChecked !(["DeleteConfirmation", True] call VANA_fnc_GetOptionValue);
+		_CtrlDelTogglePopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelTogglePopup;
+		_CtrlDelTogglePopup cbSetChecked !(["DeleteConfirmation", True] call VANA_fnc_GetOptionValue);
 
 		True
 	};
@@ -316,7 +317,7 @@ switch tolower _Mode do
 						{
 							_CtrlTvUIPopup setvariable ["UIPopup_Status",False];
 						} else {
-							False call _Showui;
+							False call _ShowUI;
 						};
 					};
 
@@ -368,7 +369,7 @@ switch tolower _Mode do
 			{
 				_ArsenalDisplay setvariable ["ControlIsBeingHeld", True];
 
-				_CtrlButtonToggleAll = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonToggleAll;
+				private _CtrlButtonToggleAll = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonToggleAll;
 				_CtrlButtonToggleAll ctrlSetText "\vana_LoadoutManagement\UI\Data_Icons\ButtonExpandAll.paa";
 				_CtrlButtonToggleAll ctrlSetToolTip "Expand All (Ctrl to Switch)"; //LOCALIZE
 			};
@@ -402,9 +403,6 @@ switch tolower _Mode do
 			["_Shift", False, [False]],
 			["_Ctrl", False, [False]],
 			["_Alt", False, [False]],
-			"_CtrlTemplate",
-			"_CtrlTvUIPopup",
-			"_CtrlOptionsMenu",
 			"_CtrlTemplateEdit",
 			"_CtrlRenameEdit",
 			"_InTemplate",
@@ -418,7 +416,7 @@ switch tolower _Mode do
 			{
 				_ArsenalDisplay setvariable ["ControlIsBeingHeld", False];
 
-				_CtrlButtonToggleAll = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonToggleAll;
+				private _CtrlButtonToggleAll = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonToggleAll;
 				_CtrlButtonToggleAll ctrlSetText "\vana_LoadoutManagement\UI\Data_Icons\ButtonColapseAll.paa";
 				_CtrlButtonToggleAll ctrlSetToolTip "Collapse All (Ctrl to Switch)"; //LOCALIZE
 			};
@@ -578,9 +576,8 @@ switch tolower _Mode do
 	{
 		params ["_CtrlTreeView"];
 
-		True call _Showui;
+		True call _ShowUI;
 		False call _ShowSaveUIParts;
-		ctrlsetfocus _CtrlMouseBlock;
 
 		//Show "Load"
 		{
@@ -605,7 +602,7 @@ switch tolower _Mode do
 	{
 		params ["_CtrlTemplateTitle","_CtrlTemplateEdit","_CtrlTreeView"];
 
-		True call _Showui;
+		True call _ShowUI;
 		True call _ShowSaveUIParts;
 
 		//Show "Save"
@@ -688,7 +685,7 @@ switch tolower _Mode do
 
 		if _HideTemplate then
 		{
-			False call _Showui;
+			False call _ShowUI;
 		};
 
 		True
