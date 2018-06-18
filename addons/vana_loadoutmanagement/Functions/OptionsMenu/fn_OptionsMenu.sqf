@@ -322,12 +322,30 @@ switch (tolower _mode) do
 	///////////////////////////////////////////////////////////////////////////////////////////
 	case "buttonwipedata":
 	{
-		params ["_CtrlDropDownMenu"];
+		params ["_CtrlTreeView","_CtrlDropDownMenu","_CtrlCopyBackup","_SelectedOption"];
 
+		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 		_CtrlDropDownMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenu;
+		_CtrlCopyBackup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_CopyBackup;
+
 		if !(ctrlenabled _CtrlDropDownMenu) then
 		{
-			[_ArsenalDisplay, "Defualt", _Arguments] call VANA_fnc_DropDownMenu;
+			_SelectedOption = [_ArsenalDisplay, "Defualt", _Arguments] call VANA_fnc_DropDownMenu;
+			if !(_SelectedOption isequalto "false") then
+			{
+				if ([_ArsenalDisplay, "Import/Wipedata", ["wipedata", _SelectedOption]] call VANA_fnc_UIPopup) then
+				{
+					TvClear _CtrlTreeView;
+					UInamespace Setvariable ["VANA_fnc_TreeViewSave_Backup", ([_ArsenalDisplay, False, cbChecked _CtrlCopyBackup] Call VANA_fnc_TvExport)];
+
+					switch _SelectedOption do
+					{
+						case "layout": {profilenamespace setvariable ["VANA_fnc_TreeViewSave_Data", nil]};
+						case "loadout": {profilenamespace setvariable ["bis_fnc_saveInventory_Data", nil]};
+						case "both": {profilenamespace setvariable ["VANA_fnc_TreeViewSave_Data", nil]; profilenamespace setvariable ["bis_fnc_saveInventory_Data", nil]};
+					};
+				};
+			};
 		} else {
 			_CtrlDropDownMenu setvariable ["DropDownMenu_Status", "false"];
 		};

@@ -6,7 +6,7 @@ disableserialization;
 params
 [
 	["_ArsenalDisplay", displaynull, [displaynull]],
-	["_TargetTv", (tvCurSel (_this select 0)), [[]]],
+	["_TargetTv", (tvCurSel (_this select 0 displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME)), [[]]],
 	"_CtrlTreeView",
 	"_TvName",
 	"_TvData",

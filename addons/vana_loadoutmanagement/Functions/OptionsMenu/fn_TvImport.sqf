@@ -23,7 +23,7 @@ _CtrlCopyBackup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP
 _LayoutData = _ImportData select 0;
 _LoadoutData = _ImportData select 1;
 
-if ([_ArsenalDisplay, "Import", [_ImportTypes]] call VANA_fnc_UIPopup) then
+if ([_ArsenalDisplay, "Import/Wipedata", ["import", _ImportTypes]] call VANA_fnc_UIPopup) then
 {
 	_Message = "";
 	_Layout = False;

@@ -46,7 +46,7 @@ _ShowUI =
 
 			ctrlSetFocus _CtrlPopupCheckBox
 		};
-		case "import":
+		case "import/wipedata":
 		{
 			ToggleUI(True)
 			{_x ctrlshow True} foreach [_CtrlCopyBackup, _CtrlCheckBoxText];
@@ -176,23 +176,31 @@ switch (toLower _Mode) do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "import":
+	case "import/wipedata":
 	{
-		params ["_Message","_CtrlTitle","_CtrlTextMessage","_CtrlButtonOk"];
+		_Arguments params
+		[
+			["_Mode", "", [""]],
+			["_SelectedOption", "", [""]],
+			"_Message",
+			"_CtrlTitle",
+			"_CtrlTextMessage",
+			"_CtrlButtonOk"
+		];
 
-		_Message = "";
+		_Message = (["Wipe Data: ", "Overwrite Data: "] select (_Mode isequalto "import")); //LOCALIZE
 
-		"Import" call _ShowUI;
-		switch (_Arguments select 0) do
+		"Import/Wipedata" call _ShowUI;
+		switch _SelectedOption do
 		{
-			case "layout": {_Message = "This will overwrite Layout data"}; //LOCALIZE
-			case "loadout": {_Message = "This will overwrite Loadout data"}; //LOCALIZE
-			case "both": {_Message = "This will overwrite both Layout and Loadout data"}; //LOCALIZE
+			case "layout": {_Message = _Message + "Layout"}; //LOCALIZE
+			case "loadout": {_Message = _Message + "Loadout"}; //LOCALIZE
+			case "both": {_Message = _Message + "Layout and Loadout"}; //LOCALIZE
 		};
 
 		//Apply header and Message text
 		_CtrlTitle = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_Title;
-		_CtrlTitle ctrlsettext "Import Confirmation"; //LOCALIZE
+		_CtrlTitle ctrlsettext (["Wipe Data Confirmation", "Import Confirmation"] select (_Mode isequalto "import")); //LOCALIZE
 
 		_CtrlTextMessage = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_Text;
 		_CtrlTextMessage ctrlsetstructuredtext parsetext _Message;
