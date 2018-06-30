@@ -6,8 +6,7 @@ params
 	["_OptionName", "", [""]],
 	["_Value", nil],
 	"_Location",
-	"_VANAOptionsData",
-	"_OptionArray"
+	"_VANAOptionsData"
 ];
 
 _Location = -1;

@@ -5,7 +5,8 @@ disableserialization;
 
 #define IDCS_Lists\
 	[\
-		IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_BackGroundList\
+		IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_BackGroundList,\
+		981201\
 	]
 
 #define ListFade(LIST,FADE)\
@@ -132,7 +133,7 @@ switch (tolower _mode) do
 				"_ConfigParent",
 				"_AllOptionTexts",
 				"_AllOptionButtons",
-				"_Script"
+				"_SetButtonFocus"
 			];
 
 			_ConfigParent = (configHierarchy _CurrentConfig) select 7;
@@ -154,7 +155,7 @@ switch (tolower _mode) do
 			_CtrlList ctrlsetposition [_X,_Y,_W,(_H * lbSize _CtrlList)];
 			_CtrlList ctrlcommit 0;
 
-			_Script =
+			_SetButtonFocus =
 			{
 				params ["_Arguments","_CtrlList","_Index","_CtrlOptionsMenu","_CtrlBlinkingList"];
 
@@ -173,7 +174,7 @@ switch (tolower _mode) do
 				Private _Ctrl = _ArsenalDisplay displayctrl ((_x >> "idc") call BIS_fnc_getCfgData);
 				_Ctrl setvariable ["_Arguments", [_CtrlList, ((_x >> "index") call BIS_fnc_getCfgData)]];
 
-				_Ctrl ctrladdeventhandler ["ButtonDown", _Script];
+				_Ctrl ctrladdeventhandler ["ButtonDown", _SetButtonFocus];
 			} foreach _AllOptionButtons;
 		} foreach (UiNameSpace getvariable "VANA_OptionsMenu_PopulateBackgroundLists"); //Elements are added to this array from RscVANABackGroundList 'Onload'
 		UiNameSpace setvariable ["VANA_OptionsMenu_PopulateBackgroundLists", nil];

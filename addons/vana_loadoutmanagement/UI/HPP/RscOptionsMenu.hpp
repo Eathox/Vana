@@ -108,6 +108,8 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
 
 			class controls
 			{
+
+				#include "OptionMenu_OptionGroups\TechOptions.hpp"
 				#include "OptionMenu_OptionGroups\MiscOptions.hpp"
 			};
 		};

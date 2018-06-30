@@ -2,7 +2,7 @@ class MiscOptions: RscVANAOptionGroup
 {
 	idc=981100;
 	x="0 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-	y="(0 - 0.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	y="(6.2 - 0.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	h="((5 * 1.222) + 2.88) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 
 	class controls
@@ -21,7 +21,7 @@ class MiscOptions: RscVANAOptionGroup
 		{
 			idc=-1;
 			text="Export Data"; //LOCALIZE
-			optiondescription="Dummy"; //LOCALIZE
+			optiondescription="Place Holder"; //LOCALIZE
 			optionbuttonidc=981102;
 			y="(1.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 		};
@@ -44,7 +44,7 @@ class MiscOptions: RscVANAOptionGroup
 		{
 			idc=-1;
 			text="Import Data"; //LOCALIZE
-			optiondescription="Dummy"; //LOCALIZE
+			optiondescription="Place Holder"; //LOCALIZE
 			optionbuttonidc=981103;
 			y="(2.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 		};
@@ -67,7 +67,7 @@ class MiscOptions: RscVANAOptionGroup
 		{
 			idc=-1;
 			text="Wipe Data"; //LOCALIZE
-			optiondescription="Dummy"; //LOCALIZE
+			optiondescription="Place Holder"; //LOCALIZE
 			optionbuttonidc=981104;
 			y="(3.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 		};
@@ -90,7 +90,7 @@ class MiscOptions: RscVANAOptionGroup
 		{
 			idc=-1;
 			text="Restore Backup"; //LOCALIZE
-			optiondescription="Dummy"; //LOCALIZE
+			optiondescription="Place Holder"; //LOCALIZE
 			optionbuttonidc=981105;
 			y="(4.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 		};
@@ -109,6 +109,7 @@ class MiscOptions: RscVANAOptionGroup
 			colorBackgroundPressed[] ={0,0,0,0.8};
 			colorBackgroundDisabled[] ={0,0,0,0.8};
 		};
+
 		class DropDownMenu: RscVANAOptionGroup
 		{
 			idc=981150;

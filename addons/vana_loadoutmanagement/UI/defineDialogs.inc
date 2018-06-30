@@ -174,7 +174,7 @@ class RscVANAOptionCategoryTitle: RscText
 {
 	idc=-1;
 	shadow=0;
-	Text="DUMMY";
+	Text="Place Holder";
 	font="RobotoCondensedBold";
 	Onload="With UiNameSpace Do {if (isnil 'VANA_OptionsMenu_ToUpper') then {VANA_OptionsMenu_ToUpper = [_this]} else {VANA_OptionsMenu_ToUpper pushback _this};}";
 	y="0.2 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -186,8 +186,8 @@ class RscVANAOptionText: RscText
 {
 	idc=-1;
 	shadow=0;
-	Text="DUMMY OPTION";
-	optiondescription="Dummy";
+	Text="Place Holder";
+	optiondescription="Place Holder";
 	optionbuttonidc=980003;
 	Onload="With UiNameSpace Do {if (isnil 'VANA_OptionsMenu_ToUpper') then {VANA_OptionsMenu_ToUpper = [_this]} else {VANA_OptionsMenu_ToUpper pushback _this};}";
 	y="(1.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
@@ -197,10 +197,27 @@ class RscVANAOptionText: RscText
 	sizeex="0.985 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 };
 
+class RscVANAOptionCheckbox: RscCheckbox
+{
+	idc=-1;
+	text="";
+	index=0;
+	periodFocus=0;
+	period=0;
+	y="(1.062 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	x="14.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+	w="5.4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
+	colorBackground[]={0,0,0,0.8};
+	colorBackgroundFocused[] ={0,0,0,0.8};
+	colorBackgroundHover[] ={0,0,0,0.8};
+	colorBackgroundPressed[] ={0,0,0,0.8};
+	colorBackgroundDisabled[] ={0,0,0,0.8};
+};
+
 class RscVANAOptionButton: RscButtonMenu
 {
 	idc=-1;
-	text="Dummy";
+	text="Place Holder";
 	index=0;
 	periodFocus=0;
 	period=0;
@@ -217,7 +234,7 @@ class RscVANAOptionPictureButton: RscVANAPictureButton
 	index=0;
 	periodFocus=0;
 	period=0;
-	y="(1.07 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
+	y="(1.062 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	x="14.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 	w="5.4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 };
