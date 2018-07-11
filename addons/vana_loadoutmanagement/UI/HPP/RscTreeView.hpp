@@ -46,8 +46,7 @@ class Template: RscControlsGroup //Path to add code to allready exsisting Rsc cl
 		class Title: RscTitle //Relocation of Vanila UI
 		{
 			style=0;
-			colorBackground[]=
-			{
+			colorBackground[]= {
 				"(profilenamespace getvariable ['GUI_BCG_RGB_R',0.13])",
 				"(profilenamespace getvariable ['GUI_BCG_RGB_G',0.54])",
 				"(profilenamespace getvariable ['GUI_BCG_RGB_B',0.21])",

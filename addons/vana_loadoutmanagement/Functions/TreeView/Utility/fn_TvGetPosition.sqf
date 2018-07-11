@@ -1,5 +1,4 @@
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Arguments", [], [[]]],
 	["_TypeData", "All", [""]],
@@ -9,8 +8,7 @@ params
 	"_Target"
 ];
 
-_Arguments params
-[
+_Arguments params [
 	["_TvParent", [-1], [[]]],
 	["_Name", "", [""]]
 ];

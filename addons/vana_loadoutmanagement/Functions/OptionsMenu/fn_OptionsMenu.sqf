@@ -3,8 +3,7 @@ disableserialization;
 #include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
 #include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
 
-#define IDCS_Lists\
-	[\
+#define IDCS_Lists [\
 		IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_BackGroundList,\
 		981201\
 	]
@@ -19,16 +18,14 @@ disableserialization;
 	if(CtrlFade LIST == 1) exitwith {ListFade(LIST,1)};\
 	UiSleep 1.2;
 
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Mode", "", [""]],
 	["_Arguments", [], [[]]],
 	"_ShowTemplateUI"
 ];
 
-_ShowTemplateUI =
-{
+_ShowTemplateUI = {
 	params ["_CtrlTemplate","_ctrlMouseBlock"];
 
 	_CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;
@@ -44,14 +41,12 @@ _ShowTemplateUI =
 	_ctrlMouseBlock ctrlshow _This;
 };
 
-switch (tolower _mode) do
-{
-	///////////////////////////////////////////////////////////////////////////////////////////
-	case "init":
-	{
-		params ["_CtrlOptionsMenu","_CtrlButtonApply","_CtrlButtonCancel","_CtrlButtonDefault","_CtrlMiscOptions_ButtonExport","_CtrlMiscOptions_ButtonImport","_CtrlMiscOptions_ButtonWipeData","_CtrlMiscOptions_ButtonRestoreBackup"];
+switch (tolower _mode) do {
+	case "init": {
+		params ["_CtrlOptionsMenu","_CtrlButtonApply","_CtrlButtonCancel","_CtrlButtonDefault","_CtrlMiscOptions_ButtonExport","_CtrlMiscOptions_ButtonImport","_CtrlMiscOptions_ButtonWipeData"];
 
 		[_ArsenalDisplay, "Init"] call VANA_fnc_DropDownMenu;
+		[_ArsenalDisplay, "InitRefreshOptions"] call VANA_fnc_OptionsMenu;
 		[_ArsenalDisplay, "ToUpper"] Spawn VANA_fnc_OptionsMenu;
 		[_ArsenalDisplay, "PopulateBackGroundLists"] call VANA_fnc_OptionsMenu;
 
@@ -76,10 +71,6 @@ switch (tolower _mode) do
 		_CtrlMiscOptions_ButtonWipeData = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_ButtonWipeData;
 		_CtrlMiscOptions_ButtonWipeData ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonWipeData', [(_this select 0)]] spawn VANA_fnc_OptionsMenu;"];
 
-		_CtrlMiscOptions_ButtonRestoreBackup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_ButtonRestoreBackup;
-		_CtrlMiscOptions_ButtonRestoreBackup ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonRestoreBackup', ['Pressed']] spawn VANA_fnc_OptionsMenu;"];
-		_CtrlMiscOptions_ButtonRestoreBackup ctrlenable !((uinamespace Getvariable ["VANA_fnc_TreeViewSave_Backup", []]) isequalto []); //WIP DONT use CtrlEnable
-
 		{
 			Private _CtrlList = _ArsenalDisplay displayctrl _x;
 			_CtrlList ctrladdeventhandler ["LBSelChanged", "[ctrlparent (_this select 0), 'ListCurSelChanged', [(_this select 0)]] call VANA_fnc_OptionsMenu;"];
@@ -87,23 +78,20 @@ switch (tolower _mode) do
 
 			_CtrlList ctrladdeventhandler ["LBSelChanged", "Private _CtrlDropDownMenu = ctrlParent (_this select 0) displayctrl 981150; if (ctrlenabled _CtrlDropDownMenu) then {_CtrlDropDownMenu setvariable ['DropDownMenu_Status', 'false']}"]; //Closes DropDownMenu
 
-			if (_x isequalto (IDCS_Lists select 0)) then
-			{
+			if (_x isequalto (IDCS_Lists select 0)) then {
 				_CtrlList lbsetcursel 0;
 				[_ArsenalDisplay, "ListBlink", [_CtrlList]] spawn VANA_fnc_OptionsMenu;
 			};
 		} foreach IDCS_Lists;
 
 		//Porting over old Varibale to new system
-		if !(isnil {Profilenamespace getvariable "TEMP_Popup_Value"}) then
-		{
+		if !(isnil {Profilenamespace getvariable "TEMP_Popup_Value"}) then {
 			["DeleteConfirmation", (Profilenamespace getvariable "TEMP_Popup_Value")] call VANA_fnc_SetOptionValue;
 			Profilenamespace setvariable ["TEMP_Popup_Value", nil];
 		};
 
 		//Make sure Data is saved with TvValue
-		if (isnil {profilenamespace getvariable "VANA_fnc_TreeViewSave_Data"}) then {[_ArsenalDisplay] Spawn VANA_fnc_TvSaveData} else
-		{
+		if (isnil {profilenamespace getvariable "VANA_fnc_TreeViewSave_Data"}) then {[_ArsenalDisplay] Spawn VANA_fnc_TvSaveData} else {
 			private _VANAData = profilenamespace getvariable "VANA_fnc_TreeViewSave_Data";
 			if (count _VANAData > 0) then {if (Count (_VANAData select 1) < 4) then {[_ArsenalDisplay] Spawn VANA_fnc_TvSaveData}};
 		};
@@ -112,22 +100,19 @@ switch (tolower _mode) do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "toupper":
-	{
-		{
-			Private _Ctrl = _x select 0;
-			_Ctrl ctrlSetText (toUpper CtrlText _Ctrl);
-		} foreach (UiNameSpace getvariable "VANA_OptionsMenu_ToUpper"); //Elements are added to this array from RscVANAOptionCategoryTitle, RscVANAOptionText and RscVANAOptionButton 'Onload'
-
-		UiNameSpace setvariable ["VANA_OptionsMenu_ToUpper", nil];
+	case "initrefreshoptions": { //WIP
+		//Desired Function: Gather all required data ([IDC, OptionName, Typeofcontrol]) for refreshoptions
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "populatebackgroundlists":
-	{
+	case "refreshoptions": { //WIP
+		//Desired Function: RefreshOption Checkbox's, dropdownmenu's ect.
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	case "populatebackgroundlists": {
 		{
-			_x params
-			[
+			_x params [
 				["_CtrlList", controlnull, [controlnull]],
 				["_CurrentConfig", confignull, [confignull]],
 				"_ConfigParent",
@@ -155,8 +140,7 @@ switch (tolower _mode) do
 			_CtrlList ctrlsetposition [_X,_Y,_W,(_H * lbSize _CtrlList)];
 			_CtrlList ctrlcommit 0;
 
-			_SetButtonFocus =
-			{
+			_SetButtonFocus = {
 				params ["_Arguments","_CtrlList","_Index","_CtrlOptionsMenu","_CtrlBlinkingList"];
 
 				_Arguments = (_this select 0) getvariable "_Arguments";
@@ -181,10 +165,8 @@ switch (tolower _mode) do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "listcurselchanged":
-	{
-		_Arguments params
-		[
+	case "listcurselchanged": {
+		_Arguments params [
 			["_CtrlList", controlnull, [controlnull]],
 			"_CtrlOptionButton",
 			"_CtrlDescription",
@@ -198,8 +180,7 @@ switch (tolower _mode) do
 		_CtrlDescription ctrlSetStructuredText parseText (_CtrlList lbdata lbcursel _CtrlList);
 
 		_CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
-		if !((_CtrlOptionsMenu getvariable "BlinkingList") isequalto _CtrlList) then
-		{
+		if !((_CtrlOptionsMenu getvariable "BlinkingList") isequalto _CtrlList) then	{
 			ListFade(_CtrlList, 0)
 			[_ArsenalDisplay, "ListBlink", [_CtrlList]] spawn VANA_fnc_OptionsMenu;
 
@@ -213,10 +194,8 @@ switch (tolower _mode) do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "listblink":
-	{
-		_Arguments params
-		[
+	case "listblink": {
+		_Arguments params [
 			["_CtrlList", controlnull, [controlnull]],
 			"_CtrlOptionsMenu"
 		];
@@ -226,17 +205,26 @@ switch (tolower _mode) do
 		if ((_CtrlOptionsMenu getvariable "BlinkingList") isequalto _CtrlList) exitwith {};
 		_CtrlOptionsMenu setvariable ["BlinkingList", _CtrlList];
 
-		while {CtrlFade _CtrlList < 1} do
-		{
+		while {CtrlFade _CtrlList < 1} do {
 			ListBlink(_CtrlList, 0.55)
 			ListBlink(_CtrlList, 0.150)
 		};
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "open":
-	{
+	case "toupper": {
+		{
+			Private _Ctrl = _x select 0;
+			_Ctrl ctrlSetText (toUpper CtrlText _Ctrl);
+		} foreach (UiNameSpace getvariable "VANA_OptionsMenu_ToUpper"); //Elements are added to this array from RscVANAOptionCategoryTitle, RscVANAOptionText and RscVANAOptionButton 'Onload'
+
+		UiNameSpace setvariable ["VANA_OptionsMenu_ToUpper", nil];
+	};
+
+	///////////////////////////////////////////////////////////////////////////////////////////
+	case "open": {
 		params ["_CtrlOptionsMenu","_ctrlMouseBlock","_CtrlTemplate","_InTemplate"];
+		[_ArsenalDisplay, "RefreshOptions"] call VANA_fnc_OptionsMenu;
 
 		_CtrlOptionsMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_OptionsMenu;
 		_CtrlOptionsMenu ctrlenable True;
@@ -255,8 +243,7 @@ switch (tolower _mode) do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "close":
-	{
+	case "close": {
 		params ["_CtrlOptionsMenu","_CtrlBUTTONOK","_GoToTemplate"];
 
 		[_ArsenalDisplay , "Toggle", [controlnull, True]] spawn VANA_fnc_DropDownMenu;
@@ -268,8 +255,7 @@ switch (tolower _mode) do
 		_GoToTemplate = _CtrlOptionsMenu getvariable ["TemplateWasOpen", False];
 		if (_ArsenalDisplay getvariable ["ControlIsBeingHeld", False]) then {_GoToTemplate = !_GoToTemplate};
 
-		if _GoToTemplate then
-		{
+		if _GoToTemplate then {
 			True call _ShowTemplateUI;
 		} else {
 			_CtrlBUTTONOK = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_CONTROLSBAR_BUTTONOK;
@@ -280,24 +266,21 @@ switch (tolower _mode) do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttonapply":
-	{
+	case "buttonapply": { //WIP
 
 
 		[_ArsenalDisplay, "Close"] call VANA_fnc_OptionsMenu;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttoncancel":
-	{
+	case "buttoncancel": { //WIP
 
 
 		[_ArsenalDisplay, "Close"] call VANA_fnc_OptionsMenu;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttondefault":
-	{
+	case "buttondefault": { //WIP
 
 	};
 
@@ -305,14 +288,12 @@ switch (tolower _mode) do
 	case "buttonexport": {[_ArsenalDisplay] call VANA_fnc_TvExport};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttonimport":
-	{
+	case "buttonimport": { //WIP Rework
 		params ["_CtrlDropDownMenu"];
 
 		_CtrlDropDownMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenu;
 
-		if !(ctrlenabled _CtrlDropDownMenu) then
-		{
+		if !(ctrlenabled _CtrlDropDownMenu) then {
 			if ismultiplayer exitwith {["showMessage",[_ArsenalDisplay, "Data import disabled when in multiplayer"]] spawn BIS_fnc_arsenal}; //LOCALIZE
 			[_ArsenalDisplay, "Import", _Arguments] call VANA_fnc_DropDownMenu;
 		} else {
@@ -321,46 +302,40 @@ switch (tolower _mode) do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttonwipedata":
-	{
-		params ["_CtrlTreeView","_CtrlDropDownMenu","_CtrlCopyBackup","_SelectedOption"];
+	case "buttonwipedata": {
+		params ["_CtrlTreeView","_CtrlDropDownMenu","_SelectedOption","_TypeNameArray","_FncReturn","_LayoutData"];
 
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 		_CtrlDropDownMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenu;
-		_CtrlCopyBackup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_CopyBackup;
 
-		if !(ctrlenabled _CtrlDropDownMenu) then
-		{
+		if !(ctrlenabled _CtrlDropDownMenu) then {
 			_SelectedOption = [_ArsenalDisplay, "Defualt", _Arguments] call VANA_fnc_DropDownMenu;
-			if !(_SelectedOption isequalto "false") then
-			{
-				if ([_ArsenalDisplay, "Import/Wipedata", ["wipedata", _SelectedOption]] call VANA_fnc_UIPopup) then
-				{
-					TvClear _CtrlTreeView;
-					UInamespace Setvariable ["VANA_fnc_TreeViewSave_Backup", ([_ArsenalDisplay, False, cbChecked _CtrlCopyBackup] Call VANA_fnc_TvExport)];
+			if !(_SelectedOption isequalto "false") then {
+				_TypeNameArray = ["layout","loadout","both", "Layout","Loadout","Layout and Loadout"]; //LOCALIZE
+				_FncReturn = [
+					_ArsenalDisplay,
+					["Wipe Data Confirmation", format ["Wipe Data: %1", _TypeNameArray select (_TypeNameArray find _SelectedOption)+3]], //LOCALIZE
+					[True, False, "Copy Backup to clipboard"]
+				] call VANA_fnc_UIPopup;
 
-					switch _SelectedOption do
-					{
-						case "layout": {profilenamespace setvariable ["VANA_fnc_TreeViewSave_Data", nil]};
-						case "loadout": {profilenamespace setvariable ["bis_fnc_saveInventory_Data", nil]};
-						case "both": {profilenamespace setvariable ["VANA_fnc_TreeViewSave_Data", nil]; profilenamespace setvariable ["bis_fnc_saveInventory_Data", nil]};
-					};
+				if (_FncReturn select 0) then {
+					"VANA_fnc_WipeData" call bis_fnc_startloadingscreen;
+
+					TvClear _CtrlTreeView;
+					if (_FncReturn select 1) then {[_ArsenalDisplay, False, True] Call VANA_fnc_TvExport};
+
+					_LayoutData = profilenamespace Getvariable ["VANA_fnc_TreeViewSave_Data", []];
+					if (_SelectedOption in ["loadout","both"]) then {profilenamespace setvariable ["bis_fnc_saveInventory_Data", nil]};
+					if (_SelectedOption in ["layout","both"]) then {_LayoutData = []};
+
+					[_ArsenalDisplay, _LayoutData] call VANA_fnc_TvLoadData;
+					_ArsenalDisplay Spawn VANA_fnc_TvSaveData;
+
+					"VANA_fnc_WipeData" call bis_fnc_endloadingscreen;
 				};
 			};
 		} else {
 			_CtrlDropDownMenu setvariable ["DropDownMenu_Status", "false"];
-		};
-	};
-
-	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttonrestorebackup":
-	{
-		params ["_CtrlMiscOptions_ButtonRestoreBackup"];
-
-		_CtrlMiscOptions_ButtonRestoreBackup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_ButtonRestoreBackup;
-		switch (Tolower (_Arguments select 0)) do
-		{
-			case "update": {_CtrlMiscOptions_ButtonRestoreBackup ctrlenable !((uinamespace Getvariable ["VANA_fnc_TreeViewSave_Backup", []]) isequalto [])}; //WIP DONT use CtrlEnable
 		};
 	};
 };

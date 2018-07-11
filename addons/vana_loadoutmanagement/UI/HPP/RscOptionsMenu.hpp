@@ -10,10 +10,9 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
 	{
 		class Title: RscTitle
 		{
-			idc=-980001;
+			idc=980001;
 			style=0;
-			colorBackground[]=
-			{
+			colorBackground[]= {
 				"(profilenamespace getvariable ['GUI_BCG_RGB_R',0.13])",
 				"(profilenamespace getvariable ['GUI_BCG_RGB_G',0.54])",
 				"(profilenamespace getvariable ['GUI_BCG_RGB_B',0.21])",
@@ -106,8 +105,7 @@ class VANA_OptionsMenuControlGroup: RscControlsGroup
 				autoScrollEnabled=1;
 			};
 
-			class controls
-			{
+			class controls {
 
 				#include "OptionMenu_OptionGroups\TechOptions.hpp"
 				#include "OptionMenu_OptionGroups\MiscOptions.hpp"

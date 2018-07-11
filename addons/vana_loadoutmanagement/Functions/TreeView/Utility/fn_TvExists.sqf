@@ -3,8 +3,7 @@ disableserialization;
 #include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
 #include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
 
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_TargetTv", (tvCurSel (_this select 0 displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME)), [[]]],
 	"_CtrlTreeView",

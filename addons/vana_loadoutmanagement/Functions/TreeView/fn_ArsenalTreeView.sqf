@@ -6,8 +6,7 @@ disableserialization;
 #define Expanded 1
 #define Collapsed 0
 
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Mode", "Open", [""]],
 	["_Arguments", [], [[]]],
@@ -15,8 +14,7 @@ params
 	"_ShowSaveUIParts"
 ];
 
-_ShowUI =
-{
+_ShowUI = {
 	params ["_CtrlTemplate","_ctrlMouseBlock"];
 
 	_CtrlTemplate = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_TEMPLATE;
@@ -28,11 +26,10 @@ _ShowUI =
 
 	_ctrlMouseBlock ctrlenable _This;
 	_ctrlMouseBlock ctrlshow _This;
-	if _This then {ctrlsetfocus _ctrlMouseBlock};
+	if (_This) then {ctrlsetfocus _ctrlMouseBlock};
 };
 
-_ShowSaveUIParts =
-{
+_ShowSaveUIParts = {
 	{
 		private _Ctrl = _ArsenalDisplay displayctrl _x;
 		_Ctrl ctrlshow _This;
@@ -40,11 +37,8 @@ _ShowSaveUIParts =
 	} foreach [IDC_RSCDISPLAYARSENAL_TEMPLATE_TEXTNAME,IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME,IDC_RSCDISPLAYARSENAL_VANA_DecorativeBar];
 };
 
-switch tolower _Mode do
-{
-	///////////////////////////////////////////////////////////////////////////////////////////
-	Case "init":
-	{
+switch tolower _Mode do {
+	Case "init": {
 		params ["_CtrlTreeView","_CtrlTemplateEdit","_CtrlTButtonOptions","_CtrlButtonSave","_CtrlButtonLoad","_CtrlTemplateOKButton","_CtrlButtonToggleAll","_CtrlButtonTabCreate","_CtrlButtonRename","_CtrlDeleteButton","_CtrlDelTogglePopup"];
 
 		//Add EventHandlers
@@ -93,7 +87,7 @@ switch tolower _Mode do
 		_CtrlDeleteButton ctrladdeventhandler ["buttonclick","[ctrlparent (_this select 0), 'ButtonDelete'] spawn VANA_fnc_ArsenalTreeView;"];
 
 		_CtrlDelTogglePopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelTogglePopup;
-		_CtrlDelTogglePopup ctrladdeventhandler ["CheckedChanged","['DeleteConfirmation', !(['DeleteConfirmation', True] call VANA_fnc_GetOptionValue)] call VANA_fnc_SetOptionValue;"];
+		_CtrlDelTogglePopup ctrladdeventhandler ["CheckedChanged","['DeleteConfirmation', !(['DeleteConfirmation'] call VANA_fnc_GetOptionValue)] call VANA_fnc_SetOptionValue;"];
 		[_ArsenalDisplay ,"UpDateCheckBox"] call VANA_fnc_ArsenalTreeView;
 
 		[_ArsenalDisplay] call VANA_fnc_TvLoadData;
@@ -103,8 +97,7 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "exit":
-	{
+	case "exit": {
 		params ["_CtrlTreeView"];
 
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
@@ -121,19 +114,17 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "updatecheckbox":
-	{
+	case "updatecheckbox": {
 		params ["_CtrlDelTogglePopup"];
 
 		_CtrlDelTogglePopup = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_DelTogglePopup;
-		_CtrlDelTogglePopup cbSetChecked !(["DeleteConfirmation", True] call VANA_fnc_GetOptionValue);
+		_CtrlDelTogglePopup cbSetChecked !(["DeleteConfirmation"] call VANA_fnc_GetOptionValue);
 
 		True
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "treeviewselchanged":
-	{
+	case "treeviewselchanged": {
 		params ["_CtrlTreeView","_SelectedTab","_IsEnabledLoadout","_CtrlDeleteButton","_CtrlButtonRename","_CtrlTemplateEdit","_CtrlTemplateOKButton"];
 
 		[_ArsenalDisplay, "CheckOverWrite"] spawn VANA_fnc_ArsenalTreeView;
@@ -162,14 +153,12 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "checkoverwrite":
-	{
+	case "checkoverwrite": {
 		params ["_CtrlTemplateBUTTONOK","_CtrlTemplateEdit","_SavedLoadouts","_Name","_Duplicate"];
 
 		_CtrlTemplateEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_EDITNAME;
 
-		if (ctrlenabled _CtrlTemplateEdit) then
-		{
+		if (ctrlenabled _CtrlTemplateEdit) then {
 			//Check if name duplicate and change text accordingly
 			_SavedLoadouts = (profilenamespace getvariable ["bis_fnc_saveInventory_Data",[]]) select {_x isequaltype ""};
 			_Name = ctrltext _CtrlTemplateEdit;
@@ -182,10 +171,8 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "subtvtoggle":
-	{
-		_Arguments params
-		[
+	case "subtvtoggle": {
+		_Arguments params [
 			["_CtrlTreeView", controlnull, [controlnull]],
 			["_TargetTv", [-1], [[]]],
 			["_Expanded", False, [False]]
@@ -195,8 +182,7 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "treedblclick":
-	{
+	case "treedblclick": {
 		params ["_SelectedTab","_TvData","_CtrlTreeView","_TvCollapsed"];
 
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
@@ -205,15 +191,12 @@ switch tolower _Mode do
 
 		if !(_CtrlTreeView getvariable ["MouseInTreeView", True]) exitwith {False};
 
-		switch _TvData do
-		{
-			case "tvloadout":
-			{
+		switch _TvData do {
+			case "tvloadout": {
 				[_ArsenalDisplay, "ButtonTemplateOK"] call VANA_fnc_ArsenalTreeView;
 				True
 			};
-			case "tvtab":
-			{
+			case "tvtab": {
 				//Expand or Collapse Tab
 				_TvCollapsed = (_CtrlTreeView TvValue _SelectedTab) isequalto Collapsed;
 				call ([{_CtrlTreeView TvCollapse _SelectedTab}, {_CtrlTreeView TvExpand _SelectedTab}] select _TvCollapsed);
@@ -225,10 +208,8 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "keydown":
-	{
-		_Arguments params
-		[
+	case "keydown": {
+		_Arguments params [
 			["_ArsenalDisplay", Displaynull, [Displaynull]],
 			["_Key", -1, [-1]],
 			["_Shift", False, [False]],
@@ -254,85 +235,67 @@ switch tolower _Mode do
 		_InPopupUI = ctrlShown _CtrlTvUIPopup;
 		_InOptionsMenu = ctrlShown _CtrlOptionsMenu;
 
-		switch True do
-		{
+		switch True do {
 			//CreateTab
-			case (_key == DIK_N && _Ctrl):
-			{
-				if (_InTemplate && !_InPopupUI) then
-				{
+			case (_key == DIK_N && _Ctrl): {
+				if (_InTemplate && !_InPopupUI) then {
 					[_ArsenalDisplay, "ButtonCreate"] call VANA_fnc_ArsenalTreeView;
 				};
 				True
 			};
 
 			//Delete
-			case ((_key == DIK_DELETE)||(_key == DIK_D && _Ctrl)):
-			{
-				if (_InTemplate && !_InPopupUI) then
-				{
+			case ((_key == DIK_DELETE)||(_key == DIK_D && _Ctrl)): {
+				if (_InTemplate && !_InPopupUI) then {
 					[_ArsenalDisplay, "ButtonDelete"] spawn VANA_fnc_ArsenalTreeView;
 				};
 				True
 			};
 
 			//Rename
-			case (_key == DIK_E && _Ctrl):
-			{
-				if (_InTemplate && !_InPopupUI) then
-				{
+			case (_key == DIK_E && _Ctrl): {
+				if (_InTemplate && !_InPopupUI) then {
 					[_ArsenalDisplay, "ButtonRename"] spawn VANA_fnc_ArsenalTreeView;
 				};
 				True
 			};
 
 			//Save
-			Case (_key == DIK_S && _Ctrl):
-			{
-				if (!_InPopupUI && !_InOptionsMenu) then
-				{
+			Case (_key == DIK_S && _Ctrl): {
+				if (!_InPopupUI && !_InOptionsMenu) then {
 					[_ArsenalDisplay, "ButtonSave"] call VANA_fnc_ArsenalTreeView;
 				};
 				True
 			};
 
 			//Open
-			Case (_key == DIK_O && _Ctrl):
-			{
-				if (!_InPopupUI && !_InOptionsMenu) then
-				{
+			Case (_key == DIK_O && _Ctrl): {
+				if (!_InPopupUI && !_InOptionsMenu) then {
 					[_ArsenalDisplay, "ButtonLoad"] call VANA_fnc_ArsenalTreeView;
 				};
 				True
 			};
 
 			//Close
-			case (_key == DIK_ESCAPE):
-			{
-				switch true do
-				{
-					case _InTemplate:
-					{
-						if _InPopupUI then
-						{
+			case (_key == DIK_ESCAPE): {
+				switch true do {
+					case _InTemplate: {
+						if _InPopupUI then {
 							_CtrlTvUIPopup setvariable ["UIPopup_Status",False];
 						} else {
 							False call _ShowUI;
 						};
 					};
 
-					case _InOptionsMenu:
-					{
-						if _InPopupUI then
-						{
+					case _InOptionsMenu: {
+						if _InPopupUI then {
 							_CtrlTvUIPopup setvariable ["UIPopup_Status",False];
 						} else {
 							[_ArsenalDisplay, "Close"] call VANA_fnc_OptionsMenu;
 						};
 					};
 
-					case (!_InTemplate || !_InOptionsMenu):
-					{
+					case (!_InTemplate || !_InOptionsMenu): {
 						Private _FullVersion = missionnamespace getvariable ["BIS_fnc_arsenal_fullArsenal", False];
 						if _fullVersion then {["buttonClose",[_ArsenalDisplay]] spawn BIS_fnc_arsenal;} else {_ArsenalDisplay closedisplay 2;};
 					}
@@ -341,14 +304,10 @@ switch tolower _Mode do
 			};
 
 			//Enter
-			case (_key in [DIK_RETURN,DIK_NUMPADENTER]):
-			{
-				switch True do
-				{
-					case _InTemplate:
-					{
-						if _InPopupUI then
-						{
+			case (_key in [DIK_RETURN,DIK_NUMPADENTER]): {
+				switch True do {
+					case _InTemplate: {
+						if _InPopupUI then {
 							private _CtrlPopupButtonOk = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_ButtonOK;
 							if (ctrlenabled _CtrlPopupButtonOk) then {_CtrlTvUIPopup setvariable ["UIPopup_Status",True];};
 						} else {
@@ -357,16 +316,14 @@ switch tolower _Mode do
 						};
 					};
 
-					case _InOptionsMenu:
-					{
+					case _InOptionsMenu: {
 						[_ArsenalDisplay, "Apply"] call VANA_fnc_OptionsMenu;
 					};
 				};
 				True
 			};
 
-			case (_Key in [DIK_LCONTROL,DIK_RCONTROL]):
-			{
+			case (_Key in [DIK_LCONTROL,DIK_RCONTROL]): {
 				_ArsenalDisplay setvariable ["ControlIsBeingHeld", True];
 
 				private _CtrlButtonToggleAll = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonToggleAll;
@@ -375,16 +332,14 @@ switch tolower _Mode do
 			};
 
 			//Calls BIS Code:
-			Default
-			{
+			Default {
 				//Allow Ctrl + C in edit bars
 				if ((_key == DIK_C && _Ctrl) && (_InTemplate || _InPopupUI)) exitwith {};
 
 				//Disable Hiding of UI while in optionsmenu
 				if (_key == DIK_BACKSPACE && _InOptionsMenu) exitwith {};
 
-				if ((_InTemplate || _InPopupUI || _InOptionsMenu) && _key == DIK_TAB) then
-				{
+				if ((_InTemplate || _InPopupUI || _InOptionsMenu) && _key == DIK_TAB) then {
 					True
 				} else {
 					with UiNameSpace do {["KeyDown", _Arguments] call VANA_fnc_arsenal};
@@ -394,10 +349,8 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "keyup":
-	{
-		_Arguments params
-		[
+	case "keyup": {
+		_Arguments params [
 			["_ArsenalDisplay", Displaynull, [Displaynull]],
 			["_Key", -1, [-1]],
 			["_Shift", False, [False]],
@@ -410,10 +363,8 @@ switch tolower _Mode do
 			"_InOptionsMenu"
 		];
 
-		switch True do
-		{
-			case (_Key in [DIK_LCONTROL,DIK_RCONTROL]):
-			{
+		switch True do {
+			case (_Key in [DIK_LCONTROL,DIK_RCONTROL]): {
 				_ArsenalDisplay setvariable ["ControlIsBeingHeld", False];
 
 				private _CtrlButtonToggleAll = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_ButtonToggleAll;
@@ -424,10 +375,8 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "mousemove":
-	{
-		_Arguments params
-		[
+	case "mousemove": {
+		_Arguments params [
 			["_CtrlTreeView", controlnull, [controlnull]],
 			["_XCoord", 0, [0]],
 			["_YCoord", 0, [0]]
@@ -437,10 +386,8 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "tvdragdrop":
-	{
-		_Arguments params
-		[
+	case "tvdragdrop": {
+		_Arguments params [
 			["_DragDropMode", "", [""]],
 			["_Arguments", [], [[]]],
 			"_CursorTab",
@@ -467,8 +414,7 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	Case "buttontoggleall":
-	{
+	Case "buttontoggleall": {
 		params ["_CtrlTreeView","_CotrolIsbeingHeld"];
 
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
@@ -481,8 +427,7 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	Case "buttoncreate":
-	{
+	Case "buttoncreate": {
 		params ["_FncReturn","_TvParent"];
 
 		_FncReturn = [_ArsenalDisplay] call VANA_fnc_TvCreateTab;
@@ -498,14 +443,13 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	Case "buttondelete":
-	{
-		params ["_CtrlTreeView","_TargetTv","_DeleteFnc"];
+	Case "buttondelete": {
+		params ["_CtrlTreeView","_TargetTv","_TvDataString","_DeleteFnc","_FncReturn"];
 
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
 		_TargetTv = tvCurSel _CtrlTreeView;
-		_DeleteFnc =
-		{
+		_TvDataString = ["Tab", "Loadout"] select (tolower (_CtrlTreeView tvData _TargetTv) isequalto "tvloadout");
+		_DeleteFnc = {
 			params ["_FncReturn","_TvParent"];
 
 			_FncReturn = [_ArsenalDisplay, _TargetTv] call VANA_fnc_TvDelete;
@@ -523,30 +467,41 @@ switch tolower _Mode do
 
 		if (_TargetTv isequalto []) exitwith {False};
 
-		if (["DeleteConfirmation", True] call VANA_fnc_GetOptionValue) then
-		{
-			if ([_ArsenalDisplay,"Delete"] call VANA_fnc_UIPopup) then
-			{
-				call _DeleteFnc;
-			};
+		if (["DeleteConfirmation"] call VANA_fnc_GetOptionValue) then {
+			_FncReturn = [
+				_ArsenalDisplay,
+				["Delete Confirmation", format ["Delete %1: '%2'", _TvDataString, _CtrlTreeView tvtext _TargetTv], localize "STR_VANA_HintText_Text"], //LOCALIZE
+				[True, False, localize "STR_VANA_TogglePopupText_Text"]
+			] call VANA_fnc_UIPopup;
+
+			["DeleteConfirmation", !(_FncReturn select 1)] call VANA_fnc_SetOptionValue;
+			[_ArsenalDisplay, "UpDateCheckBox"] call VANA_fnc_ArsenalTreeView;
+
+			if (_FncReturn select 0) then {call _DeleteFnc};
 		} else {
 			call _DeleteFnc;
 		};
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	Case "buttonrename":
-	{
-		params ["_CtrlTreeView","_CtrlRenameEdit","_TargetTv","_FncReturn","_Name","_TvParent"];
+	Case "buttonrename": {
+		params ["_CtrlTreeView","_TargetTv","_TvName","_TvDataString","_FncReturn","_Name","_TvParent"];
 
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-		_CtrlRenameEdit = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_UIPOPUP_RenameEdit;
-
-		if !([_ArsenalDisplay, "Rename"] call VANA_fnc_UIPopup) exitwith {False};
-
 		_TargetTv = tvCurSel _CtrlTreeView;
-		_Name = ctrltext _CtrlRenameEdit;
+		_TvName = _CtrlTreeView tvtext _TargetTv;
+		_TvDataString = ["Tab", "Loadout"] select (tolower (_CtrlTreeView tvData _TargetTv) isequalto "tvloadout");
 
+		_FncReturn = [
+			_ArsenalDisplay,
+			["Rename Confirmation", format ["Rename %1: '%2'", _TvDataString, _TvName]], //LOCALIZE
+			[],
+			[True, _TvName]
+		] call VANA_fnc_UIPopup;
+
+		if !(_FncReturn select 0) exitwith {False};
+
+		_Name = _FncReturn select 2;
 		[_ArsenalDisplay, [_TargetTv, _Name]] call VANA_fnc_TvRename;
 
 		_TvParent = _TargetTv call VANA_fnc_TvGetParent;
@@ -559,12 +514,10 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttonopentemplate":
-	{
+	case "buttonopentemplate": {
 		_Arguments params [["_ButtonPressed", "", [""]]];
 
-		if (_ArsenalDisplay getvariable ["ControlIsBeingHeld", False]) then
-		{
+		if (_ArsenalDisplay getvariable ["ControlIsBeingHeld", False]) then {
 			[_ArsenalDisplay, "Open"] call VANA_fnc_OptionsMenu
 		} else {
 			[_ArsenalDisplay, _ButtonPressed] call VANA_fnc_ArsenalTreeView
@@ -572,8 +525,7 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttonload":
-	{
+	case "buttonload": {
 		params ["_CtrlTreeView"];
 
 		True call _ShowUI;
@@ -586,8 +538,7 @@ switch tolower _Mode do
 
 		//Check if message allready displayed once
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-		if !(_CtrlTreeView getvariable ["VANA_LoadMessageDisplayed", False]) then
-		{
+		if !(_CtrlTreeView getvariable ["VANA_LoadMessageDisplayed", False]) then {
 			_CtrlTreeView setvariable ["VANA_LoadMessageDisplayed", True];
 			["showMessage", [_ArsenalDisplay, "Note: Loadouts still require unique names, Tabs do not"]] spawn BIS_fnc_arsenal; //LOCALIZE
 		};
@@ -598,8 +549,7 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttonsave":
-	{
+	case "buttonsave": {
 		params ["_CtrlTemplateTitle","_CtrlTemplateEdit","_CtrlTreeView"];
 
 		True call _ShowUI;
@@ -614,8 +564,7 @@ switch tolower _Mode do
 
 		//Check if message allready displayed once
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-		if !(_CtrlTreeView getvariable ["VANA_SaveMessageDisplayed", False]) then
-		{
+		if !(_CtrlTreeView getvariable ["VANA_SaveMessageDisplayed", False]) then {
 			_CtrlTreeView setvariable ["VANA_SaveMessageDisplayed", True];
 			["showMessage", [_ArsenalDisplay, localize "STR_A3_RscDisplayArsenal_message_save"]] spawn BIS_fnc_arsenal;
 		};
@@ -626,8 +575,7 @@ switch tolower _Mode do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "buttontemplateok":
-	{
+	case "buttontemplateok": {
 		params ["_CtrlTreeView","_CtrlTemplateEdit","_SelectedTab","_HideTemplate","_LoadoutName","_FncReturn","_TvParent","_Center","_Inventory","_LoadoutData","_Name","_NameID","_InventoryCustom"];
 
 		_CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
@@ -636,8 +584,7 @@ switch tolower _Mode do
 		_SelectedTab = TvCursel _CtrlTreeView;
 		_HideTemplate = True;
 
-		if (ctrlenabled _CtrlTemplateEdit) then
-		{
+		if (ctrlenabled _CtrlTemplateEdit) then {
 			//Save
 			_LoadoutName = ctrltext _CtrlTemplateEdit;
 			_FncReturn = [_ArsenalDisplay, _LoadoutName] call VANA_fnc_TvSaveLoadout;
@@ -652,8 +599,7 @@ switch tolower _Mode do
 		} else {
 			//Load (Taken Directly from BIS_fnc_Arsenal and modified to work with treeview)
 			_Center = (missionnamespace getvariable ["BIS_fnc_arsenal_center",player]);
-			if ((_CtrlTreeView TvValue _SelectedTab) >= 0 && (_CtrlTreeView TvData _SelectedTab) isequalto "tvloadout") then
-			{
+			if ((_CtrlTreeView TvValue _SelectedTab) >= 0 && (_CtrlTreeView TvData _SelectedTab) isequalto "tvloadout") then {
 				_Inventory = _CtrlTreeView TvText _SelectedTab;
 
 				[_Center,[profilenamespace,_Inventory]] call bis_fnc_loadinventory;
@@ -664,8 +610,7 @@ switch tolower _Mode do
 				_Name = _CtrlTreeView TvText _SelectedTab;
 				_NameID = _LoadoutData find _Name;
 
-				if (_NameID >= 0) then
-				{
+				if (_NameID >= 0) then {
 					_Inventory = _LoadoutData select (_NameID + 1);
 					_InventoryCustom = _Inventory select 10;
 
@@ -683,8 +628,7 @@ switch tolower _Mode do
 			};
 		};
 
-		if _HideTemplate then
-		{
+		if (_HideTemplate) then {
 			False call _ShowUI;
 		};
 

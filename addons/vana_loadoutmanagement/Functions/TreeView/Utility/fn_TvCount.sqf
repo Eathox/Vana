@@ -1,12 +1,10 @@
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Arguments", [], [[]]],
 	["_CheckSubTv", True, [True]]
 ];
 
-_Arguments params
-[
+_Arguments params [
 	["_ParentTv", [], [[]]],
 	["_TypeData", "All", [""]]
 ];

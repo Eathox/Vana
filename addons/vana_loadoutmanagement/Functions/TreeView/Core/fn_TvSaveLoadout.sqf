@@ -3,8 +3,7 @@ disableserialization;
 #include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
 #include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
 
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_LoadoutName", "", [""]],
 	"_CtrlTreeView",
@@ -24,8 +23,7 @@ _DuplicateLoadout = _LoadoutName in (profilenamespace getvariable ["bis_fnc_save
 _Center = (missionnamespace getvariable ["BIS_fnc_arsenal_Center",player]);
 [
 	_center,
-	[profilenamespace,_LoadoutName],
-	[
+	[profilenamespace,_LoadoutName], [
 		_center getvariable ["BIS_fnc_arsenal_face",face _center],
 		speaker _center,
 		_center call bis_fnc_getUnitInsignia
@@ -33,8 +31,7 @@ _Center = (missionnamespace getvariable ["BIS_fnc_arsenal_Center",player]);
 ] call bis_fnc_saveInventory;
 
 //Find and Validate Updated Loadout
-if _DuplicateLoadout exitwith
-{
+if _DuplicateLoadout exitwith {
 	[_ArsenalDisplay, [([_ArsenalDisplay, [[-1], _LoadoutName], "TvLoadout"] Call VANA_fnc_TvGetPosition), _LoadoutName]] call VANA_fnc_TvValidateLoadout;
 	["showMessage",[(ctrlparent _CtrlTreeView), (format ["Replaced existing loadout: ""%1""", _LoadoutName])]] spawn BIS_fnc_arsenal; //LOCALIZE
 
@@ -45,8 +42,7 @@ if _DuplicateLoadout exitwith
 _TargetTv = tvCurSel _CtrlTreeView;
 _TvData = tolower (_CtrlTreeView tvData _TargetTv);
 
-if (_TvData isEqualto "tvloadout") then
-{
+if (_TvData isEqualto "tvloadout") then {
 	_TargetTv resize (Count _TargetTv-1);
 };
 

@@ -103,10 +103,9 @@ switch _mode do {
 		//VANA Init
 		[_display, "Init"] call VANA_fnc_ArsenalTreeView;
 
-		if (_display getvariable ["Vana_Initialised", True]) then
-		{
-			[_display, "Init"] call VANA_fnc_UIPopup;
+		if (_display getvariable ["Vana_Initialised", True]) then {
 			[_display, "Init"] call VANA_fnc_OptionsMenu;
+			[_display,[],[],[],"Init"] call VANA_fnc_UIPopup;
 		};
 
 		if !(is3DEN) then {

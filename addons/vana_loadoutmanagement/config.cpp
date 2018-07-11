@@ -1,28 +1,23 @@
-class CfgPatches
-{
-	class VANA
-	{
+class CfgPatches {
+	class VANA {
 		name = "Vana - Loadout Management";
 		author = "Eathox";
 		version = "0.90";
 		requiredVersion = 1.3;
 		units[] = {};
-		requiredAddons[] =
-		{
+		requiredAddons[] = {
 			"A3_UI_F",
 			"A3_Functions_F"
 		};
 	};
 };
 
-class CfgScriptPaths
-{
-	VANAInit="\vana_LoadoutManagement\Functions\";
+class cfgScriptPaths {
+	VANAInit="vana_loadoutmanagement\functions\";
 };
 
-class cfgFunctions
-{
-	#include "Functions\functions.hpp"
+class cfgFunctions {
+	#include "functions\functions.hpp"
 };
 
 #include "UI\defineDialogs.inc"

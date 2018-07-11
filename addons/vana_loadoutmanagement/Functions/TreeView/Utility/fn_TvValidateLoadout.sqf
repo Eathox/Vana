@@ -1,11 +1,9 @@
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Arguments", [], [[]]]
 ];
 
-_Arguments params
-[
+_Arguments params [
 	["_Posistion", [], [[]]],
 	["_LoadoutName", "", [""]]
 ];

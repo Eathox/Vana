@@ -36,15 +36,20 @@ disableserialization;
 	_CtrlTreeView tvSetValue [_LoadoutPosistion, ([-1, 0] select BOOL)];\
 	True
 
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_TargetLoadouts", [], [[]]],
 	"_CtrlTreeView",
 	"_FullVersion",
 	"_LoadoutData",
 	"_Center",
-	"_Cargo"
+	"_Cargo",
+	"_LoadoutName",
+	"_InventoryData",
+	"_InventoryDataWeapons",
+	"_InventoryDataMagazines",
+	"_InventoryDataItems",
+	"_InventoryDataBackpacks"
 ];
 
 _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
@@ -55,11 +60,9 @@ _Cargo = (missionnamespace getvariable ["BIS_fnc_arsenal_Cargo", objnull]);
 
 GETVIRTUALCARGO
 {
-	Params ["_LoadoutName","_InventoryData","_InventoryDataWeapons","_InventoryDataMagazines","_InventoryDataItems","_InventoryDataBackpacks"];
 	_LoadoutName = _x select 0;
 
-	if (_LoadoutName in _LoadoutData) then
-	{
+	if (_LoadoutName in _LoadoutData) then {
 		//First Phase Validation
 		_InventoryData = _LoadoutData select ((_LoadoutData find _LoadoutName) + 1);
 		_InventoryDataWeapons =

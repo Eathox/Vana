@@ -86,29 +86,6 @@ class MiscOptions: RscVANAOptionGroup
 			colorBackgroundPressed[] ={0,0,0,0.8};
 			colorBackgroundDisabled[] ={0,0,0,0.8};
 		};
-		class RestoreBackupText: RscVANAOptionText
-		{
-			idc=-1;
-			text="Restore Backup"; //LOCALIZE
-			optiondescription="Place Holder"; //LOCALIZE
-			optionbuttonidc=981105;
-			y="(4.1 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-		};
-		class RestoreBackupButton: RscVANAOptionPictureButton
-		{
-			idc=981105;
-			text="\vana_LoadoutManagement\UI\Data_Icons\ButtonRestoreBackup.paa";
-			index=3;
-			y="(4.062 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-			x="17.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-			w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-			h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-			colorBackground[]={0,0,0,0.8};
-			colorBackgroundFocused[] ={0,0,0,0.8};
-			colorBackgroundHover[] ={0,0,0,0.8};
-			colorBackgroundPressed[] ={0,0,0,0.8};
-			colorBackgroundDisabled[] ={0,0,0,0.8};
-		};
 
 		class DropDownMenu: RscVANAOptionGroup
 		{

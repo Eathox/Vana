@@ -204,6 +204,8 @@ class RscVANAOptionCheckbox: RscCheckbox
 	index=0;
 	periodFocus=0;
 	period=0;
+	optionname="";
+	onCheckedChanged="['', ([False, True] select (_this select 1 == 1))] call VANA_fnc_SetOptionValue";
 	y="(1.062 * 1.2) * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 	x="14.95 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 	w="5.4 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";

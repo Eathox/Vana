@@ -3,8 +3,7 @@ disableserialization;
 #include "\vana_LoadoutManagement\UI\defineDIKCodes.inc"
 #include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
 
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Arguments", [], [[]]],
 	["_Behavior", "", [""]],
@@ -16,8 +15,7 @@ params
 ];
 
 _CtrlTreeView = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_TEMPLATE_VALUENAME;
-_Arguments params
-[
+_Arguments params [
 	["_TargetTv", (tvCurSel _CtrlTreeView), [[]]],
 	["_TabName", "", [""]]
 ];
@@ -27,15 +25,13 @@ _Behavior = tolower _Behavior;
 _TvData = tolower (_CtrlTreeView tvData _TargetTv);
 
 //Get parent
-if (!(_TvData isEqualto "tvtab") && !(_TargetTv isequalto [])) then
-{
+if (!(_TvData isEqualto "tvtab") && !(_TargetTv isequalto [])) then {
 	_TargetTv resize (Count _TargetTv -1);
 };
 
 //Create Tab in treeview
 _NewSubTvPath = +_TargetTv;
-if !(_TabName isequalto "") then
-{
+if !(_TabName isequalto "") then {
 	_AddSubTv = _CtrlTreeView tvAdd [_TargetTv, _TabName];
 } else {
 	_TabCount = [_ArsenalDisplay, [_TargetTv, "tvtab"], False] call VANA_fnc_TvCount;

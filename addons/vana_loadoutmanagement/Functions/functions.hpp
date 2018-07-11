@@ -1,38 +1,32 @@
-class VANA
-{
+class VANA {
 	tag="VANA";
 
-	class Altered_BIS_Fnc
-	{
-		file="vana_LoadoutManagement\Functions";
+	class Altered_BIS_Fnc {
+		file="vana_loadoutmanagement\functions";
 
 		class Arsenal {};
 		class Vana_Init {};
 	};
 
-	class Utility
-	{
-		file="vana_LoadoutManagement\Functions\Utility";
+	class Utility {
+		file="vana_loadoutmanagement\functions\utility";
 
 		class Log {};
-		class ClipboardChanged {};
 	};
 
-	class OptionsMenu
-	{
+	class OptionsMenu {
 		file="vana_LoadoutManagement\Functions\OptionsMenu";
 
 		class DropDownMenu {};
-		class OptionsMenu {};
 		class GetOptionValue {};
+		class OptionsMenu {};
 		class SetOptionValue {};
 		class TvExport {};
 		class TvImport {};
 		class ValidateImportData {};
 	};
 
-	class TreeView
-	{
+	class TreeView {
 		file="vana_LoadoutManagement\Functions\TreeView";
 
 		class ArsenalTreeView {};
@@ -60,8 +54,7 @@ class VANA
 		class TvValidateLoadout   {file="vana_LoadoutManagement\Functions\TreeView\Utility\fn_TvValidateLoadout.sqf"};
 	};
 
-	class UIPopup
-	{
+	class UIPopup {
 		file="vana_LoadoutManagement\Functions\UIPopup";
 
 		class UIPopup {};

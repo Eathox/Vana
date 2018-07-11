@@ -1,13 +1,17 @@
-params
-[
+#include "AllowedOptions.inc"
+
+params [
 	["_OptionName", "", [""]],
-	["_DefualtValue", nil],
-	"_Return",
-	"_VANAOptionsData"
+	"_VANAOptionsData",
+	"_DefualtValue",
+	"_Return"
 ];
 
-_Return = _DefualtValue;
 _OptionName = tolower _OptionName;
+_DefualtValue = nil;
+{if ((_x select 0) isequalto _OptionName) exitwith {_DefualtValue = (_x select 1)}} foreach ALLOWEDOPTIONS;
+_Return = _DefualtValue;
+
 _VANAOptionsData = profilenamespace getvariable ["VANA_fnc_OptionsMenu_Data", []];
 (_VANAOptionsData select {(_x select 0) isequalto _OptionName}) params [["_OptionArray", [_OptionName]]];
 

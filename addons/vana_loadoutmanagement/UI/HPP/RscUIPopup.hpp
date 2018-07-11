@@ -16,8 +16,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
 			y="0 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			w="18.8 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-			colorBackground[]=
-			{
+			colorBackground[]= {
 				"(profilenamespace getvariable ['GUI_BCG_RGB_R',0.13])",
 				"(profilenamespace getvariable ['GUI_BCG_RGB_G',0.54])",
 				"(profilenamespace getvariable ['GUI_BCG_RGB_B',0.21])",
@@ -81,7 +80,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
 			w="6.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 		};
-		class VANA_TogglePopup: RscCheckbox
+		class VANA_CheckBox: RscCheckbox
 		{
 			show=0;
 			default=0;
@@ -108,7 +107,7 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
 			show=0;
 			idc=979007;
 			style=1;
-			text=$STR_VANA_HintText_Text;
+			text="";
 			x="9.25 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 			y="2.66 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			w="9.55 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
@@ -124,17 +123,6 @@ class VANA_UIPopupControlGroup: RscControlsGroupNoScrollbars
 			w="18.2 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
 			h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
 			sizeEx="0.9 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-		};
-		class VANA_CopyBackup: RscCheckbox
-		{
-			show=0;
-			default=0;
-			idc=979009;
-			x="0.1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-			y="2.65 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-			w="1 * 					(			((safezoneW / safezoneH) min 1.2) / 40)";
-			h="1 * 					(			(			((safezoneW / safezoneH) min 1.2) / 1.2) / 25)";
-			colorBackground[]={0,0,0,1.21};
 		};
 	};
 };

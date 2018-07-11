@@ -4,8 +4,7 @@ disableserialization;
 #include "\vana_LoadoutManagement\UI\defineResinclDesign.inc"
 
 
-#define IDCS_MiscOptions_DropDownMenu\
-	[\
+#define IDCS_MiscOptions_DropDownMenu [\
 		IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenu,\
 		IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenuButtonLayout,\
 		IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenuButtonLoadout,\
@@ -13,23 +12,18 @@ disableserialization;
 		IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenuBackground\
 	]
 
-#define IDCS_Lists\
-	[\
+#define IDCS_Lists [\
 		IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_BackGroundList\
 	]
 
-params
-[
+params [
 	["_ArsenalDisplay", displaynull, [displaynull]],
 	["_Mode", "", [""]],
 	["_Arguments", [], [[]]]
 ];
 
-switch (tolower _mode) do
-{
-	///////////////////////////////////////////////////////////////////////////////////////////
-	case "init":
-	{
+switch (tolower _mode) do {
+	case "init": {
 		_Arguments params ["_CtrlDropDownMenuButtonLayout","_CtrlDropDownMenuButtonLoadout","_CtrlDropDownMenuButtonBoth","_CtrlDropDownMenu"];
 
 		_CtrlDropDownMenuButtonLayout = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenuButtonLayout;
@@ -48,15 +42,12 @@ switch (tolower _mode) do
 		_CtrlDropDownMenu	ctrlsetposition [_X,_Y,_W,0];
 		_CtrlDropDownMenu ctrlcommit 0;
 
-		{(_ArsenalDisplay displayctrl _x) ctrlenable false} foreach IDCS_MiscOptions_DropDownMenu;
+		{(_ArsenalDisplay displayctrl _x) ctrlenable false} Count IDCS_MiscOptions_DropDownMenu;
 	};
 
-
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "toggle":
-	{
-		_Arguments params
-		[
+	case "toggle": {
+		_Arguments params [
 			["_CtrlPressedButton", controlnull, [controlnull]],
 			["_ForceClose", false, [false]],
 			"_CtrlDropDownMenu",
@@ -76,13 +67,12 @@ switch (tolower _mode) do
 		_CtrlDropDownMenu	ctrlsetposition [_X,([(_ButtonY+_ButtonH), _Y] select _Close),_W,_Height];
 		_CtrlDropDownMenu Ctrlcommit 0.12;
 
-		{(_ArsenalDisplay displayctrl _x) ctrlenable ([true, false] select _Close)} foreach IDCS_MiscOptions_DropDownMenu;
+		{(_ArsenalDisplay displayctrl _x) ctrlenable ([true, false] select _Close)} Count IDCS_MiscOptions_DropDownMenu;
 		if !_Close then {ctrlsetfocus _CtrlDropDownMenu};
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "waituntilstatus":
-	{
+	case "waituntilstatus": {
 		params ["_CtrlDropDownMenu","_Status"];
 
 		_CtrlDropDownMenu = _ArsenalDisplay displayctrl IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenu;
@@ -99,27 +89,34 @@ switch (tolower _mode) do
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "defualt":
-	{
+	case "defualt": {
 		[_ArsenalDisplay, "Toggle", _Arguments] call VANA_fnc_DropDownMenu;
 		[_ArsenalDisplay, "WaitUntilStatus"] call VANA_fnc_DropDownMenu;
 	};
 
 	///////////////////////////////////////////////////////////////////////////////////////////
-	case "import":
-	{
-		params ["_ValidatedData","_DataTypes","_ImportData","_SelectedOption"];
+	case "import": { //WIP Rework
+		params ["_ValidatedData","_DataTypes","_ImportData","_SelectedOption","_TypeNameArray","_FncReturn"];
 
 		[_ArsenalDisplay, "Toggle", _Arguments] call VANA_fnc_DropDownMenu;
-		{(_ArsenalDisplay displayctrl _x) ctrlenable false} foreach (IDCS_MiscOptions_DropDownMenu - [IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenu,IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenuBackground]);
+		{(_ArsenalDisplay displayctrl _x) ctrlenable false} Count (IDCS_MiscOptions_DropDownMenu - [IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenu,IDC_RSCDISPLAYARSENAL_VANA_OPTIONS_MiscOptions_DropDownMenuBackground]);
 
-		_ValidatedData = [copyfromclipboard] call VANA_fnc_ValidateImportData;
+		_ValidatedData = copyfromclipboard call VANA_fnc_ValidateImportData;
 		_DataTypes = _ValidatedData select 0;
 		_ImportData = _ValidatedData select 1;
 
-		{_ArsenalDisplay displayctrl (IDCS_MiscOptions_DropDownMenu select ((["layout","loadout","both"] find tolower _x) + 1)) ctrlenable true} foreach _DataTypes;
+		{_ArsenalDisplay displayctrl (IDCS_MiscOptions_DropDownMenu select ((["layout","loadout","both"] find tolower _x) + 1)) ctrlenable true} Count _DataTypes;
+		format ["VANA_fnc_ValidateImportData: %1", ["copyfromclipboard call VANA_fnc_ValidateImportData", nil, 10000, displaynull] call BIS_fnc_codePerformance] call VANA_fnc_Log; //WIP Debuging
 
 		_SelectedOption = [_ArsenalDisplay, "WaitUntilStatus"] call VANA_fnc_DropDownMenu;
-		if !(_SelectedOption isequalto "false") then {[_ArsenalDisplay, _ImportData, _SelectedOption] call VANA_fnc_TvImport};
+		if !(_SelectedOption isequalto "false") then {
+			_TypeNameArray = ["layout","loadout","both", "Layout","Loadout","Layout and Loadout"]; //LOCALIZE
+			_FncReturn = [
+				_ArsenalDisplay,
+				["Import Confirmation", format ["Overwrite Data: %1", _TypeNameArray select (_TypeNameArray find _SelectedOption)+3]] //LOCALIZE
+			] call VANA_fnc_UIPopup;
+
+			if (_FncReturn select 0) then {[_ArsenalDisplay, _ImportData, _SelectedOption] call VANA_fnc_TvImport};
+		};
 	};
 };
